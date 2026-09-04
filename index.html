@@ -3291,7 +3291,8 @@ body.rfds-overlay-open { overflow: hidden; }
     transition: opacity .25s ease;
   }
   #rfds-app .eoi-form-scroll-cue::before {
-    content: "Swipe up to continue";
+    content: "Swipe up to join
+      our talent community";
     position: absolute;
     left: 50%;
     bottom: 0;
@@ -3365,6 +3366,371 @@ body.rfds-overlay-open { overflow: hidden; }
   }
 }
 
+
+/* =========================================================
+   MOBILE CINEMATIC LOCK + SWIPE COMMAND REFINEMENT
+   Keep the story surface anchored while native scrolling remains
+   available inside forms and other contained overlays.
+   ========================================================= */
+html, body {
+  overscroll-behavior-y: none;
+}
+body.rfds-story-lock {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+#rfds-app .stage-viewport {
+  overscroll-behavior: none;
+}
+@media (max-width: 900px) {
+  #rfds-app .stage-viewport {
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  #rfds-app .scroll-prompt {
+    left: 50%;
+    bottom: max(16px, calc(var(--safe-bottom) + 12px));
+    width: min(310px, calc(100vw - var(--safe-left) - var(--safe-right) - 28px));
+    min-height: 86px;
+    padding: 10px 16px 11px;
+    gap: 4px;
+    border: 1px solid rgba(0,32,91,.11);
+    border-radius: 18px;
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 12px 34px rgba(0,32,91,.11), inset 0 1px 0 rgba(255,255,255,.96);
+    backdrop-filter: blur(16px) saturate(145%);
+    -webkit-backdrop-filter: blur(16px) saturate(145%);
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  #rfds-app .scroll-prompt.ready {
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+  #rfds-app .scroll-prompt.hidden {
+    transform: translate3d(-50%, 12px, 0) scale(.985);
+  }
+  #rfds-app .scroll-prompt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(240,91,34,.025));
+  }
+  #rfds-app .scroll-prompt.ready::after {
+    width: 180px;
+    height: 14px;
+    bottom: -7px;
+    background: radial-gradient(ellipse, rgba(240,91,34,.13) 0%, rgba(240,91,34,0) 72%);
+    filter: blur(7px);
+  }
+  #rfds-app .scroll-prompt .prompt-gesture-icon {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 2px;
+    font-size: 22px;
+    line-height: .8;
+    font-weight: 500;
+    color: var(--rfds-red);
+    animation: rfdsSwipeArrowUp 1.45s cubic-bezier(.22,.61,.36,1) infinite;
+  }
+  #rfds-app .scroll-prompt .prompt-action,
+  #rfds-app .scroll-prompt .prompt-subline {
+    position: relative;
+    z-index: 1;
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  #rfds-app .scroll-prompt .prompt-action {
+    font-size: 10px;
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: .16em;
+    color: var(--rfds-navy);
+  }
+  #rfds-app .scroll-prompt .prompt-subline {
+    margin-top: 2px;
+    font-size: 8px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: .11em;
+    color: rgba(0,32,91,.62);
+  }
+
+  /* Reserve a dedicated command zone above the prompt. */
+  #rfds-app .story-stats-deck {
+    bottom: max(126px, calc(var(--safe-bottom) + 116px));
+    z-index: 45;
+  }
+  #rfds-app .story-stats-deck.is-hidden-for-map {
+    pointer-events: none;
+  }
+
+  /* Deliberately narrower editorial measure: centred, calm, readable. */
+  #rfds-app .narrative-container {
+    padding-left: max(24px, calc(var(--safe-left) + 22px)) !important;
+    padding-right: max(24px, calc(var(--safe-right) + 22px)) !important;
+  }
+  #rfds-app .narrative-card,
+  #rfds-app .beat-copy {
+    width: min(100%, 36ch) !important;
+    max-width: 36ch !important;
+    margin-inline: auto !important;
+  }
+  #rfds-app .beat-heading {
+    max-width: 30ch;
+    margin-inline: auto;
+  }
+  #rfds-app .beat-body {
+    max-width: 36ch;
+    margin-inline: auto;
+    text-wrap: pretty;
+  }
+  #rfds-app .beat-final-line {
+    max-width: 32ch !important;
+    margin-inline: auto !important;
+  }
+}
+
+@media (max-width: 900px) and (max-height: 520px) and (orientation: landscape) {
+  #rfds-app .scroll-prompt {
+    min-height: 64px;
+    width: min(300px, calc(100vw - 24px));
+    padding: 7px 14px 8px;
+  }
+  #rfds-app .scroll-prompt .prompt-gesture-icon { font-size: 18px; }
+  #rfds-app .scroll-prompt .prompt-action { font-size: 8.5px; }
+  #rfds-app .scroll-prompt .prompt-subline { font-size: 7px; }
+  #rfds-app .story-stats-deck {
+    bottom: max(74px, calc(var(--safe-bottom) + 66px));
+  }
+  #rfds-app .narrative-card,
+  #rfds-app .beat-copy {
+    width: min(100%, 48ch) !important;
+    max-width: 48ch !important;
+  }
+}
+
+@keyframes rfdsSwipeArrowUp {
+  0%, 100% { transform: translateY(4px); opacity: .48; }
+  44% { transform: translateY(-5px); opacity: 1; }
+  62% { transform: translateY(-2px); opacity: .9; }
+}
+
+
+
+/* =========================================================
+   RFDS SIGNAL — physical gesture instrument
+   The prompt behaves like a discovered mechanism, not a CTA.
+   ========================================================= */
+#rfds-app .scroll-prompt {
+  --signal-drag: 0px;
+  --signal-press: 0;
+  --signal-light: 0;
+}
+#rfds-app .scroll-prompt::before,
+#rfds-app .scroll-prompt::after { pointer-events: none; }
+#rfds-app .scroll-prompt .signal-instrument { display: none; }
+
+@media (max-width: 900px) {
+  #rfds-app .scroll-prompt {
+    position: absolute;
+    left: 50%;
+    bottom: max(16px, calc(var(--safe-bottom) + 12px));
+    width: min(286px, calc(100vw - var(--safe-left) - var(--safe-right) - 36px));
+    min-height: 120px;
+    padding: 15px 18px 16px;
+    gap: 4px;
+    border: 1px solid rgba(0,32,91,.095);
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.76), rgba(255,255,255,.50));
+    box-shadow: 0 14px 42px rgba(0,32,91,.09), inset 0 1px 0 rgba(255,255,255,.92);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    overflow: hidden;
+  }
+  #rfds-app .scroll-prompt::before {
+    content: "";
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 14%, rgba(240,91,34,.08), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.22), rgba(240,91,34,.018));
+    opacity: .9;
+  }
+  #rfds-app .scroll-prompt.ready::after {
+    content: "";
+    left: 50%;
+    bottom: -6px;
+    width: 132px;
+    height: 20px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(240,91,34,.11) 0%, rgba(240,91,34,0) 74%);
+    filter: blur(6px);
+  }
+  #rfds-app .scroll-prompt .scroll-prompt-track,
+  #rfds-app .scroll-prompt .scroll-prompt-dot { display: none !important; }
+  #rfds-app .scroll-prompt .signal-instrument {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: 34px;
+    height: 48px;
+    margin: 0 auto 1px;
+    align-items: flex-start;
+    justify-content: center;
+    transform: translateY(calc(var(--signal-drag) * .16));
+    transition: transform .12s cubic-bezier(.22,1,.36,1);
+  }
+  #rfds-app .scroll-prompt .signal-rail {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 2px;
+    height: calc(25px + var(--signal-drag) * .08);
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(240,91,34,.92), rgba(240,91,34,.32));
+    overflow: visible;
+  }
+  #rfds-app .scroll-prompt .signal-light {
+    position: absolute;
+    left: 50%;
+    top: -3px;
+    width: 3px;
+    height: 9px;
+    border-radius: 999px;
+    transform: translate(-50%, calc(var(--signal-light) * 24px));
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 0 10px rgba(240,91,34,.36);
+    opacity: .82;
+  }
+  #rfds-app .scroll-prompt .signal-arrow-head {
+    position: absolute;
+    left: 50%;
+    top: -1px;
+    width: 9px;
+    height: 9px;
+    border-top: 1.7px solid var(--rfds-red);
+    border-left: 1.7px solid var(--rfds-red);
+    transform: translate(-50%, calc(var(--signal-drag) * -0.18 - var(--signal-press) * 2px)) rotate(45deg) scale(calc(1 - var(--signal-press) * .06));
+    transform-origin: 50% 50%;
+  }
+  #rfds-app .scroll-prompt .signal-crossbar {
+    position: absolute;
+    left: 50%;
+    bottom: 7px;
+    width: 22px;
+    height: 2px;
+    border-radius: 999px;
+    transform: translateX(-50%) scaleX(calc(1 + var(--signal-press) * .08));
+    background: rgba(0,32,91,.34);
+  }
+  #rfds-app .scroll-prompt .signal-armed-dot {
+    position: absolute;
+    right: 9px;
+    top: 10px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--rfds-red);
+    box-shadow: 0 0 0 0 rgba(240,91,34,.18);
+    opacity: 0;
+  }
+  #rfds-app .scroll-prompt.ready .signal-armed-dot {
+    opacity: .72;
+    animation: rfdsSignalArm 1.8s cubic-bezier(.22,.61,.36,1) 1;
+  }
+  #rfds-app .scroll-prompt .scroll-prompt-text {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-align: center;
+    color: var(--rfds-navy);
+  }
+  #rfds-app .scroll-prompt .prompt-gesture-icon {
+    display: none;
+  }
+  #rfds-app .scroll-prompt .prompt-action {
+    font-family: "museo-sans", sans-serif;
+    font-size: 10px;
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--rfds-navy);
+  }
+  #rfds-app .scroll-prompt .prompt-subline {
+    display: block;
+    max-width: 22ch;
+    font-family: "museo-sans", sans-serif;
+    font-size: 7.7px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: .105em;
+    text-transform: uppercase;
+    color: rgba(0,32,91,.58);
+  }
+  #rfds-app .scroll-prompt.ready .signal-rail {
+    animation: rfdsSignalBreath 2s cubic-bezier(.16,1,.3,1) infinite;
+  }
+  #rfds-app .scroll-prompt.ready .signal-light {
+    animation: rfdsSignalLight 2s cubic-bezier(.16,1,.3,1) infinite;
+  }
+  #rfds-app .scroll-prompt.signal-pressed {
+    --signal-press: 1;
+    transform: translate3d(-50%, 0, 0) scale(.985) !important;
+    box-shadow: 0 10px 32px rgba(0,32,91,.08), inset 0 1px 0 rgba(255,255,255,.94);
+  }
+  #rfds-app .scroll-prompt.signal-pressed .signal-rail {
+    animation-play-state: paused;
+  }
+  #rfds-app .scroll-prompt.signal-dragging .signal-rail {
+    transition: height .08s linear;
+  }
+}
+
+@media (max-width: 900px) and (max-height: 520px) and (orientation: landscape) {
+  #rfds-app .scroll-prompt {
+    width: min(250px, calc(100vw - 24px));
+    min-height: 92px;
+    padding: 9px 14px 10px;
+  }
+  #rfds-app .scroll-prompt .signal-instrument { height: 34px; }
+  #rfds-app .scroll-prompt .signal-rail { top: 5px; height: 20px; }
+  #rfds-app .scroll-prompt .signal-crossbar { bottom: 3px; }
+}
+
+@keyframes rfdsSignalBreath {
+  0%, 100% { transform: translateX(-50%) scaleY(1); opacity: .62; }
+  45% { transform: translateX(-50%) translateY(-11px) scaleY(1.04); opacity: 1; }
+  65% { transform: translateX(-50%) translateY(-7px) scaleY(1.02); opacity: .84; }
+}
+@keyframes rfdsSignalLight {
+  0%, 100% { opacity: 0; transform: translate(-50%, 22px); }
+  20% { opacity: .12; }
+  42% { opacity: .9; transform: translate(-50%, 1px); }
+  58% { opacity: .18; transform: translate(-50%, -2px); }
+  100% { opacity: 0; }
+}
+@keyframes rfdsSignalArm {
+  0% { box-shadow: 0 0 0 0 rgba(240,91,34,.18); }
+  55% { box-shadow: 0 0 0 5px rgba(240,91,34,.06); }
+  100% { box-shadow: 0 0 0 0 rgba(240,91,34,0); }
+}
 </style>
 
 </head>
@@ -3417,12 +3783,21 @@ body.rfds-overlay-open { overflow: hidden; }
       <p class="hero-intro">With diverse roles, strong values and a real sense of purpose, this is your chance to use your skills to make a lasting impact in communities across Australia.</p>
     </div>
 
-    <!-- Cinematic Scroll Prompt -->
-    <div class="scroll-prompt" id="scrollPrompt">
-      <div class="scroll-prompt-track">
-        <div class="scroll-prompt-dot"></div>
+    <!-- RFDS Signal — discreet gesture instrument -->
+    <div class="scroll-prompt" id="scrollPrompt" aria-label="Swipe up to join our talent community">
+      <div class="signal-instrument" aria-hidden="true">
+        <div class="signal-rail">
+          <span class="signal-light"></span>
+          <span class="signal-arrow-head"></span>
+        </div>
+        <div class="signal-crossbar"></div>
+        <span class="signal-armed-dot"></span>
       </div>
-      <span class="scroll-prompt-text"><span>Scroll to join our talent community</span></span>
+      <span class="scroll-prompt-text">
+        <span class="prompt-gesture-icon" aria-hidden="true">↑</span>
+        <span class="prompt-action">Swipe up</span>
+        <span class="prompt-subline">to join our talent community</span>
+      </span>
     </div>
 
     <!-- Final Step Banner (Stage 6) -->
@@ -4340,7 +4715,8 @@ var storyState = {
   unlockTimer: null,
   cooldownUntil: 0,
   touchStartY: null,
-  touchActive: false
+  touchActive: false,
+  promptTouchStartY: null
 };
 
 function setSpine(activeIdx) {
@@ -4389,8 +4765,8 @@ function showScrollPrompt(delay) {
   if (promptText) {
     var isMobilePrompt = window.innerWidth <= 900;
     promptText.innerHTML = isMobilePrompt
-      ? '<span class=\"prompt-gesture-icon\" aria-hidden=\"true\">↑</span><span>swipe up to join our talent community</span>'
-      : '<span>Scroll to join our talent community</span>';
+      ? '<span class=\"prompt-gesture-icon\" aria-hidden=\"true\">↑</span><span class=\"prompt-action\">Swipe up</span><span class=\"prompt-subline\">to join our talent community</span>'
+      : '<span class=\"prompt-action\">Continue <span aria-hidden=\"true\">↑</span></span>';
   }
 
   storyState.promptTimer = window.setTimeout(function() {
@@ -4406,6 +4782,7 @@ function showScrollPrompt(delay) {
 function showFinalDestination() {
   storyState.done = true;
   storyState.ready = false;
+  if (document.body) document.body.classList.remove('rfds-story-lock');
   appRoot.classList.add('destination-mode');
   appRoot.classList.remove('has-map-selection');
   storyState.locked = false;
@@ -4423,6 +4800,7 @@ function showFinalDestination() {
 }
 
 function applyStoryBeat(beat) {
+  if (document.body) document.body.classList.add('rfds-story-lock');
   var isMobile = window.innerWidth <= 900;
   var isShortLandscape = isMobile && window.innerWidth > window.innerHeight && window.innerHeight <= 520;
   var isCompactPortrait = isMobile && window.innerWidth <= 560 && window.innerHeight <= 650 && window.innerHeight >= window.innerWidth;
@@ -4593,6 +4971,11 @@ function handleTouchStart(e) {
   if (!e.touches || !e.touches.length) return;
   storyState.touchStartY = e.touches[0].clientY;
   storyState.touchActive = true;
+
+  // Lock the native page pan as soon as a story gesture begins. Preserve
+  // click/tap synthesis for the explicit prompt control itself.
+  var isPrompt = e.target && e.target.closest && e.target.closest('.scroll-prompt');
+  if (!isPrompt && e.cancelable) e.preventDefault();
 }
 
 function handleTouchMove(e) {
@@ -4626,9 +5009,35 @@ if (scrollPrompt) {
   });
 }
 
+// RFDS Signal tactile response: the command itself becomes a tiny physical control.
+if (scrollPrompt) {
+  scrollPrompt.addEventListener('touchstart', function(e) {
+    if (!storyState.ready || storyState.locked || storyState.done) return;
+    if (!e.touches || !e.touches.length) return;
+    scrollPrompt.classList.add('signal-pressed');
+    storyState.promptTouchStartY = e.touches[0].clientY;
+    scrollPrompt.style.setProperty('--signal-drag', '0px');
+  }, { passive: true });
+  scrollPrompt.addEventListener('touchmove', function(e) {
+    if (!scrollPrompt.classList.contains('signal-pressed')) return;
+    if (!e.touches || !e.touches.length || storyState.promptTouchStartY == null) return;
+    var delta = storyState.promptTouchStartY - e.touches[0].clientY;
+    var upward = Math.max(0, Math.min(delta, 72));
+    scrollPrompt.classList.add('signal-dragging');
+    scrollPrompt.style.setProperty('--signal-drag', upward.toFixed(1) + 'px');
+  }, { passive: true });
+  function resetSignalTouch() {
+    scrollPrompt.classList.remove('signal-pressed', 'signal-dragging');
+    scrollPrompt.style.setProperty('--signal-drag', '0px');
+    storyState.promptTouchStartY = null;
+  }
+  scrollPrompt.addEventListener('touchend', resetSignalTouch, { passive: true });
+  scrollPrompt.addEventListener('touchcancel', resetSignalTouch, { passive: true });
+}
+
 window.addEventListener('wheel', handleWheel, { passive: false });
 window.addEventListener('keydown', handleKeydown, { passive: false });
-window.addEventListener('touchstart', handleTouchStart, { passive: true });
+window.addEventListener('touchstart', handleTouchStart, { passive: false });
 window.addEventListener('touchmove', handleTouchMove, { passive: false });
 window.addEventListener('touchend', handleTouchEnd, { passive: true });
 window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
@@ -4642,6 +5051,7 @@ window.addEventListener('orientationchange', refreshStoryLayout, { passive: true
 // Lock the document to the cinematic stage. The story no longer requires a
 // fake 700vh–1200vh scroll runway, which removes device-dependent pacing.
 if (scrollTrack) scrollTrack.style.height = '100vh';
+if (document.body) document.body.classList.add('rfds-story-lock');
 if (appRoot) appRoot.setAttribute('data-story-beat', '0');
 
 applyStoryBeat(STORY_BEATS.HERO);
@@ -4803,7 +5213,6 @@ function setTouchedSection(path, clientX, clientY) {
   }
 
   appRoot.classList.add('has-map-selection');
-  if (mapTouchHint) mapTouchHint.classList.remove('is-visible');
   addMapTouchRipple(clientX, clientY);
 
   // A very light haptic confirms the section has been claimed by the finger.

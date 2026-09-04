@@ -4766,7 +4766,8 @@ function showScrollPrompt(delay) {
     var isMobilePrompt = window.innerWidth <= 900;
     promptText.innerHTML = isMobilePrompt
       ? '<span class=\"prompt-gesture-icon\" aria-hidden=\"true\">↑</span><span class=\"prompt-action\">Swipe up</span><span class=\"prompt-subline\">to join our talent community</span>'
-      : '<span class=\"prompt-action\">Continue <span aria-hidden=\"true\">↑</span></span>';
+      : '<span class=\"prompt-action\">SWIPE UP TO JOIN
+      OUR TALENT COMMUNITY" <span aria-hidden=\"true\">↑</span></span>';
   }
 
   storyState.promptTimer = window.setTimeout(function() {

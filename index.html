@@ -724,6 +724,19 @@ body.rfds-overlay-open { overflow: hidden; }
   border-radius: 2px;
   animation: scrollDrop 2s cubic-bezier(0.6, 0.05, 0.2, 0.9) infinite;
 }
+#rfds-app .scroll-prompt .prompt-gesture-icon {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 18px;
+  line-height: .75;
+  font-weight: 300;
+  color: var(--rfds-red);
+  animation: rfdsSwipeUpCue 1.35s cubic-bezier(.16,1,.3,1) infinite;
+}
+@keyframes rfdsSwipeUpCue {
+  0%, 100% { transform: translateY(4px); opacity: .45; }
+  45% { transform: translateY(-4px); opacity: 1; }
+}
 #rfds-app .scroll-prompt-text {
   font-family: "museo-sans", sans-serif;
   font-size: 10px;
@@ -3266,36 +3279,6 @@ body.rfds-overlay-open { overflow: hidden; }
   }
 
   /* Small first-arrival instruction, deliberately quieter than the main CTA. */
-  #rfds-app .map-touch-hint {
-    position: absolute;
-    left: 50%;
-    bottom: max(74px, calc(var(--safe-bottom) + 66px));
-    transform: translate(-50%, 8px);
-    width: max-content;
-    max-width: calc(100% - 32px);
-    padding: 8px 12px;
-    border: 1px solid rgba(0,32,91,.10);
-    border-radius: 999px;
-    background: rgba(255,255,255,.82);
-    box-shadow: 0 10px 26px rgba(0,32,91,.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: var(--rfds-navy);
-    font-size: 9px;
-    line-height: 1;
-    font-weight: 700;
-    letter-spacing: .09em;
-    text-transform: uppercase;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .45s ease, transform .45s cubic-bezier(.16,1,.3,1);
-    z-index: 35;
-  }
-  #rfds-app.destination-mode .map-touch-hint.is-visible {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-  #rfds-app.destination-mode.has-map-selection .map-touch-hint { opacity: 0 !important; }
 
   /* Stronger edge cue for a scrollable form on small screens. */
   #rfds-app .eoi-form-scroll-cue {
@@ -3358,11 +3341,27 @@ body.rfds-overlay-open { overflow: hidden; }
 
   @media (prefers-reduced-motion: reduce) {
     #rfds-app .map-stage-wrapper::after,
-    #rfds-app .map-touch-hint,
     #rfds-app .eoi-form-scroll-cue,
     #rfds-app .map-interactive .state-path.state-selected {
       transition-duration: 1ms !important;
     }
+  }
+}
+
+
+@media (max-width: 900px) {
+  #rfds-app .scroll-prompt {
+    width: min(calc(100vw - 28px), 430px);
+    gap: 7px;
+  }
+  #rfds-app .scroll-prompt-text {
+    max-width: 340px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.3;
+  }
+  #rfds-app .scroll-prompt.ready {
+    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -3423,7 +3422,7 @@ body.rfds-overlay-open { overflow: hidden; }
       <div class="scroll-prompt-track">
         <div class="scroll-prompt-dot"></div>
       </div>
-      <span class="scroll-prompt-text"><span>Scroll to continue</span><span>through the story</span></span>
+      <span class="scroll-prompt-text"><span>Scroll to join our talent community</span></span>
     </div>
 
     <!-- Final Step Banner (Stage 6) -->
@@ -3713,7 +3712,6 @@ body.rfds-overlay-open { overflow: hidden; }
     </div>
 
     <p class="section-structure-note" id="sectionStructureNote">The RFDS is made up of six operational ‘Sections’ around Australia, under a federated structure. Each of the entities are independent, both financially and operationally.</p>
-    <div class="map-touch-hint" id="mapTouchHint" aria-hidden="true">Tap a section to explore</div>
 
     <!-- Three-beat Careers Scrollytelling -->
     <div class="narrative-container" aria-label="Why work with the Royal Flying Doctor Service">
@@ -4283,7 +4281,6 @@ var flightArcs = document.querySelectorAll('.flight-arc');
 var statesLayer = document.getElementById('statesLayer');
 var scrollTrack = document.getElementById('scrollTrack');
 var stateTooltip = document.getElementById('stateTooltip');
-var mapTouchHint = document.getElementById('mapTouchHint');
 
 var n1 = document.getElementById('narrative1');
 var n2 = document.getElementById('narrative2');
@@ -4387,6 +4384,15 @@ function showScrollPrompt(delay) {
   if (!scrollPrompt || storyState.done) return;
   if (storyState.promptTimer) window.clearTimeout(storyState.promptTimer);
   hideScrollPrompt();
+
+  var promptText = scrollPrompt.querySelector('.scroll-prompt-text');
+  if (promptText) {
+    var isMobilePrompt = window.innerWidth <= 900;
+    promptText.innerHTML = isMobilePrompt
+      ? '<span class=\"prompt-gesture-icon\" aria-hidden=\"true\">↑</span><span>swipe up to join our talent community</span>'
+      : '<span>Scroll to join our talent community</span>';
+  }
+
   storyState.promptTimer = window.setTimeout(function() {
     scrollPrompt.classList.remove('hidden');
     requestAnimationFrame(function() {
@@ -4402,7 +4408,6 @@ function showFinalDestination() {
   storyState.ready = false;
   appRoot.classList.add('destination-mode');
   appRoot.classList.remove('has-map-selection');
-  if (mapTouchHint) mapTouchHint.classList.add('is-visible');
   storyState.locked = false;
   hideScrollPrompt();
   finalBanner.classList.add('visible');
@@ -4730,7 +4735,7 @@ document.querySelectorAll('.state-path').forEach(function(path) {
     }
     var data = STATE_DATA[id];
     if (!data) return;
-    stateTooltip.textContent = data.name + ' (' + data.bases.length + ' Bases)';
+    stateTooltip.textContent = data.name;
     stateTooltip.classList.add('visible');
   });
 

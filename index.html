@@ -3566,12 +3566,12 @@ body.rfds-story-lock {
   #rfds-app .story-stats-deck { top:70%; bottom:auto; left:50%; width:calc(100% - var(--safe-left) - var(--safe-right) - 24px); max-width:520px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; align-items:start; transform:translateX(-50%); }
   #rfds-app .story-stat-card { width:auto; max-width:none; min-width:0; min-height:0; padding:2px 9px 0; border:0; border-radius:0; background:none; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
   #rfds-app .story-stat-card::before { display:none; }
-  #rfds-app .story-stat-card + .story-stat-card { border-left:1px solid rgba(0,32,91,.14); }
+  #rfds-app .story-stat-card + .story-stat-card { border-left:0; }
   #rfds-app .story-stat-card-label { font-size:8px; line-height:1.2; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
   #rfds-app .story-stat-card-value { margin-top:6px; font-size:clamp(17px,5vw,22px); line-height:.95; letter-spacing:-.03em; }
   #rfds-app .story-stat-card-sub { max-width:15ch; margin:5px auto 0; font-size:8.5px; line-height:1.25; text-align:center; }
   #rfds-app .story-stat-card-split { display:flex; justify-content:center; gap:7px; margin-top:6px; }
-  #rfds-app .story-stat-card-split .split-unit + .split-unit { border-left:1px solid rgba(0,32,91,.12); padding-left:7px; }
+  #rfds-app .story-stat-card-split .split-unit + .split-unit { border-left:0; padding-left:0; }
   #rfds-app .story-stat-card-split .split-value { font-size:clamp(15px,4.8vw,21px); }
   #rfds-app .story-stat-card-split .split-label { margin-top:4px; font-size:8px; line-height:1.2; }
 }
@@ -3593,6 +3593,295 @@ body.rfds-story-lock {
 #rfds-app .form-success-inline { display:flex; flex-direction:column; gap:5px; margin:14px 0 0; padding:12px 14px; border-left:3px solid var(--rfds-red); background:rgba(240,91,34,.06); color:var(--rfds-navy); font-family:"museo-sans",sans-serif; }
 #rfds-app .form-success-inline strong { font-size:13px; font-weight:900; }
 #rfds-app .form-success-inline span { font-size:12px; line-height:1.45; font-weight:500; }
+
+
+/* =========================================================
+   FINAL UX OPTIMISATION — V23
+   ========================================================= */
+#rfds-app .narrative-card,
+#rfds-app .hero-lockup {
+  transition:
+    opacity 420ms cubic-bezier(.22,.61,.36,1),
+    transform 420ms cubic-bezier(.22,.61,.36,1),
+    filter 360ms cubic-bezier(.22,.61,.36,1) !important;
+}
+
+/* One statistic per story beat: large, centred and resolving with the copy. */
+#rfds-app .story-stats-deck {
+  position:absolute;
+  left:50%;
+  top:68%;
+  bottom:auto;
+  width:min(760px, calc(100% - 48px));
+  height:120px;
+  transform:translateX(-50%);
+  display:block;
+  pointer-events:none;
+  z-index:42;
+  opacity:1;
+}
+#rfds-app .story-stat-card {
+  position:absolute;
+  left:50%;
+  top:50%;
+  display:block;
+  width:auto;
+  min-width:0;
+  max-width:min(720px, 90vw);
+  min-height:0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  text-align:center;
+  opacity:0;
+  visibility:hidden;
+  transform:translate(-50%, calc(-50% + 18px));
+  filter:blur(8px);
+  transition:
+    opacity 420ms cubic-bezier(.22,.61,.36,1),
+    transform 420ms cubic-bezier(.22,.61,.36,1),
+    filter 360ms cubic-bezier(.22,.61,.36,1),
+    visibility 0s linear 420ms;
+}
+#rfds-app .story-stat-card.is-visible {
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%, -50%);
+  filter:blur(0);
+  transition-delay:0s;
+}
+#rfds-app .story-stat-card::before { display:none !important; }
+#rfds-app .story-stat-card-label {
+  display:block;
+  font-size:12px;
+  line-height:1.1;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--rfds-navy);
+}
+#rfds-app .story-stat-card-value {
+  display:block;
+  margin-top:8px;
+  font-size:clamp(46px, 5.2vw, 76px);
+  line-height:.92;
+  letter-spacing:-.045em;
+  color:var(--rfds-red);
+}
+#rfds-app .story-stat-card-sub {
+  display:block;
+  max-width:30ch;
+  margin:10px auto 0;
+  font-size:14px;
+  line-height:1.35;
+  color:var(--rfds-navy);
+  text-align:center;
+}
+#rfds-app .story-stat-card-split {
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  gap:22px;
+  margin-top:10px;
+}
+#rfds-app .story-stat-card-split .split-unit + .split-unit {
+  border-left:0;
+  padding-left:0;
+}
+#rfds-app .story-stat-card-split .split-value {
+  display:block;
+  font-size:clamp(40px, 4.5vw, 60px);
+  line-height:.92;
+  color:var(--rfds-red);
+}
+#rfds-app .story-stat-card-split .split-label {
+  display:block;
+  margin-top:7px;
+  font-size:12px;
+  line-height:1.2;
+  color:var(--rfds-navy);
+  text-align:center;
+}
+#rfds-app[data-story-beat="0"] .story-stats-deck { opacity:0; pointer-events:none; }
+
+/* Closing statement sits over the geographical centre of Australia. */
+#rfds-app .closing-card {
+  top:50% !important;
+  left:50% !important;
+  width:min(900px, calc(100% - 48px)) !important;
+  max-width:900px !important;
+}
+#rfds-app .closing-card:not(.active) {
+  transform:translate3d(-50%, calc(-50% + 24px), 0) !important;
+}
+#rfds-app .closing-card.active {
+  transform:translate3d(-50%, -50%, 0) !important;
+}
+#rfds-app .closing-card.exit {
+  transform:translate3d(-50%, calc(-50% - 22px), 0) !important;
+}
+
+/* FURTHER is a trajectory: underline draws outward after the word resolves. */
+#rfds-app .further-word { --further-progress:0; --further-trail:clamp(80px, 12vw, 190px); }
+#rfds-app .further-word::after {
+  width:calc(100% + var(--further-trail));
+  transform-origin:left center;
+  transform:scaleX(var(--further-progress));
+  transition:transform 680ms cubic-bezier(.16,1,.3,1), opacity 320ms ease;
+}
+#rfds-app .further-word::before {
+  left:calc(100% + var(--further-trail));
+  transform:translate(-50%,-50%) rotate(45deg) scale(var(--further-progress));
+  transition:transform 680ms cubic-bezier(.16,1,.3,1), opacity 320ms ease;
+}
+
+/* Clean gesture glyph — no box, rail, dot or shadow. */
+#rfds-app .scroll-prompt,
+#rfds-app .scroll-prompt.ready,
+#rfds-app .scroll-prompt.hidden {
+  width:auto !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:none !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+#rfds-app .scroll-prompt.hidden { opacity:0 !important; transform:translate3d(-50%, 8px, 0) !important; }
+#rfds-app .scroll-prompt.ready { opacity:1 !important; transform:translate3d(-50%, 0, 0) !important; }
+#rfds-app .scroll-prompt::before,
+#rfds-app .scroll-prompt::after,
+#rfds-app .scroll-prompt .signal-instrument,
+#rfds-app .scroll-prompt .scroll-prompt-track,
+#rfds-app .scroll-prompt .scroll-prompt-dot { display:none !important; }
+#rfds-app .scroll-prompt .scroll-prompt-text {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  text-align:center;
+}
+#rfds-app .scroll-prompt .prompt-gesture-icon {
+  display:block !important;
+  margin:0 0 3px !important;
+  font-family:"museo-sans",Arial,sans-serif;
+  font-size:26px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  color:var(--rfds-red) !important;
+  animation:rfdsCleanSwipe 1.55s cubic-bezier(.22,.61,.36,1) infinite !important;
+  will-change:transform,opacity;
+}
+#rfds-app .scroll-prompt .prompt-action {
+  font-family:"museo-sans",sans-serif !important;
+  font-size:10px !important;
+  line-height:1.05 !important;
+  font-weight:900 !important;
+  letter-spacing:.16em !important;
+  color:var(--rfds-navy) !important;
+  text-transform:uppercase !important;
+}
+#rfds-app .scroll-prompt .prompt-subline {
+  display:block;
+  margin:0 !important;
+  font-family:"museo-sans",sans-serif !important;
+  font-size:8px !important;
+  line-height:1.15 !important;
+  font-weight:600 !important;
+  letter-spacing:.11em !important;
+  color:rgba(0,32,91,.62) !important;
+  text-transform:uppercase !important;
+}
+@keyframes rfdsCleanSwipe {
+  0%,100% { transform:translateY(0); opacity:.48; }
+  38% { transform:translateY(-15px); opacity:1; }
+  58% { transform:translateY(-15px); opacity:1; }
+}
+
+/* First modal screen = selected section blurb only. */
+#rfds-app .selection-face { justify-content:center; gap:24px; }
+#rfds-app .selection-blurb-box {
+  width:min(100%,520px);
+  margin:0 auto;
+  padding:28px 30px 30px;
+  border-left:4px solid var(--rfds-red);
+  background:rgba(0,32,91,.035);
+}
+#rfds-app .selection-section-name {
+  display:block;
+  margin-bottom:14px;
+  font-family:"museo-sans",sans-serif;
+  font-size:clamp(20px,2.2vw,28px);
+  line-height:1.05;
+  font-weight:900;
+  color:var(--rfds-red);
+  text-transform:uppercase;
+  letter-spacing:-.02em;
+}
+#rfds-app .selection-section-blurb {
+  margin:0;
+  font-family:"museo-sans",sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  font-weight:500;
+  color:var(--rfds-navy);
+}
+#rfds-app .selection-continue-btn { width:min(100%,520px); margin:0 auto; }
+#rfds-app .success-section-kicker,
+#rfds-app .success-section-title,
+#rfds-app .success-section-link { display:none !important; }
+
+/* Mobile: stronger immediate feedback and a genuinely scrollable input surface. */
+@media (max-width:900px) {
+  #rfds-app .story-stats-deck { top:70%; width:min(92vw,720px); height:108px; }
+  #rfds-app .story-stat-card-label { font-size:9.5px; }
+  #rfds-app .story-stat-card-value { font-size:clamp(38px,11vw,58px); }
+  #rfds-app .story-stat-card-sub { font-size:10.5px; }
+  #rfds-app .story-stat-card-split { gap:15px; }
+  #rfds-app .story-stat-card-split .split-unit + .split-unit { border-left:0; padding-left:0; }
+  #rfds-app .story-stat-card-split .split-value { font-size:clamp(30px,9vw,46px); }
+  #rfds-app .story-stat-card-split .split-label { font-size:9.5px; }
+  #rfds-app .narrative-container { padding-top:106px !important; padding-bottom:120px !important; }
+  #rfds-app .closing-card { width:calc(100% - 28px) !important; }
+  #rfds-app .beat-final-line { margin:0 auto !important; }
+  #rfds-app .further-word { --further-trail:55px; }
+  #rfds-app .flip-card-front,
+  #rfds-app .flip-card-back { touch-action:pan-y; }
+  #rfds-app #eoiForm {
+    touch-action:pan-y !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior-y:contain !important;
+    scroll-behavior:smooth;
+    padding-bottom:24px !important;
+  }
+  #rfds-app #eoiForm::after,
+  #rfds-app .eoi-form-scroll-cue { display:none !important; }
+  #rfds-app #eoiForm > .drawer-primary-btn {
+    position:relative !important;
+    bottom:auto !important;
+    margin-top:10px !important;
+    box-shadow:none !important;
+  }
+  #rfds-app .selection-blurb-box { padding:24px 20px 26px; }
+  #rfds-app .selection-section-name { font-size:20px; }
+  #rfds-app .selection-section-blurb { font-size:14px; }
+}
+@media (max-width:560px) and (orientation:portrait) {
+  #rfds-app .scroll-prompt .prompt-gesture-icon { font-size:24px !important; }
+  #rfds-app .scroll-prompt .prompt-action { font-size:9.5px !important; }
+  #rfds-app .scroll-prompt .prompt-subline { font-size:7.5px !important; max-width:34ch; }
+  #rfds-app .story-stats-deck { top:72%; }
+}
 </style>
 
 </head>
@@ -4038,8 +4327,8 @@ body.rfds-story-lock {
   <div class="flip-card" id="flipCard">
     <div class="flip-card-inner" id="flipCardInner">
 
-      <!-- Face 1: Expression of Interest form — second screen -->
-      <div class="flip-card-front eoi-form-face">
+      <!-- Face 2: Expression of Interest form -->
+      <div class="flip-card-back eoi-form-face">
         <button type="button" class="modal-close-btn" id="modalCloseBtnFront" aria-label="Close form">&times;</button>
 
         <span class="section-meta-kicker" id="formSectionLabel">RFDS · SA/NT</span>
@@ -4104,21 +4393,14 @@ body.rfds-story-lock {
         </form>
       </div>
 
-      <!-- Face 2: Section selection confirmation — opens first -->
-      <div class="flip-card-back success-face selection-face">
+      <!-- Face 1: Section blurb — opens first -->
+      <div class="flip-card-front success-face selection-face">
         <button type="button" class="modal-close-btn" id="modalCloseBtnBack" aria-label="Close selection">&times;</button>
-        <span class="section-selection-label" id="selectionSectionLabel">RFDS SA/NT</span>
-        <h2 class="selection-title" id="selectionTitle">You have selected &quot;SA/NT&quot;.</h2>
-        <p class="selection-body">Continue to join the RFDS talent community for this Section.</p>
-
-        <div class="success-section-card">
-          <span class="success-section-kicker">YOUR SELECTED SECTION</span>
-          <h3 class="success-section-title" id="successSectionTitle">SA/NT</h3>
-          <p class="success-section-blurb" id="successSectionBlurb"></p>
-          <a class="success-section-link" id="successSectionLink" href="https://www.flyingdoctor.org.au/sant/" target="_blank" rel="noopener">LEARN MORE ABOUT RFDS SA/NT <span aria-hidden="true">↗</span></a>
+        <div class="selection-blurb-box">
+          <span class="selection-section-name" id="selectionSectionLabel">RFDS SA/NT</span>
+          <p class="selection-section-blurb" id="successSectionBlurb">We’re a lifeline for South Australians and Territorians, delivering emergency aeromedical and essential primary health care.</p>
         </div>
-
-        <button type="button" class="drawer-primary-btn success-return-btn" id="successCloseBtn">Continue to Talent Community</button>
+        <button type="button" class="drawer-primary-btn selection-continue-btn" id="successCloseBtn">CONTINUE</button>
       </div>
 
     </div>
@@ -4139,6 +4421,7 @@ var STATE_DATA = {
       { label: 'Clinics', items: ['Beagle Bay', 'Bidyadanga', 'Gibb River', 'Menzies', 'One Arm Point', "Payne's Find", 'Perenjori', 'Useless Loop', 'Cosmo Newberry'] }
     ],
     recruiterEmail: 'careers@rfdswo.com.au',
+    formEmailTo: 'REPLACE_WITH_WA_FORM_EMAIL',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/wa/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS WESTERN OPERATIONS'
   },
@@ -4153,6 +4436,7 @@ var STATE_DATA = {
       { label: 'Clinics / Health Services', items: ['Andamooka', 'Innamincka', 'Marla', 'Marree', 'Wiawera / Olary'] }
     ],
     recruiterEmail: 'stories@flyingdoctor.net',
+    formEmailTo: 'REPLACE_WITH_SA_NT_FORM_EMAIL',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/sant/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS SA/NT'
   },
@@ -4167,6 +4451,7 @@ var STATE_DATA = {
       { label: 'Clinics', items: ['Bedourie', 'Birdsville', 'Boulia', 'Burketown', 'Camooweal', 'Eulo', 'Jundah', 'Thargomindah'] }
     ],
     recruiterEmail: 'recruitment@rfdsqld.com.au',
+    formEmailTo: 'REPLACE_WITH_QLD_FORM_EMAIL',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/qld/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS QUEENSLAND'
   },
@@ -4181,6 +4466,7 @@ var STATE_DATA = {
       { label: 'Clinics', items: ['Condobolin', 'Ivanhoe', 'Louth', 'Menindee', 'Packsaddle', 'Wanaaring', 'Wilcannia'] }
     ],
     recruiterEmail: 'recruitment@rfdsse.org.au',
+    formEmailTo: 'REPLACE_WITH_NSW_ACT_FORM_EMAIL',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/nswact/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS SOUTH EASTERN SECTION'
   },
@@ -4194,6 +4480,7 @@ var STATE_DATA = {
       { label: 'RFDS Bases / Road Bases', items: ['Bairnsdale', 'Bendigo', 'Drouin', 'Echuca', 'Essendon', 'Essendon Air Base', 'Horsham', 'Kyneton', 'Mildura', 'Mitcham', 'Morwell', 'Sale', 'Shepparton', 'Stawell', 'Wangaratta', 'Warrnambool', 'Wodonga', 'Wonthaggi'] }
     ],
     recruiterEmail: 'careers@flyingdoctor.org.au',
+    formEmailTo: 'REPLACE_WITH_VIC_FORM_EMAIL',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/vic/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS VICTORIA'
   },
@@ -4208,6 +4495,7 @@ var STATE_DATA = {
       { label: 'Clinics', items: ['Glamorgan Spring Bay', 'Huon Valley', 'Meander Valley', 'Southern Midlands', 'Central Highlands'] }
     ],
     recruiterEmail: 'tasmania@flyingdoctor.org.au',
+    formEmailTo: 'REPLACE_WITH_TAS_FORM_EMAIL',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/tas/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS TASMANIA'
   }
@@ -4553,11 +4841,11 @@ var STORY_BEATS = {
 };
 
 var STORY_TIMING = {
-  transition: 1050,
-  settle: 1650,
-  firstSettle: 2300,
-  promptFade: 420,
-  gestureCooldown: 420
+  transition: 420,
+  settle: 320,
+  firstSettle: 900,
+  promptFade: 260,
+  gestureCooldown: 180
 };
 
 var storyState = {
@@ -4581,12 +4869,11 @@ function setSpine(activeIdx) {
   });
 }
 
-function setStoryStats(count) {
-  if (storyStatDeck) storyStatDeck.setAttribute('aria-hidden', count > 0 ? 'false' : 'true');
+function setStoryStats(activeIndex) {
+  if (storyStatDeck) storyStatDeck.setAttribute('aria-hidden', activeIndex > 0 ? 'false' : 'true');
   storyStats.forEach(function(card, idx) {
     if (!card) return;
-    if (idx < count) card.classList.add('is-visible');
-    else card.classList.remove('is-visible');
+    card.classList.toggle('is-visible', idx === activeIndex - 1);
   });
 }
 
@@ -4906,16 +5193,8 @@ var eoiWhyCount = document.getElementById('eoiWhyCount');
 var formError = document.getElementById('formError');
 var eoiSubmitBtn = document.getElementById('eoiSubmitBtn');
 var successCloseBtn = document.getElementById('successCloseBtn');
-var successSectionTitle = document.getElementById('successSectionTitle');
 var successSectionBlurb = document.getElementById('successSectionBlurb');
-var successSectionLink = document.getElementById('successSectionLink');
 var currentActiveStateId = 'WA';
-
-function updateSuccessSectionLink(data) {
-  if (!successSectionLink || !data) return;
-  successSectionLink.href = data.learnMoreUrl || 'https://www.flyingdoctor.org.au/';
-  successSectionLink.innerHTML = (data.learnMoreLabel || ('LEARN MORE ABOUT RFDS ' + data.formTitle)) + ' <span aria-hidden="true">↗</span>';
-}
 
 function openModal(id) {
   if (id === 'SA' || id === 'NT') id = 'SA_NT';
@@ -4936,8 +5215,8 @@ function openModal(id) {
   eoiSelectedSection.value = data.name;
   formSectionLabel.textContent = 'RFDS · ' + data.formTitle;
 
-  // Section selection is the first screen; the EOI form is the second screen.
-  flipCard.classList.add('flipped');
+  // Selection blurb is the first face; the EOI form is the second face.
+  flipCard.classList.remove('flipped');
   formError.style.display = 'none';
   if (eoiWhyCount) eoiWhyCount.textContent = '0 / 100 words';
   var eoiFormNode = document.getElementById('eoiForm');
@@ -4945,20 +5224,12 @@ function openModal(id) {
     eoiFormNode.reset();
     eoiFormNode.scrollTop = 0;
   }
-  ensureMobileFormCue();
-  eoiSelectedSection.value = data.name;
 
-  // Prepare the selection card shown first.
-  successSectionTitle.textContent = data.formTitle;
-  successSectionBlurb.textContent = data.blurb;
-  updateSuccessSectionLink(data);
   var selectionSectionLabel = document.getElementById('selectionSectionLabel');
-  var selectionTitle = document.getElementById('selectionTitle');
   if (selectionSectionLabel) selectionSectionLabel.textContent = 'RFDS ' + data.formTitle;
-  if (selectionTitle) selectionTitle.textContent = 'You have selected "' + data.formTitle + '".';
+  if (successSectionBlurb) successSectionBlurb.textContent = data.blurb;
 
   stateModal.classList.add('open');
-  window.setTimeout(updateMobileFormCue, 80);
   document.getElementById('rfds-app').classList.add('drawer-open');
   document.body.classList.add('rfds-overlay-open');
 }
@@ -5121,7 +5392,8 @@ eoiForm.addEventListener('submit', function(e) {
   var lastName = document.getElementById('eoiLastName').value.trim();
   var email = document.getElementById('eoiEmail').value.trim();
   var role = eoiRoleSelect.value;
-  var stateInfo = STATE_DATA[currentActiveStateId] || { name: 'Australia', formTitle: 'RFDS', blurb: '', learnMoreUrl: 'https://www.flyingdoctor.org.au/' };
+  var stateInfo = STATE_DATA[currentActiveStateId] || { name: 'Australia', formTitle: 'RFDS', blurb: '', formEmailTo: 'REPLACE_WITH_DEFAULT_FORM_EMAIL' };
+  var formEmailTo = stateInfo.formEmailTo || ''; // TODO: wire this recipient into the approved backend/email service.
 
   if (!firstName || !lastName || !email || email.indexOf('@') === -1 || !role) {
     formError.style.display = 'block';
@@ -5163,14 +5435,14 @@ if (stateModal) stateModal.addEventListener('click', function(e) {
   if (e.target === stateModal) closeModal();
 });
 successCloseBtn.addEventListener('click', function() {
-  flipCard.classList.remove('flipped');
+  flipCard.classList.add('flipped');
   var eoiFormNode = document.getElementById('eoiForm');
   if (eoiFormNode) {
     window.setTimeout(function() {
       eoiFormNode.scrollTop = 0;
       var firstField = document.getElementById('eoiFirstName');
       if (firstField) firstField.focus({ preventScroll:true });
-    }, 260);
+    }, 420);
   }
 });
 
@@ -5182,8 +5454,22 @@ document.addEventListener('keydown', function(e) {
     closeLiveMap();
   }
 });
+
+
 </script>
 
 </div><!-- /#rfds-app -->
 </body>
 </html>
+
+I want the initial swipe prompt to say "SWIPE UP TO JOIN OUR TALENT COMMUNITY" then every subsequent prompt to say SWIPE UP
+TO GO FURTHER
+
+/* FINAL STYLE PASS — obsolete stat separators removed. */
+#rfds-app .story-stats-deck .story-stat-card,
+#rfds-app .story-stats-deck .story-stat-card + .story-stat-card,
+#rfds-app .story-stats-deck .story-stat-card-split .split-unit,
+#rfds-app .story-stats-deck .story-stat-card-split .split-unit + .split-unit {
+  border-left: 0 !important;
+  padding-left: 0;
+}

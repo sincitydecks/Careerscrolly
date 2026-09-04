@@ -3795,8 +3795,8 @@ body.rfds-story-lock {
       </div>
       <span class="scroll-prompt-text">
         <span class="prompt-gesture-icon" aria-hidden="true">↑</span>
-        <span class="prompt-action">Swipe up</span>
-        <span class="prompt-subline">to join our talent community</span>
+        <span class="prompt-action">SWIPE UP</span>
+        <span class="prompt-subline">TO JOIN OUR TALENT COMMUNITY</span>
       </span>
     </div>
 
@@ -4763,11 +4763,21 @@ function showScrollPrompt(delay) {
 
   var promptText = scrollPrompt.querySelector('.scroll-prompt-text');
   if (promptText) {
-    var isMobilePrompt = window.innerWidth <= 900;
-    promptText.innerHTML = isMobilePrompt
-      ? '<span class=\"prompt-gesture-icon\" aria-hidden=\"true\">↑</span><span class=\"prompt-action\">Swipe up</span><span class=\"prompt-subline\">to join our talent community</span>'
-      : '<span class=\"prompt-action\">SWIPE UP TO JOIN
-      OUR TALENT COMMUNITY" <span aria-hidden=\"true\">↑</span></span>';
+    var isInitialPrompt = storyState.beat === STORY_BEATS.HERO;
+    var action = isInitialPrompt ? 'SWIPE UP' : 'SWIPE UP';
+    var subline = isInitialPrompt ? 'TO JOIN OUR TALENT COMMUNITY' : 'TO GO FURTHER';
+
+    promptText.innerHTML =
+      '<span class="prompt-gesture-icon" aria-hidden="true">↑</span>' +
+      '<span class="prompt-action">' + action + '</span>' +
+      '<span class="prompt-subline">' + subline + '</span>';
+
+    scrollPrompt.setAttribute(
+      'aria-label',
+      isInitialPrompt
+        ? 'Swipe up to join our talent community'
+        : 'Swipe up to go further'
+    );
   }
 
   storyState.promptTimer = window.setTimeout(function() {

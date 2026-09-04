@@ -2233,7 +2233,7 @@ body.rfds-overlay-open { overflow: hidden; }
   transition-duration: .32s, .42s, .25s;
 }
 
-/* Form opens first; success is the physical back face. */
+/* Selection card opens first; EOI form is the second face. */
 #rfds-app .flip-card {
   width: min(620px, calc(100vw - 40px));
   height: min(760px, calc(100vh - 48px));
@@ -3291,24 +3291,9 @@ body.rfds-overlay-open { overflow: hidden; }
     transition: opacity .25s ease;
   }
   #rfds-app .eoi-form-scroll-cue::before {
-    content: "Swipe up to join
-    our talent community";
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: max-content;
-    max-width: calc(100% - 24px);
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.88);
-    box-shadow: 0 4px 16px rgba(0,32,91,.08);
-    color: var(--rfds-navy);
-    font-size: 8px;
-    line-height: 1;
-    font-weight: 800;
-    letter-spacing: .11em;
-    text-transform: uppercase;
+    content:"↑"; position:absolute; left:50%; bottom:0; transform:translateX(-50%);
+    color:var(--rfds-red); font-family:Arial,sans-serif; font-size:20px; line-height:1;
+    animation:rfdsSwipeArrowTravel 1.7s cubic-bezier(.22,.61,.36,1) infinite;
   }
   #rfds-app .eoi-form-scroll-cue.is-visible { opacity: 1; }
   #rfds-app .eoi-form-scroll-cue::after {
@@ -3527,210 +3512,87 @@ body.rfds-story-lock {
 
 
 /* =========================================================
-   RFDS SIGNAL — physical gesture instrument
-   The prompt behaves like a discovered mechanism, not a CTA.
+   MOBILE SWIPE PROMPT — minimal gesture glyph
    ========================================================= */
-#rfds-app .scroll-prompt {
-  --signal-drag: 0px;
-  --signal-press: 0;
-  --signal-light: 0;
-}
-#rfds-app .scroll-prompt::before,
-#rfds-app .scroll-prompt::after { pointer-events: none; }
-#rfds-app .scroll-prompt .signal-instrument { display: none; }
-
-@media (max-width: 900px) {
+#rfds-app .scroll-prompt { --signal-drag: 0px; --signal-press: 0; }
+#rfds-app .scroll-prompt .signal-instrument { display:none !important; }
+#rfds-app .scroll-prompt .scroll-prompt-track,
+#rfds-app .scroll-prompt .scroll-prompt-dot { display:none !important; }
+@media (max-width:900px) {
   #rfds-app .scroll-prompt {
-    position: absolute;
-    left: 50%;
-    bottom: max(16px, calc(var(--safe-bottom) + 12px));
-    width: min(286px, calc(100vw - var(--safe-left) - var(--safe-right) - 36px));
-    min-height: 120px;
-    padding: 15px 18px 16px;
-    gap: 4px;
-    border: 1px solid rgba(0,32,91,.095);
-    border-radius: 20px;
-    background: linear-gradient(180deg, rgba(255,255,255,.76), rgba(255,255,255,.50));
-    box-shadow: 0 14px 42px rgba(0,32,91,.09), inset 0 1px 0 rgba(255,255,255,.92);
-    backdrop-filter: blur(14px) saturate(135%);
-    -webkit-backdrop-filter: blur(14px) saturate(135%);
-    touch-action: none;
-    -webkit-user-select: none;
-    user-select: none;
-    overflow: hidden;
+    position:absolute; left:50%; bottom:max(22px, calc(var(--safe-bottom) + 18px));
+    width:max-content; max-width:calc(100vw - var(--safe-left) - var(--safe-right) - 28px);
+    min-height:0; padding:0; margin:0; border:0; border-radius:0; background:none;
+    box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none;
+    touch-action:manipulation; -webkit-user-select:none; user-select:none; overflow:visible;
+    gap:7px; transform:translateX(-50%);
   }
-  #rfds-app .scroll-prompt::before {
-    content: "";
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(circle at 50% 14%, rgba(240,91,34,.08), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.22), rgba(240,91,34,.018));
-    opacity: .9;
-  }
-  #rfds-app .scroll-prompt.ready::after {
-    content: "";
-    left: 50%;
-    bottom: -6px;
-    width: 132px;
-    height: 20px;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(240,91,34,.11) 0%, rgba(240,91,34,0) 74%);
-    filter: blur(6px);
-  }
-  #rfds-app .scroll-prompt .scroll-prompt-track,
-  #rfds-app .scroll-prompt .scroll-prompt-dot { display: none !important; }
-  #rfds-app .scroll-prompt .signal-instrument {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    width: 34px;
-    height: 48px;
-    margin: 0 auto 1px;
-    align-items: flex-start;
-    justify-content: center;
-    transform: translateY(calc(var(--signal-drag) * .16));
-    transition: transform .12s cubic-bezier(.22,1,.36,1);
-  }
-  #rfds-app .scroll-prompt .signal-rail {
-    position: absolute;
-    top: 7px;
-    left: 50%;
-    width: 2px;
-    height: calc(25px + var(--signal-drag) * .08);
-    transform: translateX(-50%);
-    border-radius: 999px;
-    background: linear-gradient(180deg, rgba(240,91,34,.92), rgba(240,91,34,.32));
-    overflow: visible;
-  }
-  #rfds-app .scroll-prompt .signal-light {
-    position: absolute;
-    left: 50%;
-    top: -3px;
-    width: 3px;
-    height: 9px;
-    border-radius: 999px;
-    transform: translate(-50%, calc(var(--signal-light) * 24px));
-    background: rgba(255,255,255,.98);
-    box-shadow: 0 0 10px rgba(240,91,34,.36);
-    opacity: .82;
-  }
-  #rfds-app .scroll-prompt .signal-arrow-head {
-    position: absolute;
-    left: 50%;
-    top: -1px;
-    width: 9px;
-    height: 9px;
-    border-top: 1.7px solid var(--rfds-red);
-    border-left: 1.7px solid var(--rfds-red);
-    transform: translate(-50%, calc(var(--signal-drag) * -0.18 - var(--signal-press) * 2px)) rotate(45deg) scale(calc(1 - var(--signal-press) * .06));
-    transform-origin: 50% 50%;
-  }
-  #rfds-app .scroll-prompt .signal-crossbar {
-    position: absolute;
-    left: 50%;
-    bottom: 7px;
-    width: 22px;
-    height: 2px;
-    border-radius: 999px;
-    transform: translateX(-50%) scaleX(calc(1 + var(--signal-press) * .08));
-    background: rgba(0,32,91,.34);
-  }
-  #rfds-app .scroll-prompt .signal-armed-dot {
-    position: absolute;
-    right: 9px;
-    top: 10px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--rfds-red);
-    box-shadow: 0 0 0 0 rgba(240,91,34,.18);
-    opacity: 0;
-  }
-  #rfds-app .scroll-prompt.ready .signal-armed-dot {
-    opacity: .72;
-    animation: rfdsSignalArm 1.8s cubic-bezier(.22,.61,.36,1) 1;
-  }
+  #rfds-app .scroll-prompt.ready::before,
+  #rfds-app .scroll-prompt.ready::after { display:none !important; }
   #rfds-app .scroll-prompt .scroll-prompt-text {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    text-align: center;
-    color: var(--rfds-navy);
+    position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:2px; text-align:center; color:var(--rfds-navy);
   }
   #rfds-app .scroll-prompt .prompt-gesture-icon {
-    display: none;
+    display:block !important; margin:0 0 3px; font-family:Arial,sans-serif;
+    font-size:28px; line-height:.8; font-weight:400; letter-spacing:0; color:var(--rfds-red);
+    animation:rfdsSwipeArrowTravel 1.7s cubic-bezier(.22,.61,.36,1) infinite;
   }
   #rfds-app .scroll-prompt .prompt-action {
-    font-family: "museo-sans", sans-serif;
-    font-size: 10px;
-    line-height: 1.05;
-    font-weight: 900;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--rfds-navy);
+    font-family:"museo-sans",sans-serif; font-size:10px; line-height:1.05;
+    font-weight:900; letter-spacing:.16em; text-transform:uppercase; color:var(--rfds-navy);
   }
   #rfds-app .scroll-prompt .prompt-subline {
-    display: block;
-    max-width: 22ch;
-    font-family: "museo-sans", sans-serif;
-    font-size: 7.7px;
-    line-height: 1.35;
-    font-weight: 600;
-    letter-spacing: .105em;
-    text-transform: uppercase;
-    color: rgba(0,32,91,.58);
+    display:block; max-width:28ch; font-family:"museo-sans",sans-serif;
+    font-size:8px; line-height:1.25; font-weight:600; letter-spacing:.11em;
+    text-transform:uppercase; color:rgba(0,32,91,.62);
   }
-  #rfds-app .scroll-prompt.ready .signal-rail {
-    animation: rfdsSignalBreath 2s cubic-bezier(.16,1,.3,1) infinite;
-  }
-  #rfds-app .scroll-prompt.ready .signal-light {
-    animation: rfdsSignalLight 2s cubic-bezier(.16,1,.3,1) infinite;
-  }
-  #rfds-app .scroll-prompt.signal-pressed {
-    --signal-press: 1;
-    transform: translate3d(-50%, 0, 0) scale(.985) !important;
-    box-shadow: 0 10px 32px rgba(0,32,91,.08), inset 0 1px 0 rgba(255,255,255,.94);
-  }
-  #rfds-app .scroll-prompt.signal-pressed .signal-rail {
-    animation-play-state: paused;
-  }
-  #rfds-app .scroll-prompt.signal-dragging .signal-rail {
-    transition: height .08s linear;
-  }
+}
+@media (max-width:900px) and (max-height:520px) and (orientation:landscape) {
+  #rfds-app .scroll-prompt { bottom:max(12px, calc(var(--safe-bottom) + 8px)); gap:5px; }
+  #rfds-app .scroll-prompt .prompt-gesture-icon { font-size:23px; }
+  #rfds-app .scroll-prompt .prompt-action { font-size:8.5px; }
+  #rfds-app .scroll-prompt .prompt-subline { font-size:7px; }
+}
+@keyframes rfdsSwipeArrowTravel {
+  0%,100% { transform:translateY(6px); opacity:.48; }
+  42% { transform:translateY(-9px); opacity:1; }
+  62% { transform:translateY(-5px); opacity:.88; }
 }
 
-@media (max-width: 900px) and (max-height: 520px) and (orientation: landscape) {
-  #rfds-app .scroll-prompt {
-    width: min(250px, calc(100vw - 24px));
-    min-height: 92px;
-    padding: 9px 14px 10px;
-  }
-  #rfds-app .scroll-prompt .signal-instrument { height: 34px; }
-  #rfds-app .scroll-prompt .signal-rail { top: 5px; height: 20px; }
-  #rfds-app .scroll-prompt .signal-crossbar { bottom: 3px; }
+
+/* MOBILE UX AUDIT FIX — stats become a proof strip below narrative copy. */
+@media (max-width:900px) {
+  #rfds-app .story-stats-deck { top:70%; bottom:auto; left:50%; width:calc(100% - var(--safe-left) - var(--safe-right) - 24px); max-width:520px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; align-items:start; transform:translateX(-50%); }
+  #rfds-app .story-stat-card { width:auto; max-width:none; min-width:0; min-height:0; padding:2px 9px 0; border:0; border-radius:0; background:none; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
+  #rfds-app .story-stat-card::before { display:none; }
+  #rfds-app .story-stat-card + .story-stat-card { border-left:1px solid rgba(0,32,91,.14); }
+  #rfds-app .story-stat-card-label { font-size:8px; line-height:1.2; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
+  #rfds-app .story-stat-card-value { margin-top:6px; font-size:clamp(17px,5vw,22px); line-height:.95; letter-spacing:-.03em; }
+  #rfds-app .story-stat-card-sub { max-width:15ch; margin:5px auto 0; font-size:8.5px; line-height:1.25; text-align:center; }
+  #rfds-app .story-stat-card-split { display:flex; justify-content:center; gap:7px; margin-top:6px; }
+  #rfds-app .story-stat-card-split .split-unit + .split-unit { border-left:1px solid rgba(0,32,91,.12); padding-left:7px; }
+  #rfds-app .story-stat-card-split .split-value { font-size:clamp(15px,4.8vw,21px); }
+  #rfds-app .story-stat-card-split .split-label { margin-top:4px; font-size:8px; line-height:1.2; }
+}
+@media (max-width:560px) {
+  #rfds-app .story-stats-deck { top:71%; width:calc(100% - var(--safe-left) - var(--safe-right) - 18px); }
+  #rfds-app .story-stat-card { padding-left:6px; padding-right:6px; }
+  #rfds-app .story-stat-card-label { font-size:7.5px; }
+  #rfds-app .story-stat-card-sub { font-size:8px; }
 }
 
-@keyframes rfdsSignalBreath {
-  0%, 100% { transform: translateX(-50%) scaleY(1); opacity: .62; }
-  45% { transform: translateX(-50%) translateY(-11px) scaleY(1.04); opacity: 1; }
-  65% { transform: translateX(-50%) translateY(-7px) scaleY(1.02); opacity: .84; }
-}
-@keyframes rfdsSignalLight {
-  0%, 100% { opacity: 0; transform: translate(-50%, 22px); }
-  20% { opacity: .12; }
-  42% { opacity: .9; transform: translate(-50%, 1px); }
-  58% { opacity: .18; transform: translate(-50%, -2px); }
-  100% { opacity: 0; }
-}
-@keyframes rfdsSignalArm {
-  0% { box-shadow: 0 0 0 0 rgba(240,91,34,.18); }
-  55% { box-shadow: 0 0 0 5px rgba(240,91,34,.06); }
-  100% { box-shadow: 0 0 0 0 rgba(240,91,34,0); }
-}
+
+/* Selection confirmation front face. */
+#rfds-app .selection-face { justify-content:center; }
+#rfds-app .selection-section-label { display:block; margin:0 0 12px; font-family:"museo-sans",sans-serif; font-size:14px; line-height:1.1; font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:var(--rfds-red); }
+#rfds-app .selection-title { margin:0 0 12px; max-width:16ch; font-family:"museo-sans",sans-serif; font-size:clamp(30px,3.4vw,46px); line-height:1.03; font-weight:900; letter-spacing:-.03em; color:var(--rfds-navy); }
+#rfds-app .selection-body { margin:0 0 28px; max-width:44ch; font-family:"museo-sans",sans-serif; font-size:16px; line-height:1.5; font-weight:500; color:var(--ink-muted); }
+@media (max-width:900px) { #rfds-app .selection-section-label { font-size:11px; } #rfds-app .selection-title { max-width:14ch; font-size:clamp(30px,8vw,40px); } #rfds-app .selection-body { font-size:14px; margin-bottom:22px; } }
+
+#rfds-app .form-success-inline { display:flex; flex-direction:column; gap:5px; margin:14px 0 0; padding:12px 14px; border-left:3px solid var(--rfds-red); background:rgba(240,91,34,.06); color:var(--rfds-navy); font-family:"museo-sans",sans-serif; }
+#rfds-app .form-success-inline strong { font-size:13px; font-weight:900; }
+#rfds-app .form-success-inline span { font-size:12px; line-height:1.45; font-weight:500; }
 </style>
 
 </head>
@@ -3785,14 +3647,6 @@ body.rfds-story-lock {
 
     <!-- RFDS Signal — discreet gesture instrument -->
     <div class="scroll-prompt" id="scrollPrompt" aria-label="Swipe up to join our talent community">
-      <div class="signal-instrument" aria-hidden="true">
-        <div class="signal-rail">
-          <span class="signal-light"></span>
-          <span class="signal-arrow-head"></span>
-        </div>
-        <div class="signal-crossbar"></div>
-        <span class="signal-armed-dot"></span>
-      </div>
       <span class="scroll-prompt-text">
         <span class="prompt-gesture-icon" aria-hidden="true">↑</span>
         <span class="prompt-action">SWIPE UP</span>
@@ -4184,7 +4038,7 @@ body.rfds-story-lock {
   <div class="flip-card" id="flipCard">
     <div class="flip-card-inner" id="flipCardInner">
 
-      <!-- Face 1: Expression of Interest form — opens first -->
+      <!-- Face 1: Expression of Interest form — second screen -->
       <div class="flip-card-front eoi-form-face">
         <button type="button" class="modal-close-btn" id="modalCloseBtnFront" aria-label="Close form">&times;</button>
 
@@ -4250,12 +4104,12 @@ body.rfds-story-lock {
         </form>
       </div>
 
-      <!-- Face 2: Thank-you + selected Section information -->
-      <div class="flip-card-back success-face">
-        <button type="button" class="modal-close-btn" id="modalCloseBtnBack" aria-label="Close confirmation">&times;</button>
-        <span class="section-meta-kicker">RFDS TALENT COMMUNITY</span>
-        <h2 class="success-title success-title-large">Thank you for joining our community.</h2>
-        <p class="success-body success-body-lead">We will be in contact to discuss taking your career further.</p>
+      <!-- Face 2: Section selection confirmation — opens first -->
+      <div class="flip-card-back success-face selection-face">
+        <button type="button" class="modal-close-btn" id="modalCloseBtnBack" aria-label="Close selection">&times;</button>
+        <span class="section-selection-label" id="selectionSectionLabel">RFDS SA/NT</span>
+        <h2 class="selection-title" id="selectionTitle">You have selected &quot;SA/NT&quot;.</h2>
+        <p class="selection-body">Continue to join the RFDS talent community for this Section.</p>
 
         <div class="success-section-card">
           <span class="success-section-kicker">YOUR SELECTED SECTION</span>
@@ -4264,7 +4118,7 @@ body.rfds-story-lock {
           <a class="success-section-link" id="successSectionLink" href="https://www.flyingdoctor.org.au/sant/" target="_blank" rel="noopener">LEARN MORE ABOUT RFDS SA/NT <span aria-hidden="true">↗</span></a>
         </div>
 
-        <button type="button" class="drawer-primary-btn success-return-btn" id="successCloseBtn">Return to Map</button>
+        <button type="button" class="drawer-primary-btn success-return-btn" id="successCloseBtn">Continue to Talent Community</button>
       </div>
 
     </div>
@@ -4764,20 +4618,10 @@ function showScrollPrompt(delay) {
   var promptText = scrollPrompt.querySelector('.scroll-prompt-text');
   if (promptText) {
     var isInitialPrompt = storyState.beat === STORY_BEATS.HERO;
-    var action = isInitialPrompt ? 'SWIPE UP' : 'SWIPE UP';
-    var subline = isInitialPrompt ? 'TO JOIN OUR TALENT COMMUNITY' : 'TO GO FURTHER';
-
-    promptText.innerHTML =
-      '<span class="prompt-gesture-icon" aria-hidden="true">↑</span>' +
-      '<span class="prompt-action">' + action + '</span>' +
-      '<span class="prompt-subline">' + subline + '</span>';
-
-    scrollPrompt.setAttribute(
-      'aria-label',
-      isInitialPrompt
-        ? 'Swipe up to join our talent community'
-        : 'Swipe up to go further'
-    );
+    promptText.innerHTML = isInitialPrompt
+      ? '<span class="prompt-gesture-icon" aria-hidden="true">↑</span><span class="prompt-action">SWIPE UP</span><span class="prompt-subline">TO JOIN OUR TALENT COMMUNITY</span>'
+      : '<span class="prompt-gesture-icon" aria-hidden="true">↑</span><span class="prompt-action">SWIPE TO CONTINUE</span>';
+    scrollPrompt.setAttribute('aria-label', isInitialPrompt ? 'Swipe up to join our talent community' : 'Swipe to continue');
   }
 
   storyState.promptTimer = window.setTimeout(function() {
@@ -5020,32 +4864,6 @@ if (scrollPrompt) {
   });
 }
 
-// RFDS Signal tactile response: the command itself becomes a tiny physical control.
-if (scrollPrompt) {
-  scrollPrompt.addEventListener('touchstart', function(e) {
-    if (!storyState.ready || storyState.locked || storyState.done) return;
-    if (!e.touches || !e.touches.length) return;
-    scrollPrompt.classList.add('signal-pressed');
-    storyState.promptTouchStartY = e.touches[0].clientY;
-    scrollPrompt.style.setProperty('--signal-drag', '0px');
-  }, { passive: true });
-  scrollPrompt.addEventListener('touchmove', function(e) {
-    if (!scrollPrompt.classList.contains('signal-pressed')) return;
-    if (!e.touches || !e.touches.length || storyState.promptTouchStartY == null) return;
-    var delta = storyState.promptTouchStartY - e.touches[0].clientY;
-    var upward = Math.max(0, Math.min(delta, 72));
-    scrollPrompt.classList.add('signal-dragging');
-    scrollPrompt.style.setProperty('--signal-drag', upward.toFixed(1) + 'px');
-  }, { passive: true });
-  function resetSignalTouch() {
-    scrollPrompt.classList.remove('signal-pressed', 'signal-dragging');
-    scrollPrompt.style.setProperty('--signal-drag', '0px');
-    storyState.promptTouchStartY = null;
-  }
-  scrollPrompt.addEventListener('touchend', resetSignalTouch, { passive: true });
-  scrollPrompt.addEventListener('touchcancel', resetSignalTouch, { passive: true });
-}
-
 window.addEventListener('wheel', handleWheel, { passive: false });
 window.addEventListener('keydown', handleKeydown, { passive: false });
 window.addEventListener('touchstart', handleTouchStart, { passive: false });
@@ -5118,8 +4936,8 @@ function openModal(id) {
   eoiSelectedSection.value = data.name;
   formSectionLabel.textContent = 'RFDS · ' + data.formTitle;
 
-  // Every Section click opens directly on the actual EOI form.
-  flipCard.classList.remove('flipped');
+  // Section selection is the first screen; the EOI form is the second screen.
+  flipCard.classList.add('flipped');
   formError.style.display = 'none';
   if (eoiWhyCount) eoiWhyCount.textContent = '0 / 100 words';
   var eoiFormNode = document.getElementById('eoiForm');
@@ -5130,10 +4948,14 @@ function openModal(id) {
   ensureMobileFormCue();
   eoiSelectedSection.value = data.name;
 
-  // Preload the success face so it is ready to flip immediately after submission.
+  // Prepare the selection card shown first.
   successSectionTitle.textContent = data.formTitle;
   successSectionBlurb.textContent = data.blurb;
   updateSuccessSectionLink(data);
+  var selectionSectionLabel = document.getElementById('selectionSectionLabel');
+  var selectionTitle = document.getElementById('selectionTitle');
+  if (selectionSectionLabel) selectionSectionLabel.textContent = 'RFDS ' + data.formTitle;
+  if (selectionTitle) selectionTitle.textContent = 'You have selected "' + data.formTitle + '".';
 
   stateModal.classList.add('open');
   window.setTimeout(updateMobileFormCue, 80);
@@ -5260,7 +5082,7 @@ function enforceWordLimit() {
 }
 if (eoiWhy) eoiWhy.addEventListener('input', enforceWordLimit);
 
-// Form submission handler. The UI flips to the selected Section confirmation.
+// Form submission handler. After the section-selection step, the EOI form confirms receipt in-place.
 // Connect this point to your approved form/email endpoint when production delivery is available.
 var eoiForm = document.getElementById('eoiForm');
 var eoiScrollCue = null;
@@ -5314,12 +5136,17 @@ eoiForm.addEventListener('submit', function(e) {
     eoiSubmitBtn.disabled = false;
     eoiSubmitBtn.innerHTML = '<span>Join our talent community</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>';
 
-    successSectionTitle.textContent = stateInfo.formTitle;
-    successSectionBlurb.textContent = stateInfo.blurb;
-    updateSuccessSectionLink(stateInfo);
-
-    // Actual physical flip: form face -> thank-you face.
-    flipCard.classList.add('flipped');
+    eoiSubmitBtn.innerHTML = '<span>Interest received</span>';
+    eoiSubmitBtn.disabled = true;
+    var existingNotice = eoiForm.querySelector('.form-success-inline');
+    if (!existingNotice) {
+      existingNotice = document.createElement('div');
+      existingNotice.className = 'form-success-inline';
+      existingNotice.setAttribute('role', 'status');
+      existingNotice.innerHTML = '<strong>Thanks — we have your details.</strong><span>We will be in contact to discuss taking your career further.</span>';
+      eoiForm.insertBefore(existingNotice, eoiSubmitBtn);
+    }
+    existingNotice.scrollIntoView({ block:'nearest', behavior:'smooth' });
   }, 280);
 });
 
@@ -5335,7 +5162,17 @@ modalCloseBtnBack.addEventListener('click', closeModal);
 if (stateModal) stateModal.addEventListener('click', function(e) {
   if (e.target === stateModal) closeModal();
 });
-successCloseBtn.addEventListener('click', closeModal);
+successCloseBtn.addEventListener('click', function() {
+  flipCard.classList.remove('flipped');
+  var eoiFormNode = document.getElementById('eoiForm');
+  if (eoiFormNode) {
+    window.setTimeout(function() {
+      eoiFormNode.scrollTop = 0;
+      var firstField = document.getElementById('eoiFirstName');
+      if (firstField) firstField.focus({ preventScroll:true });
+    }, 260);
+  }
+});
 
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape' && stateModal.classList.contains('open')) {

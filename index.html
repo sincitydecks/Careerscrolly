@@ -2954,6 +2954,7 @@ body.rfds-overlay-open { overflow: hidden; }
 }
 #rfds-app .closing-card .beat-copy {
   max-width: 860px;
+  text-align: center !important;
 }
 #rfds-app .closing-card .beat-final-line {
   margin-top: 0;
@@ -3283,25 +3284,25 @@ body.rfds-overlay-open { overflow: hidden; }
   /* Stronger edge cue for a scrollable form on small screens. */
   #rfds-app .eoi-form-scroll-cue {
     position: sticky;
-    bottom: 66px;
+    bottom: max(66px, calc(var(--safe-bottom) + 54px));
     z-index: 2;
     height: 0;
     pointer-events: none;
     opacity: 0;
-    transition: opacity .25s ease;
+    transition: opacity .35s ease;
   }
   #rfds-app .eoi-form-scroll-cue::before {
     content:"↑"; position:absolute; left:50%; bottom:0; transform:translateX(-50%);
-    color:var(--rfds-red); font-family:Arial,sans-serif; font-size:20px; line-height:1;
-    animation:rfdsSwipeArrowTravel 1.7s cubic-bezier(.22,.61,.36,1) infinite;
+    color:var(--rfds-red); font-family:Arial,sans-serif; font-size:22px; line-height:1;
+    animation:rfdsSwipeArrowTravel 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
   }
   #rfds-app .eoi-form-scroll-cue.is-visible { opacity: 1; }
   #rfds-app .eoi-form-scroll-cue::after {
     content: "";
     position: absolute;
     left: 50%;
-    bottom: -15px;
-    width: 26px;
+    bottom: -18px;
+    width: 32px;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(240,91,34,.55), transparent);
   }
@@ -3850,8 +3851,8 @@ body.rfds-story-lock {
   #rfds-app .story-stat-card-split .split-value { font-size:clamp(30px,9vw,46px); }
   #rfds-app .story-stat-card-split .split-label { font-size:9.5px; }
   #rfds-app .narrative-container { padding-top:106px !important; padding-bottom:120px !important; }
-  #rfds-app .closing-card { width:calc(100% - 28px) !important; }
-  #rfds-app .beat-final-line { margin:0 auto !important; }
+  #rfds-app .closing-card { width:calc(100% - 28px) !important; margin:0 auto !important; text-align: center !important; }
+  #rfds-app .beat-final-line { margin:0 auto !important; text-align: center !important; }
   #rfds-app .further-word { --further-trail:55px; }
   #rfds-app .flip-card-front,
   #rfds-app .flip-card-back { touch-action:pan-y; }
@@ -3956,6 +3957,126 @@ body.rfds-story-lock {
     min-height: 52px !important;
     margin-top: 12px !important;
     border-radius: 13px !important;
+  }
+}
+/* FINAL STYLE PASS — obsolete stat separators removed. */
+#rfds-app .story-stats-deck .story-stat-card,
+#rfds-app .story-stats-deck .story-stat-card + .story-stat-card,
+#rfds-app .story-stats-deck .story-stat-card-split .split-unit,
+#rfds-app .story-stats-deck .story-stat-card-split .split-unit + .split-unit {
+  border-left: 0 !important;
+  padding-left: 0;
+}
+
+/* =========================================================
+   INTERACTION DIRECTOR PASS — Apple/Resn Motion Physics
+   ========================================================= */
+
+/* 1. SCROLL PHYSICS & NARRATIVE CHOREOGRAPHY */
+/* Use custom 'confident deceleration' cubic-beziers. */
+#rfds-app .narrative-card {
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 1s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transform: translateY(32px) !important;
+}
+#rfds-app .narrative-card.closing-card:not(.active) {
+  transform: translate(-50%, calc(-50% + 32px)) !important;
+}
+#rfds-app .narrative-card.active {
+  transform: translateY(0) !important;
+}
+#rfds-app .narrative-card.closing-card.active {
+  transform: translate(-50%, -50%) !important;
+}
+#rfds-app .narrative-card.closing-card.exit {
+  transform: translate(-50%, calc(-50% - 32px)) !important;
+}
+#rfds-app .narrative-card.exit {
+  transform: translateY(-32px) !important;
+}
+
+@media (max-width: 900px) {
+  #rfds-app .narrative-card {
+    transform: translateY(20px) !important;
+  }
+  #rfds-app .narrative-card.closing-card:not(.active) {
+    transform: translate(-50%, calc(-50% + 20px)) !important;
+  }
+  #rfds-app .narrative-card.exit {
+    transform: translateY(-20px) !important;
+  }
+  #rfds-app .narrative-card.closing-card.exit {
+    transform: translate(-50%, calc(-50% - 20px)) !important;
+  }
+}
+
+/* 2. STAT CARD RESOLUTION (Staggered Arrival) */
+#rfds-app .story-stat-card {
+  transform: translate(-50%, calc(-50% + 24px)) !important;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease, box-shadow 0.35s ease !important;
+}
+#rfds-app .story-stat-card.is-visible {
+  transform: translate(-50%, -50%) !important;
+}
+
+#rfds-app #storyStat1 { transition-delay: 0s !important; }
+#rfds-app #storyStat2 { transition-delay: 0.12s !important; }
+#rfds-app #storyStat3 { transition-delay: 0.24s !important; }
+
+/* 2B. MOBILE READING PADDING (Protect edges) */
+#rfds-app .beat-copy {
+  padding-left: clamp(22px, 6vw, 40px) !important;
+  padding-right: clamp(22px, 6vw, 40px) !important;
+  box-sizing: border-box !important;
+}
+
+/* 3. HERO LOCKUP PHYSICALITY */
+#rfds-app .hero-lockup {
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 1.1s ease !important;
+}
+
+/* 4. MODAL/DRAWER WEIGHT (Physical flip) */
+#rfds-app .flip-card {
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transform: translateY(40px) scale(0.96) !important;
+}
+#rfds-app .modal-overlay.open .flip-card {
+  transform: translateY(0) scale(1) !important;
+}
+#rfds-app .flip-card-inner {
+  transition: transform 0.9s cubic-bezier(0.25, 1, 0.4, 1) !important; /* smooth physical flip */
+}
+
+/* 5. LIVE MAP OVERLAY MOTION */
+#rfds-app .live-map-panel {
+  transform: translateY(20px) scale(0.98);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+}
+#rfds-app .live-map-overlay.open .live-map-panel {
+  transform: translateY(0) scale(1);
+}
+
+/* 6. MAP STAGE TRANSFORMATIONS */
+#rfds-app .map-stage-wrapper {
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 1s ease !important;
+}
+
+/* 7. SPINE INDICATOR FLUIDITY */
+#rfds-app .spine-pip {
+  transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease !important;
+}
+
+/* 8. SCROLL PROMPT RHYTHM */
+#rfds-app .scroll-prompt {
+  transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+#rfds-app .scroll-prompt.hidden {
+  transform: translateX(-50%) translateY(24px) !important;
+}
+
+/* 9. RADAR PULSE OFFSET FOR MOBILE GPU */
+@media (max-width: 900px) {
+  #rfds-app .base-pulse-ring {
+    animation-delay: 0.1s;
   }
 }
 </style>
@@ -4983,7 +5104,7 @@ function showScrollPrompt(delay) {
     var isInitialPrompt = storyState.beat === STORY_BEATS.HERO;
     promptText.innerHTML = isInitialPrompt
       ? '<span class="prompt-gesture-icon" aria-hidden="true">↑</span><span class="prompt-action">SWIPE UP</span><span class="prompt-subline">TO JOIN OUR TALENT COMMUNITY</span>'
-      : '<span class="prompt-gesture-icon" aria-hidden="true">↑</span><span class="prompt-action">SWIPE TO CONTINUE</span>';
+      : '<span class="prompt-gesture-icon" aria-hidden="true">↑</span><span class="prompt-action">SWIPE UP</span><span class="prompt-subline">TO GO FURTHER</span>';
     scrollPrompt.setAttribute('aria-label', isInitialPrompt ? 'Swipe up to join our talent community' : 'Swipe to continue');
   }
 
@@ -5537,15 +5658,3 @@ document.addEventListener('keydown', function(e) {
 </div><!-- /#rfds-app -->
 </body>
 </html>
-
-I want the initial swipe prompt to say "SWIPE UP TO JOIN OUR TALENT COMMUNITY" then every subsequent prompt to say SWIPE UP
-TO GO FURTHER
-
-/* FINAL STYLE PASS — obsolete stat separators removed. */
-#rfds-app .story-stats-deck .story-stat-card,
-#rfds-app .story-stats-deck .story-stat-card + .story-stat-card,
-#rfds-app .story-stats-deck .story-stat-card-split .split-unit,
-#rfds-app .story-stats-deck .story-stat-card-split .split-unit + .split-unit {
-  border-left: 0 !important;
-  padding-left: 0;
-}

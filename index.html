@@ -10,7 +10,7 @@
   style-src 'self' 'unsafe-inline' https://use.typekit.net https://p.typekit.net;
   img-src 'self' data: blob: https://www.flyingdoctor.org.au https://flyingdoctor.org.au https://res.cloudinary.com https://thumbor.ixchosted.com https://rfds-media.s3.amazonaws.com https://p.typekit.net;
   font-src 'self' data: https://use.typekit.net https://p.typekit.net;
-  connect-src 'self';
+  connect-src 'self' https://formsubmit.co;
   frame-src 'self' https://www.flightaware.com;
 ">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -5537,7 +5537,7 @@ function enforceWordLimit() {
 if (eoiWhy) eoiWhy.addEventListener('input', enforceWordLimit);
 
 // Form submission handler. After the section-selection step, the EOI form confirms receipt in-place.
-// Connect this point to your approved form/email endpoint when production delivery is available.
+// Delivery uses FormSubmit's cross-origin AJAX endpoint; no RFDS sender-domain DNS verification is required.
 var eoiForm = document.getElementById('eoiForm');
 var eoiScrollCue = null;
 
@@ -5600,10 +5600,23 @@ eoiForm.addEventListener('submit', async function(e) {
   eoiSubmitBtn.innerHTML = '<span>Sending your details…</span>';
 
   try {
-    var response = await fetch('/api/eoi', {
+    // FormSubmit handles the email delivery directly, so this static build no longer
+    // depends on a same-origin /api/eoi serverless function or a verified sender domain.
+    // The regional recipient remains controlled by STATE_DATA.formEmailTo.
+    var recipient = stateInfo.formEmailTo || stateInfo.recruiterEmail;
+    if (!recipient || recipient.indexOf('REPLACE_WITH_') === 0) {
+      throw new Error('This section is not yet configured for enquiries. Please try another section.');
+    }
+
+    // Keep the existing honeypot client-side only; FormSubmit treats _honey specially.
+    var honey = website ? website.value.trim() : '';
+    if (honey) {
+      throw new Error('We could not send your details. Please try again.');
+    }
+
+    var response = await fetch('https://formsubmit.co/ajax/' + recipient, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      credentials: 'same-origin',
       body: JSON.stringify({
         firstName: firstName,
         lastName: lastName,
@@ -5611,15 +5624,19 @@ eoiForm.addEventListener('submit', async function(e) {
         phone: phone,
         role: role,
         why: why,
+        state: stateInfo.name,
         stateId: currentActiveStateId,
-        website: website ? website.value : ''
+        _subject: 'RFDS Careers — ' + stateInfo.name + ' expression of interest',
+        _replyto: email,
+        _template: 'table',
+        _honey: honey
       })
     });
 
     var result = await response.json().catch(function() { return {}; });
 
-    if (!response.ok || !result.ok) {
-      throw new Error(result.error || 'We could not send your details. Please try again.');
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || result.error || 'We could not send your details. Please try again.');
     }
 
     eoiSubmitBtn.innerHTML = '<span>Interest received</span>';

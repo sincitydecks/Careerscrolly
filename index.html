@@ -4532,8 +4532,7 @@ body.rfds-story-lock {
         <h2 class="eoi-form-title">Join our talent community</h2>
         <p class="eoi-form-subheading">Express your interest in an RFDS career below</p>
 
-        <form id="eoiForm" novalidate>
-          <input type="text" id="eoiWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;">
+        <form id="eoiForm" onsubmit="return false;">
           <input type="hidden" id="eoiSelectedSection" value="SA / NT" />
 
           <div class="form-row">
@@ -5592,17 +5591,10 @@ eoiForm.addEventListener('submit', async function(e) {
   var phone = document.getElementById('eoiPhone').value.trim();
   var role = eoiRoleSelect.value;
   var why = eoiWhy.value.trim();
-  var section = eoiSelectedSection.value || 'Australia';
-  var website = document.getElementById('eoiWebsite').value.trim();
+  var stateId = currentActiveStateId;
 
-  if (!firstName || !lastName || !email || !/^\S+@\S+\.\S+$/.test(email) || !role) {
+  if (!firstName || !lastName || !email || email.indexOf('@') === -1 || !role) {
     formError.textContent = 'Please complete your name, email address and preferred role.';
-    formError.style.display = 'block';
-    return;
-  }
-
-  if (why.split(/\s+/).filter(Boolean).length > 100) {
-    formError.textContent = 'Please keep your response to 100 words or fewer.';
     formError.style.display = 'block';
     return;
   }
@@ -5611,11 +5603,13 @@ eoiForm.addEventListener('submit', async function(e) {
   eoiSubmitBtn.disabled = true;
   eoiSubmitBtn.innerHTML = '<span>Sending your details…</span>';
 
+  var existingNotice = eoiForm.querySelector('.form-success-inline');
+  if (existingNotice) existingNotice.remove();
+
   try {
     var response = await fetch('/api/eoi', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
         firstName: firstName,
         lastName: lastName,
@@ -5623,34 +5617,29 @@ eoiForm.addEventListener('submit', async function(e) {
         phone: phone,
         role: role,
         why: why,
-        section: section,
-        stateId: currentActiveStateId,
-        website: website
+        stateId: stateId,
+        website: ''
       })
     });
 
-    var result = {};
-    try { result = await response.json(); } catch (_) {}
+    var result = await response.json().catch(function() { return {}; });
 
     if (!response.ok || !result.ok) {
-      throw new Error(result.error || 'Unable to submit your enquiry.');
+      throw new Error(result.error || 'The submission could not be sent.');
     }
 
     eoiSubmitBtn.innerHTML = '<span>Interest received</span>';
     eoiSubmitBtn.disabled = true;
 
-    var existingNotice = eoiForm.querySelector('.form-success-inline');
-    if (!existingNotice) {
-      existingNotice = document.createElement('div');
-      existingNotice.className = 'form-success-inline';
-      existingNotice.setAttribute('role', 'status');
-      existingNotice.innerHTML = '<strong>Thanks — we have your details.</strong><span>We will be in contact to discuss taking your career further.</span>';
-      eoiForm.insertBefore(existingNotice, eoiSubmitBtn);
-    }
-    existingNotice.scrollIntoView({ block:'nearest', behavior:'smooth' });
-  } catch (err) {
-    console.error('EOI submission failed:', err);
-    formError.textContent = 'We could not send your details just now. Please try again.';
+    existingNotice = document.createElement('div');
+    existingNotice.className = 'form-success-inline';
+    existingNotice.setAttribute('role', 'status');
+    existingNotice.innerHTML = '<strong>Thanks — we have your details.</strong><span>Your expression of interest has been sent to the RFDS team. We will be in contact to discuss taking your career further.</span>';
+    eoiForm.insertBefore(existingNotice, eoiSubmitBtn);
+    existingNotice.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  } catch (error) {
+    console.error('EOI submission failed:', error);
+    formError.textContent = 'We could not send your expression of interest. Please check your connection and try again.';
     formError.style.display = 'block';
     eoiSubmitBtn.disabled = false;
     eoiSubmitBtn.innerHTML = '<span>Join our talent community</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>';

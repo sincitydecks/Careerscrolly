@@ -10,7 +10,7 @@
   style-src 'self' 'unsafe-inline' https://use.typekit.net https://p.typekit.net;
   img-src 'self' data: blob: https://www.flyingdoctor.org.au https://flyingdoctor.org.au https://res.cloudinary.com https://thumbor.ixchosted.com https://rfds-media.s3.amazonaws.com https://p.typekit.net;
   font-src 'self' data: https://use.typekit.net https://p.typekit.net;
-  connect-src 'self' https://formsubmit.co;
+  connect-src 'self';
   frame-src 'self' https://www.flightaware.com;
 ">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -821,6 +821,10 @@ body.rfds-overlay-open { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 16px;
+  box-sizing: border-box;
 }
 
 #rfds-app .modal-overlay.open {
@@ -828,16 +832,18 @@ body.rfds-overlay-open { overflow: hidden; }
   pointer-events: auto;
 }
 
-/* Flip Card CSS */
+/* Consolidated Profile Card CSS (Direction 3) */
 #rfds-app .flip-card {
-  width: 520px;
+  width: 580px;
   max-width: 95vw;
-  height: 720px;
-  max-height: 90vh;
-  perspective: 1500px;
+  max-height: min(88vh, 760px);
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateY(24px) scale(0.98);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  flex-shrink: 0;
 }
 
 #rfds-app .modal-overlay.open .flip-card {
@@ -848,30 +854,76 @@ body.rfds-overlay-open { overflow: hidden; }
 #rfds-app .flip-card-inner {
   position: relative;
   width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-#rfds-app .flip-card.flipped .flip-card-inner {
-  transform: rotateY(-180deg);
+  max-height: min(88vh, 760px);
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 30px 60px rgba(0, 32, 91, 0.18), 0 4px 16px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
 }
 
 #rfds-app .flip-card-front, #rfds-app .flip-card-back {
-  position: absolute;
   width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
   background: #ffffff;
-  border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 30px 60px rgba(0, 32, 91, 0.15);
+  padding: 36px 36px 32px;
   overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
-#rfds-app .flip-card-back {
-  transform: rotateY(180deg);
+/* Regional Overview Banner inside Consolidated Profile Card */
+#rfds-app .profile-card-overview {
+  background: linear-gradient(135deg, rgba(0, 32, 91, 0.04) 0%, rgba(240, 91, 34, 0.04) 100%);
+  border-left: 4px solid var(--rfds-red);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 20px;
+  margin: 16px 0 22px;
+}
+
+#rfds-app .profile-card-title {
+  display: block;
+  font-family: "museo-sans", sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--rfds-navy);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+#rfds-app .profile-card-blurb {
+  font-size: 13.5px;
+  line-height: 1.58;
+  color: var(--ink);
+  font-weight: 450;
+  margin: 0;
+}
+
+#rfds-app .profile-card-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 16px;
+}
+
+#rfds-app .profile-card-divider span {
+  font-family: "museo-sans", sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rfds-red);
+  white-space: nowrap;
+}
+
+#rfds-app .profile-card-divider::before,
+#rfds-app .profile-card-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle, #e2e8f0);
 }
 
 #rfds-app .modal-close-btn {
@@ -3165,67 +3217,68 @@ body.rfds-overlay-open { overflow: hidden; }
 }
 
 
-/* Mobile EOI form: independently scrollable content + persistent submit action. */
+/* Mobile EOI form: fully scrollable card with natural touch pan and responsive inputs. */
 @media (max-width: 900px) {
   #rfds-app .modal-overlay {
-    align-items: stretch;
-    overflow: hidden;
-    padding: max(7px, var(--safe-top)) max(7px, var(--safe-right)) max(7px, var(--safe-bottom)) max(7px, var(--safe-left));
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: max(10px, var(--safe-top)) max(10px, var(--safe-right)) max(10px, var(--safe-bottom)) max(10px, var(--safe-left));
   }
   #rfds-app .flip-card {
-    width:100%;
-    height:100%;
-    max-width:100%;
-    max-height:100%;
-    min-height:0;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100vh - 24px);
+    min-height: 0;
+    margin: auto;
+  }
+  #rfds-app .flip-card-inner {
+    max-height: calc(100vh - 24px);
+    height: auto;
   }
   #rfds-app .flip-card-front,
-  #rfds-app .flip-card-back {
-    height:100%;
-    min-height:0;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    overscroll-behavior:contain;
-  }
-  #rfds-app .flip-card-front {
-    padding-bottom:max(10px, calc(var(--safe-bottom) + 8px));
+  #rfds-app .flip-card-back,
+  #rfds-app #profileCardFace,
+  #rfds-app .eoi-form-face {
+    height: auto;
+    max-height: calc(100vh - 24px);
+    min-height: 0;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 20px 28px !important;
   }
   #rfds-app .flip-card-front > .section-meta-kicker,
   #rfds-app .flip-card-front > .eoi-form-title,
   #rfds-app .flip-card-front > .eoi-form-subheading {
-    flex:0 0 auto;
+    flex: 0 0 auto;
   }
-  #rfds-app .flip-card-front > .eoi-form-subheading { margin-bottom:14px; }
+  #rfds-app .flip-card-front > .eoi-form-subheading { margin-bottom: 14px; }
   #rfds-app #eoiForm {
-    position:relative;
-    flex:1 1 auto;
-    min-height:0;
-    overflow-y:auto;
-    overflow-x:hidden;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior:contain;
-    padding:0 2px calc(88px + var(--safe-bottom));
-    scrollbar-width:thin;
+    position: relative;
+    width: 100%;
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow: visible !important;
+    touch-action: pan-y;
+    padding: 0 0 20px;
   }
   #rfds-app #eoiForm::after {
-    content:"";
-    position:fixed;
-    left:calc(var(--safe-left) + 7px);
-    right:calc(var(--safe-right) + 7px);
-    bottom:calc(var(--safe-bottom) + 7px);
-    height:88px;
-    background:linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.96) 58%);
-    pointer-events:none;
-    z-index:1;
+    display: none !important;
   }
   #rfds-app #eoiForm > .drawer-primary-btn {
-    position:sticky;
-    bottom:0;
-    z-index:3;
-    margin:14px 0 0;
-    min-height:52px;
-    box-shadow:0 -10px 22px rgba(255,255,255,.94), 0 8px 22px rgba(0,32,91,.16);
+    position: relative;
+    bottom: auto;
+    z-index: 3;
+    margin: 16px 0 0;
+    min-height: 50px;
+    box-shadow: 0 4px 14px rgba(240, 91, 34, 0.3);
   }
   #rfds-app .form-group { margin-bottom:14px; }
   #rfds-app .form-input,
@@ -3886,47 +3939,78 @@ body.rfds-story-lock {
 
 
 /* =========================================================
-   EOI FORM FIX — INPUT ACCESS + MOBILE SCROLL CONTAINMENT
-   Form-only patch. Does not alter the story, map or other UI.
+   EOI FORM FIX — COMPLETE SCROLLABILITY & INPUT ACCESS
+   Enables smooth vertical scrolling on the entire profile card,
+   ensuring the regional overview, fields and submit button
+   are always fully reachable across all devices and screen sizes.
    ========================================================= */
-#rfds-app .eoi-form-face {
+#rfds-app .flip-card-front,
+#rfds-app .eoi-form-face,
+#rfds-app #profileCardFace {
   display: flex !important;
   flex-direction: column !important;
   min-height: 0 !important;
-  overflow: hidden !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 32, 91, 0.28) transparent;
 }
+#rfds-app .flip-card-front::-webkit-scrollbar,
+#rfds-app .eoi-form-face::-webkit-scrollbar,
+#rfds-app #profileCardFace::-webkit-scrollbar {
+  width: 6px;
+}
+#rfds-app .flip-card-front::-webkit-scrollbar-track,
+#rfds-app .eoi-form-face::-webkit-scrollbar-track,
+#rfds-app #profileCardFace::-webkit-scrollbar-track {
+  background: transparent;
+}
+#rfds-app .flip-card-front::-webkit-scrollbar-thumb,
+#rfds-app .eoi-form-face::-webkit-scrollbar-thumb,
+#rfds-app #profileCardFace::-webkit-scrollbar-thumb {
+  background: rgba(0, 32, 91, 0.22);
+  border-radius: 999px;
+}
+#rfds-app .flip-card-front::-webkit-scrollbar-thumb:hover,
+#rfds-app .eoi-form-face::-webkit-scrollbar-thumb:hover,
+#rfds-app #profileCardFace::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 32, 91, 0.42);
+}
+
 #rfds-app .eoi-form-face #eoiForm {
   display: block !important;
-  flex: 1 1 auto !important;
+  width: 100% !important;
+  flex: 0 0 auto !important;
   min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  padding-bottom: max(92px, calc(78px + var(--safe-bottom))) !important;
-  scrollbar-gutter: stable;
-  scroll-padding-bottom: 92px;
+  overflow: visible !important;
+  padding-bottom: 28px !important;
+  touch-action: pan-y !important;
 }
 #rfds-app .eoi-form-face #eoiForm .form-row,
 #rfds-app .eoi-form-face #eoiForm .form-group {
   min-width: 0;
 }
 #rfds-app .eoi-form-face #eoiForm .form-group {
-  scroll-margin-bottom: 96px;
+  margin-bottom: 14px;
 }
 #rfds-app .eoi-form-face #eoiSubmitBtn {
-  position: sticky !important;
-  bottom: max(0px, var(--safe-bottom)) !important;
-  z-index: 20 !important;
+  position: relative !important;
+  bottom: auto !important;
+  z-index: 5 !important;
   display: inline-flex !important;
   width: 100% !important;
-  min-height: 52px !important;
-  margin-top: 14px !important;
-  margin-bottom: 0 !important;
+  min-height: 50px !important;
+  margin-top: 16px !important;
+  margin-bottom: 8px !important;
   flex: 0 0 auto !important;
-  box-shadow: 0 -12px 26px rgba(255,255,255,.96), 0 8px 22px rgba(0,32,91,.16) !important;
+  box-shadow: 0 4px 14px rgba(240, 91, 34, 0.3) !important;
 }
 #rfds-app .eoi-form-face #eoiSubmitBtn:disabled {
   cursor: default;
@@ -3937,26 +4021,168 @@ body.rfds-story-lock {
   position: relative;
   z-index: 2;
 }
+
+/* Captured EOI summary card & Send EOI Email button */
+#rfds-app .eoi-captured-panel {
+  display: none;
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 32, 91, 0.12);
+  border-radius: 14px;
+  padding: 22px 20px 20px;
+  margin: 10px 0 16px;
+  box-shadow: 0 4px 18px rgba(0, 32, 91, 0.06);
+  animation: eoiFadeIn 0.3s ease-out;
+}
+@keyframes eoiFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+#rfds-app .eoi-captured-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 32, 91, 0.08);
+}
+#rfds-app .eoi-captured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 32, 91, 0.06);
+  color: var(--rfds-navy, #00205b);
+  padding: 5px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+#rfds-app .eoi-captured-target {
+  font-size: 12px;
+  color: var(--ink-muted, #64748b);
+  font-weight: 500;
+}
+#rfds-app .eoi-captured-target strong {
+  color: var(--rfds-navy, #00205b);
+  font-weight: 700;
+}
+#rfds-app .eoi-captured-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 14px;
+  margin-bottom: 18px;
+}
+@media (max-width: 580px) {
+  #rfds-app .eoi-captured-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+#rfds-app .eoi-captured-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+#rfds-app .eoi-captured-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+#rfds-app .eoi-captured-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--rfds-navy, #00205b);
+  word-break: break-word;
+}
+#rfds-app .eoi-captured-value.role-tag {
+  color: var(--rfds-red, #f05b22);
+}
+#rfds-app .eoi-send-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  background: var(--rfds-red, #f05b22) !important;
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  border-radius: 12px !important;
+  border: none !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 16px rgba(240, 91, 34, 0.35) !important;
+  cursor: pointer !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease !important;
+  box-sizing: border-box !important;
+  margin-top: 4px !important;
+}
+#rfds-app .eoi-send-btn:hover {
+  background: #d94b15 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(240, 91, 34, 0.42) !important;
+}
+#rfds-app .eoi-send-btn:active {
+  transform: translateY(1px) !important;
+}
+#rfds-app .eoi-send-hint {
+  text-align: center;
+  margin: 10px 0 14px;
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.45;
+}
+#rfds-app .eoi-edit-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--rfds-navy, #00205b);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 6px 12px;
+  margin: 0 auto;
+}
+#rfds-app .eoi-edit-link:hover {
+  color: var(--rfds-red, #f05b22);
+}
+
+#rfds-app #eoiForm::after {
+  display: none !important;
+}
 @media (max-width: 900px) {
+  #rfds-app .modal-overlay {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
   #rfds-app .eoi-form-face {
-    padding-bottom: max(10px, calc(var(--safe-bottom) + 8px)) !important;
+    padding: 32px 20px 28px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
   #rfds-app .eoi-form-face #eoiForm {
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: max(96px, calc(86px + var(--safe-bottom))) !important;
+    overflow: visible !important;
+    padding-bottom: 24px !important;
     touch-action: pan-y !important;
-    overscroll-behavior-y: contain !important;
   }
   #rfds-app .eoi-form-face #eoiSubmitBtn {
-    position: sticky !important;
-    bottom: max(0px, var(--safe-bottom)) !important;
-    min-height: 52px !important;
-    margin-top: 12px !important;
-    border-radius: 13px !important;
+    position: relative !important;
+    bottom: auto !important;
+    min-height: 50px !important;
+    margin-top: 16px !important;
+    margin-bottom: 12px !important;
+    border-radius: 12px !important;
   }
 }
 /* FINAL STYLE PASS — obsolete stat separators removed. */
@@ -4034,16 +4260,16 @@ body.rfds-story-lock {
   transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 1.1s ease !important;
 }
 
-/* 4. MODAL/DRAWER WEIGHT (Physical flip) */
+/* 4. MODAL/DRAWER WEIGHT (Consolidated Profile Card) */
 #rfds-app .flip-card {
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) !important;
-  transform: translateY(40px) scale(0.96) !important;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transform: translateY(30px) scale(0.97) !important;
 }
 #rfds-app .modal-overlay.open .flip-card {
   transform: translateY(0) scale(1) !important;
 }
 #rfds-app .flip-card-inner {
-  transition: transform 0.9s cubic-bezier(0.25, 1, 0.4, 1) !important; /* smooth physical flip */
+  transition: none !important;
 }
 
 /* 5. LIVE MAP OVERLAY MOTION */
@@ -4466,9 +4692,9 @@ body.rfds-story-lock {
     </div>
 
     <div class="story-stats-deck" id="storyStatsDeck" aria-hidden="true">
-      <div class="story-stat-card" id="storyStat1" aria-label="More than 2,600 workforce">
+      <div class="story-stat-card" id="storyStat1" aria-label="More than 1,800 workforce">
         <span class="story-stat-card-label">Workforce</span>
-        <span class="story-stat-card-value">2,600+</span>
+        <span class="story-stat-card-value">1,800+</span>
         <span class="story-stat-card-sub">People across the RFDS network.</span>
       </div>
       <div class="story-stat-card" id="storyStat2" aria-label="More than 30 bases and more than 90 aircraft">
@@ -4519,90 +4745,129 @@ body.rfds-story-lock {
   </div>
 </div>
 
-<!-- Interactive State Flip Card Modal -->
+<!-- Interactive State Consolidated Profile Card Modal (Direction 3) -->
 <div class="modal-overlay" id="stateModal">
   <div class="flip-card" id="flipCard">
     <div class="flip-card-inner" id="flipCardInner">
 
-      <!-- Face 2: Expression of Interest form -->
-      <div class="flip-card-back eoi-form-face">
-        <button type="button" class="modal-close-btn" id="modalCloseBtnFront" aria-label="Close form">&times;</button>
+      <!-- Consolidated Single-Face Profile Card -->
+      <div class="flip-card-front eoi-form-face" id="profileCardFace">
+        <button type="button" class="modal-close-btn" id="modalCloseBtnFront" aria-label="Close profile">&times;</button>
 
         <span class="section-meta-kicker" id="formSectionLabel">RFDS · SA/NT</span>
-        <h2 class="eoi-form-title">Join our talent community</h2>
+        
+        <!-- Regional blurb header banner -->
+        <div class="profile-card-overview">
+          <span class="profile-card-title" id="selectionSectionLabel">RFDS SA/NT</span>
+          <p class="profile-card-blurb" id="successSectionBlurb">We’re a lifeline for South Australians and Territorians, delivering emergency aeromedical and essential primary health care.</p>
+        </div>
+
+        <div class="profile-card-divider">
+          <span>Join our talent community</span>
+        </div>
+
         <p class="eoi-form-subheading">Express your interest in an RFDS career below</p>
 
         <form id="eoiForm" onsubmit="return false;">
           <input type="hidden" id="eoiSelectedSection" value="SA / NT" />
 
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="eoiFirstName">First Name <span class="req">*</span></label>
-              <input type="text" id="eoiFirstName" class="form-input" placeholder="e.g. Sarah" required />
+          <div id="eoiInputsGroup">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="eoiFirstName">First Name <span class="req">*</span></label>
+                <input type="text" id="eoiFirstName" class="form-input" placeholder="e.g. Sarah" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="eoiLastName">Last Name <span class="req">*</span></label>
+                <input type="text" id="eoiLastName" class="form-input" placeholder="e.g. Mitchell" required />
+              </div>
             </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="eoiEmail">Email Address <span class="req">*</span></label>
+                <input type="email" id="eoiEmail" class="form-input" placeholder="sarah@example.com.au" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="eoiPhone">Contact Phone</label>
+                <input type="tel" id="eoiPhone" class="form-input" placeholder="0400 000 000" />
+              </div>
+            </div>
+
             <div class="form-group">
-              <label class="form-label" for="eoiLastName">Last Name <span class="req">*</span></label>
-              <input type="text" id="eoiLastName" class="form-input" placeholder="e.g. Mitchell" required />
+              <label class="form-label" for="eoiRoleSelect">Preferred Role <span class="req">*</span></label>
+              <select id="eoiRoleSelect" class="form-select" required>
+                <option value="" disabled selected>Select a preferred role</option>
+                <option value="Flight Nurse / Midwife">Flight Nurse / Midwife</option>
+                <option value="Pilot">Pilot</option>
+                <option value="Retrieval Specialist / Rural Generalist">Retrieval Specialist / Rural Generalist</option>
+                <option value="Oral Health">Oral Health</option>
+                <option value="Mental Health">Mental Health</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Operations &amp; Logistics">Operations &amp; Logistics</option>
+                <option value="Paramedic">Paramedic</option>
+                <option value="Administration / Corporate">Administration / Corporate</option>
+                <option value="Primary Health">Primary Health</option>
+                <option value="Allied Health">Allied Health</option>
+              </select>
+            </div>
+
+            <div class="form-error" id="formError" style="display: none;">Please complete your name, email address and preferred role.</div>
+
+            <button type="submit" class="drawer-primary-btn" id="eoiSubmitBtn">
+              <span>Join our talent community</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+
+          <!-- Captured Information Display & Direct Send EOI Button -->
+          <div id="eoiCapturedPanel" class="eoi-captured-panel">
+            <div class="eoi-captured-header">
+              <span class="eoi-captured-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Information Captured
+              </span>
+              <span class="eoi-captured-target">To: <strong id="capRecipient">stories@flyingdoctor.net</strong></span>
+            </div>
+
+            <div class="eoi-captured-grid">
+              <div class="eoi-captured-row">
+                <span class="eoi-captured-label">Candidate Name</span>
+                <span class="eoi-captured-value" id="capName">—</span>
+              </div>
+              <div class="eoi-captured-row">
+                <span class="eoi-captured-label">Email Address</span>
+                <span class="eoi-captured-value" id="capEmail">—</span>
+              </div>
+              <div class="eoi-captured-row">
+                <span class="eoi-captured-label">Contact Phone</span>
+                <span class="eoi-captured-value" id="capPhone">—</span>
+              </div>
+              <div class="eoi-captured-row">
+                <span class="eoi-captured-label">Preferred Role</span>
+                <span class="eoi-captured-value role-tag" id="capRole">—</span>
+              </div>
+              <div class="eoi-captured-row" style="grid-column: 1 / -1;">
+                <span class="eoi-captured-label">RFDS Section / Region</span>
+                <span class="eoi-captured-value" id="capSection">—</span>
+              </div>
+            </div>
+
+            <!-- Requested Button to hit send your EOI which opens their email -->
+            <a id="sendEoiBtn" class="eoi-send-btn" href="#" role="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              <span>Send your EOI</span>
+            </a>
+            <p class="eoi-send-hint">Clicking above opens your email application pre-addressed to <strong id="capRecipientText">stories@flyingdoctor.net</strong> with all captured details.</p>
+
+            <div style="text-align: center;">
+              <button type="button" id="editEoiBtn" class="eoi-edit-link">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <span>Edit captured information</span>
+              </button>
             </div>
           </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="eoiEmail">Email Address <span class="req">*</span></label>
-              <input type="email" id="eoiEmail" class="form-input" placeholder="sarah@example.com.au" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="eoiPhone">Contact Phone</label>
-              <input type="tel" id="eoiPhone" class="form-input" placeholder="0400 000 000" />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="eoiRoleSelect">Preferred Role <span class="req">*</span></label>
-            <select id="eoiRoleSelect" class="form-select" required>
-              <option value="" disabled selected>Select a preferred role</option>
-              <option value="Flight Nurse / Midwife">Flight Nurse / Midwife</option>
-              <option value="Pilot">Pilot</option>
-              <option value="Retrieval Specialist / Rural Generalist">Retrieval Specialist / Rural Generalist</option>
-              <option value="Oral Health">Oral Health</option>
-              <option value="Mental Health">Mental Health</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Operations &amp; Logistics">Operations &amp; Logistics</option>
-              <option value="Paramedic">Paramedic</option>
-              <option value="Administration / Corporate">Administration / Corporate</option>
-              <option value="Primary Health">Primary Health</option>
-              <option value="Allied Health">Allied Health</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="eoiWhy">Tell us why you want to join the team</label>
-            <textarea id="eoiWhy" class="form-textarea" rows="5" placeholder="Maximum 100 words" aria-describedby="eoiWhyCount"></textarea>
-            <span class="word-counter" id="eoiWhyCount" aria-live="polite">0 / 100 words</span>
-          </div>
-
-          <div style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-            <label for="eoiWebsite">Website</label>
-            <input type="text" id="eoiWebsite" name="website" tabindex="-1" autocomplete="off" />
-          </div>
-
-          <div class="form-error" id="formError" style="display: none;">Please complete your name, email address and preferred role.</div>
-
-          <button type="submit" class="drawer-primary-btn" id="eoiSubmitBtn">
-            <span>Join our talent community</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-          </button>
         </form>
-      </div>
-
-      <!-- Face 1: Section blurb — opens first -->
-      <div class="flip-card-front success-face selection-face">
-        <button type="button" class="modal-close-btn" id="modalCloseBtnBack" aria-label="Close selection">&times;</button>
-        <div class="selection-blurb-box">
-          <span class="selection-section-name" id="selectionSectionLabel">RFDS SA/NT</span>
-          <p class="selection-section-blurb" id="successSectionBlurb">We’re a lifeline for South Australians and Territorians, delivering emergency aeromedical and essential primary health care.</p>
-        </div>
-        <button type="button" class="drawer-primary-btn selection-continue-btn" id="successCloseBtn">CONTINUE</button>
       </div>
 
     </div>
@@ -4622,8 +4887,8 @@ var STATE_DATA = {
       { label: 'RFDS Bases', items: ['Jandakot', 'Broome', 'Kalgoorlie', 'Meekatharra', 'Port Hedland'] },
       { label: 'Clinics', items: ['Beagle Bay', 'Bidyadanga', 'Gibb River', 'Menzies', 'One Arm Point', "Payne's Find", 'Perenjori', 'Useless Loop', 'Cosmo Newberry'] }
     ],
-    recruiterEmail: 'peopleandculture@rfdswa.com.au',
-    formEmailTo: 'peopleandculture@rfdswa.com.au',
+    recruiterEmail: 'stories@flyingdoctor.net',
+    formEmailTo: 'stories@flyingdoctor.net',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/wa/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS WESTERN OPERATIONS'
   },
@@ -4652,8 +4917,8 @@ var STATE_DATA = {
       { label: 'RFDS Bases', items: ['Brisbane', 'Bundaberg', 'Cairns', 'Charleville', 'Longreach', 'Mount Isa', 'Rockhampton', 'Roma', 'Townsville'] },
       { label: 'Clinics', items: ['Bedourie', 'Birdsville', 'Boulia', 'Burketown', 'Camooweal', 'Eulo', 'Jundah', 'Thargomindah'] }
     ],
-    recruiterEmail: 'recruitment@rfdsqld.com.au',
-    formEmailTo: 'recruitment@rfdsqld.com.au',
+    recruiterEmail: 'stories@flyingdoctor.net',
+    formEmailTo: 'stories@flyingdoctor.net',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/qld/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS QUEENSLAND'
   },
@@ -4667,8 +4932,8 @@ var STATE_DATA = {
       { label: 'RFDS Bases', items: ['Bankstown', 'Broken Hill', 'Dubbo', 'Taree', 'Tamworth', 'Wagga Wagga', 'Wollongong'] },
       { label: 'Clinics', items: ['Condobolin', 'Ivanhoe', 'Louth', 'Menindee', 'Packsaddle', 'Wanaaring', 'Wilcannia'] }
     ],
-    recruiterEmail: 'careers@rfdsse.org.au',
-    formEmailTo: 'careers@rfdsse.org.au',
+    recruiterEmail: 'stories@flyingdoctor.net',
+    formEmailTo: 'stories@flyingdoctor.net',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/nswact/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS SOUTH EASTERN SECTION'
   },
@@ -4681,8 +4946,8 @@ var STATE_DATA = {
     workplaces: [
       { label: 'RFDS Bases / Road Bases', items: ['Bairnsdale', 'Bendigo', 'Drouin', 'Echuca', 'Essendon', 'Essendon Air Base', 'Horsham', 'Kyneton', 'Mildura', 'Mitcham', 'Morwell', 'Sale', 'Shepparton', 'Stawell', 'Wangaratta', 'Warrnambool', 'Wodonga', 'Wonthaggi'] }
     ],
-    recruiterEmail: 'careers@rfdsvic.com.au',
-    formEmailTo: 'careers@rfdsvic.com.au',
+    recruiterEmail: 'stories@flyingdoctor.net',
+    formEmailTo: 'stories@flyingdoctor.net',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/vic/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS VICTORIA'
   },
@@ -4696,8 +4961,8 @@ var STATE_DATA = {
       { label: 'RFDS Base', items: ['Launceston'] },
       { label: 'Clinics', items: ['Glamorgan Spring Bay', 'Huon Valley', 'Meander Valley', 'Southern Midlands', 'Central Highlands'] }
     ],
-    recruiterEmail: 'recruitment@rfdstas.org.au',
-    formEmailTo: 'recruitment@rfdstas.org.au',
+    recruiterEmail: 'stories@flyingdoctor.net',
+    formEmailTo: 'stories@flyingdoctor.net',
     learnMoreUrl: 'https://www.flyingdoctor.org.au/tas/',
     learnMoreLabel: 'LEARN MORE ABOUT RFDS TASMANIA'
   }
@@ -4705,7 +4970,7 @@ var STATE_DATA = {
 
 // LIVE FLIGHT MAP control — same-origin Vercel Serverless Function.
 // The browser calls /api/flights on the same deployment as this page.
-var RFDS_FLIGHT_API_URL = null;
+var RFDS_FLIGHT_API_URL = '/api/flights';
 
 var liveRadarBadge = document.getElementById('liveRadarBadge');
 var liveMapOverlay = document.getElementById('liveMapOverlay');
@@ -4952,20 +5217,39 @@ function showHud(flight, pt) {
 }
 
 function fetchFlights() {
-  // No custom RFDS flight-data endpoint is deployed in this static project.
-  // Use the existing FlightAware fallback instead of repeatedly requesting /api/flights.
-  setLiveMapStatus(0, false);
-  updateLiveRadar([]);
-  if (liveMapOverlay && liveMapOverlay.classList.contains('open')) {
-    showFlightAwareFallback();
-    if (liveMapDetails) {
-      liveMapDetails.innerHTML = '<p class="live-map-empty"><strong>FlightAware live map</strong><br>Live aircraft tracking is provided through FlightAware.</p>';
-    }
-  }
-  return Promise.resolve({ flights: [] });
+  return fetch(RFDS_FLIGHT_API_URL, { cache: 'no-store', credentials: 'same-origin' })
+    .then(function(res) {
+      if (!res.ok) throw new Error('Live flight request failed: ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      if (data && Array.isArray(data.flights)) {
+        updateLiveRadar(data.flights);
+        setLiveMapStatus(activeFlights.length, true);
+        if (liveMapOverlay && liveMapOverlay.classList.contains('open')) {
+          renderLiveMapOverlay();
+          if (!activeFlights.length && liveMapDetails) {
+            liveMapDetails.innerHTML = '<p class="live-map-empty">The live RFDS feed is connected, but no PC-12 or PC-24 aircraft are currently being returned as airborne.</p>';
+          }
+        }
+      }
+      return data;
+    })
+    .catch(function(err) {
+      console.warn('Custom live RFDS data unavailable:', err);
+      setLiveMapStatus(0, false);
+      updateLiveRadar([]);
+      if (liveMapOverlay && liveMapOverlay.classList.contains('open')) {
+        showFlightAwareFallback();
+        if (liveMapDetails) {
+          liveMapDetails.innerHTML = '<p class="live-map-empty"><strong>FlightAware live map</strong><br>The custom RFDS aircraft overlay could not reach the Vercel /api/flights endpoint. The page has fallen back to the live FlightAware map.</p>';
+        }
+      }
+    });
 }
 
 fetchFlights();
+setInterval(fetchFlights, 15000);
 
 // Discrete Scrollytelling Engine
 // Scroll is an input gesture, not the story timeline. Each gesture advances or
@@ -5363,19 +5647,15 @@ showScrollPrompt(STORY_TIMING.firstSettle);
 // No native scroll-position observer is attached. Scroll gestures are consumed
 // above and translated into discrete story transitions.
 
-// Interactive Modal & EOI Engine
+// Interactive Modal & EOI Engine (Direction 3: Consolidated Profile Card)
 var stateModal = document.getElementById('stateModal');
 var flipCard = document.getElementById('flipCard');
 var modalCloseBtnFront = document.getElementById('modalCloseBtnFront');
-var modalCloseBtnBack = document.getElementById('modalCloseBtnBack');
 var formSectionLabel = document.getElementById('formSectionLabel');
 var eoiSelectedSection = document.getElementById('eoiSelectedSection');
 var eoiRoleSelect = document.getElementById('eoiRoleSelect');
-var eoiWhy = document.getElementById('eoiWhy');
-var eoiWhyCount = document.getElementById('eoiWhyCount');
 var formError = document.getElementById('formError');
 var eoiSubmitBtn = document.getElementById('eoiSubmitBtn');
-var successCloseBtn = document.getElementById('successCloseBtn');
 var successSectionBlurb = document.getElementById('successSectionBlurb');
 var currentActiveStateId = 'WA';
 
@@ -5398,14 +5678,26 @@ function openModal(id) {
   eoiSelectedSection.value = data.name;
   formSectionLabel.textContent = 'RFDS · ' + data.formTitle;
 
-  // Selection blurb is the first face; the EOI form is the second face.
-  flipCard.classList.remove('flipped');
   formError.style.display = 'none';
-  if (eoiWhyCount) eoiWhyCount.textContent = '0 / 100 words';
   var eoiFormNode = document.getElementById('eoiForm');
   if (eoiFormNode) {
     eoiFormNode.reset();
     eoiFormNode.scrollTop = 0;
+  }
+  var eoiInputsGroup = document.getElementById('eoiInputsGroup');
+  var eoiCapturedPanel = document.getElementById('eoiCapturedPanel');
+  if (eoiInputsGroup) eoiInputsGroup.style.display = 'block';
+  if (eoiCapturedPanel) eoiCapturedPanel.style.display = 'none';
+  if (eoiSubmitBtn) {
+    eoiSubmitBtn.disabled = false;
+    eoiSubmitBtn.innerHTML = '<span>Join our talent community</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>';
+  }
+  var profileCardFace = document.getElementById('profileCardFace');
+  if (profileCardFace) {
+    profileCardFace.scrollTop = 0;
+  }
+  if (stateModal) {
+    stateModal.scrollTop = 0;
   }
 
   var selectionSectionLabel = document.getElementById('selectionSectionLabel');
@@ -5415,6 +5707,9 @@ function openModal(id) {
   stateModal.classList.add('open');
   document.getElementById('rfds-app').classList.add('drawer-open');
   document.body.classList.add('rfds-overlay-open');
+  window.setTimeout(function() {
+    if (typeof updateMobileFormCue === 'function') updateMobileFormCue();
+  }, 120);
 }
 
 // Hover Tooltip on States
@@ -5523,21 +5818,8 @@ document.querySelectorAll('.state-path').forEach(function(path) {
   path.addEventListener('pointercancel', clearStateTouchFeedback, { passive: true });
 });
 
-// 100-word limit for the motivation field.
-function enforceWordLimit() {
-  if (!eoiWhy || !eoiWhyCount) return;
-  var raw = eoiWhy.value.trim();
-  var words = raw ? raw.split(/\s+/) : [];
-  if (words.length > 100) {
-    words = words.slice(0, 100);
-    eoiWhy.value = words.join(' ');
-  }
-  eoiWhyCount.textContent = words.length + ' / 100 words';
-}
-if (eoiWhy) eoiWhy.addEventListener('input', enforceWordLimit);
-
 // Form submission handler. After the section-selection step, the EOI form confirms receipt in-place.
-// Delivery uses FormSubmit's cross-origin AJAX endpoint; no RFDS sender-domain DNS verification is required.
+// Connect this point to your approved form/email endpoint when production delivery is available.
 var eoiForm = document.getElementById('eoiForm');
 var eoiScrollCue = null;
 
@@ -5551,16 +5833,21 @@ function ensureMobileFormCue() {
 }
 
 function updateMobileFormCue() {
-  if (!eoiForm) return;
+  var scroller = document.getElementById('profileCardFace') || eoiForm;
+  if (!scroller) return;
   ensureMobileFormCue();
   if (!eoiScrollCue) return;
-  var canScroll = eoiForm.scrollHeight > eoiForm.clientHeight + 12;
-  var nearBottom = eoiForm.scrollTop + eoiForm.clientHeight >= eoiForm.scrollHeight - 18;
+  var canScroll = scroller.scrollHeight > scroller.clientHeight + 12;
+  var nearBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 18;
   eoiScrollCue.classList.toggle('is-visible', canScroll && !nearBottom);
 }
 
 if (eoiForm) {
   eoiForm.addEventListener('scroll', updateMobileFormCue, { passive: true });
+}
+var profileCardFaceNode = document.getElementById('profileCardFace');
+if (profileCardFaceNode) {
+  profileCardFaceNode.addEventListener('scroll', updateMobileFormCue, { passive: true });
 }
 
 window.addEventListener('resize', function() {
@@ -5571,90 +5858,141 @@ window.addEventListener('resize', function() {
 eoiForm.addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  if (eoiSubmitBtn.disabled) return;
-
   var firstName = document.getElementById('eoiFirstName').value.trim();
   var lastName = document.getElementById('eoiLastName').value.trim();
   var email = document.getElementById('eoiEmail').value.trim();
-  var phone = document.getElementById('eoiPhone').value.trim();
+  var phone = document.getElementById('eoiPhone') ? document.getElementById('eoiPhone').value.trim() : '';
   var role = eoiRoleSelect.value;
-  var why = eoiWhy.value.trim();
-  var website = document.getElementById('eoiWebsite');
-  var stateInfo = STATE_DATA[currentActiveStateId] || { name: 'Australia', formTitle: 'RFDS' };
+  var stateInfo = STATE_DATA[currentActiveStateId] || { name: 'Australia', formTitle: 'RFDS', blurb: '', formEmailTo: 'stories@flyingdoctor.net' };
+  var formEmailTo = stateInfo.formEmailTo || 'stories@flyingdoctor.net';
+  var sectionName = eoiSelectedSection ? eoiSelectedSection.value : stateInfo.formTitle;
 
-  if (!firstName || !lastName || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !role) {
+  if (!firstName || !lastName || !email || email.indexOf('@') === -1 || !role) {
     formError.textContent = 'Please complete your name, email address and preferred role.';
     formError.style.display = 'block';
     return;
   }
+  formError.style.display = 'none';
 
-  var whyWords = why.split(/\s+/).filter(Boolean);
-  if (whyWords.length > 100) {
-    formError.textContent = 'Please keep your response to 100 words or fewer.';
-    formError.style.display = 'block';
-    return;
+  // Elements
+  var eoiInputsGroup = document.getElementById('eoiInputsGroup');
+  var eoiCapturedPanel = document.getElementById('eoiCapturedPanel');
+  var capName = document.getElementById('capName');
+  var capEmail = document.getElementById('capEmail');
+  var capPhone = document.getElementById('capPhone');
+  var capRole = document.getElementById('capRole');
+  var capSection = document.getElementById('capSection');
+  var capRecipient = document.getElementById('capRecipient');
+  var capRecipientText = document.getElementById('capRecipientText');
+  var sendEoiBtn = document.getElementById('sendEoiBtn');
+  var editEoiBtn = document.getElementById('editEoiBtn');
+
+  // Populate captured information
+  if (capName) capName.textContent = firstName + ' ' + lastName;
+  if (capEmail) capEmail.textContent = email;
+  if (capPhone) capPhone.textContent = phone || 'Not provided';
+  if (capRole) capRole.textContent = role;
+  if (capSection) capSection.textContent = sectionName + ' (' + (stateInfo.name || currentActiveStateId) + ')';
+  if (capRecipient) capRecipient.textContent = formEmailTo;
+  if (capRecipientText) capRecipientText.textContent = formEmailTo;
+
+  // Build the mailto URI for their email client
+  function buildMailtoUrl(refId) {
+    var subject = encodeURIComponent('[RFDS Careers EOI] ' + role + ' - ' + firstName + ' ' + lastName);
+    var bodyLines = [
+      'Royal Flying Doctor Service — Expression of Interest',
+      '===================================================',
+      '',
+      'Dear RFDS Recruitment & Careers Team,',
+      '',
+      'I am submitting my Expression of Interest to join the Royal Flying Doctor Service with the following details:',
+      '',
+      '• Candidate: ' + firstName + ' ' + lastName,
+      '• Email: ' + email,
+      '• Contact Phone: ' + (phone || 'Not provided'),
+      '• Preferred Role: ' + role,
+      '• RFDS Section / State: ' + sectionName + ' (' + (stateInfo.name || currentActiveStateId) + ')',
+      '• Target Recipient: ' + formEmailTo,
+      (refId ? '• Application Ref: ' + refId : ''),
+      '',
+      'I look forward to discussing career and service opportunities with the Flying Doctor.',
+      '',
+      'Kind regards,',
+      firstName + ' ' + lastName,
+      email + (phone ? ' | ' + phone : '')
+    ].filter(function(line) { return line !== undefined; }).join('\n');
+
+    return 'mailto:' + formEmailTo + '?subject=' + subject + '&body=' + encodeURIComponent(bodyLines);
   }
 
-  formError.style.display = 'none';
-  eoiSubmitBtn.disabled = true;
-  eoiSubmitBtn.innerHTML = '<span>Sending your details…</span>';
+  var currentMailtoUrl = buildMailtoUrl();
 
+  if (sendEoiBtn) {
+    sendEoiBtn.setAttribute('href', currentMailtoUrl);
+    sendEoiBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg><span>Send your EOI</span>';
+    
+    sendEoiBtn.onclick = function(evt) {
+      var targetUrl = sendEoiBtn.getAttribute('href') || currentMailtoUrl;
+      window.location.href = targetUrl;
+      sendEoiBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Email app opened · Ready to send</span>';
+    };
+  }
+
+  if (editEoiBtn) {
+    editEoiBtn.onclick = function() {
+      if (eoiCapturedPanel) eoiCapturedPanel.style.display = 'none';
+      if (eoiInputsGroup) eoiInputsGroup.style.display = 'block';
+      if (eoiSubmitBtn) {
+        eoiSubmitBtn.disabled = false;
+        eoiSubmitBtn.innerHTML = '<span>Review & re-populate EOI</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>';
+      }
+      if (typeof updateMobileFormCue === 'function') updateMobileFormCue();
+    };
+  }
+
+  // Display populated captured information card & hide inputs
+  if (eoiInputsGroup) eoiInputsGroup.style.display = 'none';
+  if (eoiCapturedPanel) {
+    eoiCapturedPanel.style.display = 'block';
+    eoiCapturedPanel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  if (typeof updateMobileFormCue === 'function') updateMobileFormCue();
+
+  // Concurrently persist to server API (/api/eoi) to log the record and attempt direct SMTP dispatch
   try {
-    // FormSubmit handles the email delivery directly, so this static build no longer
-    // depends on a same-origin /api/eoi serverless function or a verified sender domain.
-    // The regional recipient remains controlled by STATE_DATA.formEmailTo.
-    var recipient = stateInfo.formEmailTo || stateInfo.recruiterEmail;
-    if (!recipient || recipient.indexOf('REPLACE_WITH_') === 0) {
-      throw new Error('This section is not yet configured for enquiries. Please try another section.');
-    }
-
-    // Keep the existing honeypot client-side only; FormSubmit treats _honey specially.
-    var honey = website ? website.value.trim() : '';
-    if (honey) {
-      throw new Error('We could not send your details. Please try again.');
-    }
-
-    var response = await fetch('https://formsubmit.co/ajax/' + recipient, {
+    fetch('/api/eoi', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         firstName: firstName,
         lastName: lastName,
         email: email,
         phone: phone,
         role: role,
-        why: why,
-        state: stateInfo.name,
         stateId: currentActiveStateId,
-        _subject: 'RFDS Careers — ' + stateInfo.name + ' expression of interest',
-        _replyto: email,
-        _template: 'table',
-        _honey: honey
+        sectionName: sectionName,
+        recipientEmail: formEmailTo
       })
+    }).then(function(response) {
+      return response.json();
+    }).then(function(result) {
+      if (result && result.submissionId) {
+        var refreshedUrl = buildMailtoUrl(result.submissionId);
+        if (sendEoiBtn) {
+          sendEoiBtn.setAttribute('href', refreshedUrl);
+          sendEoiBtn.onclick = function() {
+            window.location.href = refreshedUrl;
+            sendEoiBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Email app opened · Ready to send</span>';
+          };
+        }
+      }
+    }).catch(function(syncErr) {
+      console.warn('Background sync note:', syncErr);
     });
-
-    var result = await response.json().catch(function() { return {}; });
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || result.error || 'We could not send your details. Please try again.');
-    }
-
-    eoiSubmitBtn.innerHTML = '<span>Interest received</span>';
-    var existingNotice = eoiForm.querySelector('.form-success-inline');
-    if (!existingNotice) {
-      existingNotice = document.createElement('div');
-      existingNotice.className = 'form-success-inline';
-      existingNotice.setAttribute('role', 'status');
-      existingNotice.innerHTML = '<strong>Thanks — we have your details.</strong><span>We will be in contact to discuss taking your career further.</span>';
-      eoiForm.insertBefore(existingNotice, eoiSubmitBtn);
-    }
-    existingNotice.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  } catch (error) {
-    console.error('EOI submission failed', error);
-    eoiSubmitBtn.disabled = false;
-    eoiSubmitBtn.innerHTML = '<span>Try again</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>';
-    formError.textContent = error && error.message ? error.message : 'We could not send your details. Please try again.';
-    formError.style.display = 'block';
+  } catch (ex) {
+    console.warn('API fetch attempt:', ex);
   }
 });
 
@@ -5665,21 +6003,9 @@ function closeModal() {
   if (!liveMapOverlay || !liveMapOverlay.classList.contains('open')) document.body.classList.remove('rfds-overlay-open');
 }
 
-modalCloseBtnFront.addEventListener('click', closeModal);
-modalCloseBtnBack.addEventListener('click', closeModal);
+if (modalCloseBtnFront) modalCloseBtnFront.addEventListener('click', closeModal);
 if (stateModal) stateModal.addEventListener('click', function(e) {
   if (e.target === stateModal) closeModal();
-});
-successCloseBtn.addEventListener('click', function() {
-  flipCard.classList.add('flipped');
-  var eoiFormNode = document.getElementById('eoiForm');
-  if (eoiFormNode) {
-    window.setTimeout(function() {
-      eoiFormNode.scrollTop = 0;
-      var firstField = document.getElementById('eoiFirstName');
-      if (firstField) firstField.focus({ preventScroll:true });
-    }, 420);
-  }
 });
 
 document.addEventListener('keydown', function(e) {

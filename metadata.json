@@ -1,0 +1,6 @@
+{
+  "name": "RFDS Careers Scrolly",
+  "description": "RFDS Careers standalone application shell scrollytelling experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,29 +1,18 @@
-const express = require('express');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 const nodemailer = require('nodemailer');
 
-const app = express();
-const PORT = 3000;
+// On Vercel serverless, root fs is read-only so use /tmp, otherwise use current working dir
+const DATA_FILE = path.join(process.env.VERCEL ? '/tmp' : process.cwd(), 'submissions.json');
 
-// Parse JSON and URL-encoded request bodies
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Submissions persistence path
-const DATA_FILE = path.join(__dirname, 'submissions.json');
-
-// Ensure submissions file exists and load entries
 function loadSubmissions() {
   try {
     if (!fs.existsSync(DATA_FILE)) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2), 'utf8');
       return [];
     }
     const raw = fs.readFileSync(DATA_FILE, 'utf8');
     return JSON.parse(raw) || [];
   } catch (err) {
-    console.error('Error loading submissions:', err);
     return [];
   }
 }
@@ -31,16 +20,14 @@ function loadSubmissions() {
 function saveSubmission(item) {
   try {
     const list = loadSubmissions();
-    list.unshift(item); // Newest first
+    list.unshift(item);
     fs.writeFileSync(DATA_FILE, JSON.stringify(list, null, 2), 'utf8');
     return true;
   } catch (err) {
-    console.error('Error saving submission:', err);
     return false;
   }
 }
 
-// Lazy initialization of nodemailer transporter
 function getEmailTransporter() {
   const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
@@ -59,8 +46,32 @@ function getEmailTransporter() {
   return null;
 }
 
-// API endpoint: submit an Expression of Interest (EOI)
-app.post('/api/eoi', async (req, res) => {
+module.exports = async (req, res) => {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  if (req.method === 'GET') {
+    const list = loadSubmissions();
+    return res.status(200).json({
+      total: list.length,
+      targetRecipient: process.env.NOTIFICATION_EMAIL || 'stories@flyingdoctor.net',
+      smtpConfigured: !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
+      submissions: list
+    });
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ success: false, error: 'Method Not Allowed' });
+  }
+
   try {
     const {
       firstName,
@@ -73,7 +84,6 @@ app.post('/api/eoi', async (req, res) => {
       recipientEmail
     } = req.body || {};
 
-    // Input Validation
     if (!firstName || !lastName || !email || !role) {
       return res.status(400).json({
         success: false,
@@ -117,7 +127,6 @@ app.post('/api/eoi', async (req, res) => {
       }
     };
 
-    // Attempt email dispatch via SMTP if configured in environment
     const transporter = getEmailTransporter();
     let emailSent = false;
     let emailStatusMessage = '';
@@ -195,25 +204,16 @@ app.post('/api/eoi', async (req, res) => {
         submissionRecord.emailDelivery.sent = true;
         submissionRecord.emailDelivery.info = sendResult.messageId || 'Sent';
         emailStatusMessage = `Email dispatched to ${targetEmail}`;
-        console.log(`[EOI] Email successfully dispatched to ${targetEmail} for ${submissionRecord.firstName} ${submissionRecord.lastName}`);
+        console.log(`[EOI] Email successfully dispatched to ${targetEmail}`);
       } catch (mailErr) {
-        console.error(`[EOI] SMTP send error to ${targetEmail}:`, mailErr.message);
+        console.error(`[EOI] SMTP send error:`, mailErr.message);
         submissionRecord.emailDelivery.error = mailErr.message;
         emailStatusMessage = `SMTP notice: ${mailErr.message}`;
       }
     } else {
-      emailStatusMessage = `Saved to secure submissions log. (SMTP not configured)`;
-      console.log(`[EOI Captured] Stored submission for ${targetEmail}:`, {
-        candidate: `${submissionRecord.firstName} ${submissionRecord.lastName}`,
-        email: submissionRecord.email,
-        phone: submissionRecord.phone,
-        role: submissionRecord.role,
-        section: submissionRecord.sectionName,
-        note: 'Configure SMTP_HOST, SMTP_USER, and SMTP_PASS in Settings to send live email.'
-      });
+      emailStatusMessage = `Captured successfully. (SMTP credentials not set)`;
     }
 
-    // Persist to submissions.json
     saveSubmission(submissionRecord);
 
     return res.status(200).json({
@@ -229,42 +229,10 @@ app.post('/api/eoi', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error processing /api/eoi submission:', error);
+    console.error('Error processing EOI:', error);
     return res.status(500).json({
       success: false,
       error: 'An internal error occurred while processing your expression of interest.'
     });
   }
-});
-
-// Endpoint to view captured submissions
-app.get('/api/eoi', (req, res) => {
-  const list = loadSubmissions();
-  res.json({
-    total: list.length,
-    targetRecipient: process.env.NOTIFICATION_EMAIL || 'stories@flyingdoctor.net',
-    smtpConfigured: !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
-    submissions: list
-  });
-});
-
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(__dirname));
-
-// Fallback to index.html
-app.get('*', (req, res) => {
-  if (fs.existsSync(path.join(__dirname, 'public', 'index.html'))) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  } else {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  }
-});
-
-if (require.main === module) {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
-
-module.exports = app;
+};

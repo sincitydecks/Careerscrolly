@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interaction Concepts - RFDS</title>
+  <style>
+    :root {
+      --rfds-navy: #00205b;
+      --rfds-orange: #f05b22;
+      --bg: #e2e8f0;
+      --surface: #ffffff;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+    
+    .presentation-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 375px;
+    }
+    
+    .concept-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--rfds-navy);
+      margin-bottom: 8px;
+    }
+    
+    .concept-desc {
+      font-size: 14px;
+      color: #64748b;
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Device Frame */
+    .device {
+      width: 375px;
+      height: 750px;
+      background: #f8fafc;
+      border-radius: 40px;
+      border: 8px solid #cbd5e1;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      background-image: url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=375&h=750&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Overlay / Sheet System */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+    }
+
+    .sheet {
+      background: var(--surface);
+      border-radius: 28px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    /* Concept 1: The Spatial Slide */
+    .slide-track {
+      display: flex;
+      width: 200%;
+      transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+      align-items: flex-start;
+    }
+    .slide-panel {
+      width: 50%;
+      padding: 32px 24px;
+      flex-shrink: 0;
+    }
+
+    /* Concept 2: The Morph */
+    .morph-sheet {
+      padding: 32px 24px;
+      transition: all 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+      position: relative;
+    }
+    .morph-content {
+      transition: opacity 0.3s ease, transform 0.4s ease;
+    }
+    .morph-form-content {
+      position: absolute;
+      top: 32px;
+      left: 24px;
+      right: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+    }
+    
+    /* Active States */
+    .slide-track.active {
+      transform: translateX(-50%);
+    }
+    
+    .morph-sheet.active .morph-content {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-20px);
+    }
+    .morph-sheet.active .morph-form-content {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+      position: relative;
+      top: 0; left: 0; right: 0;
+    }
+
+    /* Typography & Elements inside sheets */
+    h2 {
+      margin: 0 0 12px 0;
+      font-size: 28px;
+      color: var(--rfds-navy);
+      letter-spacing: -0.02em;
+    }
+    
+    .subtitle {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #f05b22;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    p {
+      margin: 0 0 24px 0;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      width: 100%;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--rfds-navy);
+      color: white;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    .btn.primary {
+      background: var(--rfds-orange);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 24px;
+      cursor: pointer;
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      height: 56px;
+      background: #f1f5f9;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 0 16px;
+      font-size: 16px;
+      color: #0f172a;
+      transition: all 0.2s;
+    }
+    .form-input:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: var(--rfds-navy);
+    }
+    
+    .stagger-1 { transition-delay: 0.1s !important; }
+    .stagger-2 { transition-delay: 0.15s !important; }
+    .stagger-3 { transition-delay: 0.2s !important; }
+    
+    /* Reset buttons */
+    .reset-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONCEPT 1: SPATIAL SLIDE -->
+  <div class="presentation-column">
+    <div class="concept-title">Idea 1: The Spatial Slide</div>
+    <div class="concept-desc">Uses horizontal space. It feels like moving through a physical app. Highly reliable for scrolling on iOS.</div>
+    
+    <div class="device">
+      <button class="reset-btn" onclick="resetSlide()">Restart Demo</button>
+      <div class="overlay">
+        <div class="sheet">
+          <div class="slide-track" id="slideTrack">
+            <!-- Card 1: Blurb -->
+            <div class="slide-panel">
+              <span class="subtitle">You selected</span>
+              <h2>RFDS SA/NT</h2>
+              <p>We’re a lifeline for South Australians and Territorians, delivering emergency aeromedical and essential primary health care. From life-saving evacuations to fly-in clinics, we bring care to the most isolated corners.</p>
+              <button class="btn" onclick="document.getElementById('slideTrack').classList.add('active')">
+                Go further in SA / NT &rarr;
+              </button>
+            </div>
+            
+            <!-- Card 2: Form -->
+            <div class="slide-panel">
+              <div class="back-link" onclick="document.getElementById('slideTrack').classList.remove('active')">
+                &larr; Back to SA / NT
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input class="form-input" placeholder="e.g. Sarah Mitchell" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input class="form-input" placeholder="sarah@example.com" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone (Optional)</label>
+                <input class="form-input" placeholder="0400 000 000" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Preferred Role</label>
+                <input class="form-input" placeholder="Select a role..." />
+              </div>
+              
+              <button class="btn primary" style="margin-top: 8px;">
+                Express Your Interest
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- CONCEPT 2: THE MORPH -->
+  <div class="presentation-column">
+    <div class="concept-title">Idea 2: The Morph</div>
+    <div class="concept-desc">Focuses completely on the center of the screen. Zero lateral movement. Feels incredibly premium and calm.</div>
+    
+    <div class="device">
+      <button class="reset-btn" onclick="resetMorph()">Restart Demo</button>
+      <div class="overlay">
+        <div class="sheet morph-sheet" id="morphSheet">
+          
+          <!-- Card 1 Content (Fades out) -->
+          <div class="morph-content">
+            <span class="subtitle">You selected</span>
+            <h2>RFDS SA/NT</h2>
+            <p>We’re a lifeline for South Australians and Territorians, delivering emergency aeromedical and essential primary health care. From life-saving evacuations to fly-in clinics, we bring care to the most isolated corners.</p>
+            <button class="btn" onclick="triggerMorph()">
+              Go further in SA / NT &rarr;
+            </button>
+          </div>
+
+          <!-- Card 2 Content (Fades in) -->
+          <div class="morph-form-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+              <h2 style="margin: 0; font-size: 24px;">Your Details</h2>
+              <div class="back-link" style="margin: 0;" onclick="resetMorph()">Cancel</div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input class="form-input" placeholder="e.g. Sarah Mitchell" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input class="form-input" placeholder="sarah@example.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone (Optional)</label>
+              <input class="form-input" placeholder="0400 000 000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Preferred Role</label>
+              <input class="form-input" placeholder="Select a role..." />
+            </div>
+            
+            <button class="btn primary" style="margin-top: 8px;">
+              Express Your Interest
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function resetSlide() {
+      document.getElementById('slideTrack').classList.remove('active');
+    }
+
+    function triggerMorph() {
+      const sheet = document.getElementById('morphSheet');
+      // Set fixed heights briefly for smooth animation if needed, 
+      // but CSS takes care of it natively if we just toggle the class!
+      sheet.classList.add('active');
+    }
+
+    function resetMorph() {
+      document.getElementById('morphSheet').classList.remove('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+-e /* CSS REQUIRED FOR SPATIAL SLIDE */
+.slide-viewport {
+  width: 100%;
+  overflow-x: hidden;
+  flex: 0 0 auto;
+}
+.slide-track {
+  display: flex;
+  width: 200%;
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  align-items: flex-start;
+}
+.slide-track.active {
+  transform: translateX(-50%);
+}
+.slide-panel {
+  width: 50%;
+  flex-shrink: 0;
+  padding-bottom: 32px;
+}
+.spatial-cta-btn {
+  width: 100%;
+  height: 56px;
+  border-radius: 16px;
+  background: #f05b22;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s, background 0.2s;
+  margin-top: 16px;
+}
+.spatial-cta-btn:active {
+  transform: scale(0.98);
+}
+.spatial-cta-btn:hover {
+  background: #d04a1a;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.back-link:hover {
+  color: #0f172a;
+}
+<div class="flip-card-inner" id="flipCardInner">
+
+<!-- Consolidated Single-Face Profile Card -->
+<div class="flip-card-front eoi-form-face" id="profileCardFace">
+<button type="button" class="modal-close-btn" id="modalCloseBtnFront" aria-label="Close profile">&times;</button>
+
+<div class="slide-viewport" style="width: 100%; overflow-x: hidden; flex: 0 0 auto;">
+<div class="slide-track" id="eoiSlideTrack">
+<!-- Slide 1: Blurb -->
+<div class="slide-panel">
+<span class="section-meta-kicker" id="formSectionLabel">RFDS · SA/NT</span>
+<div class="profile-card-overview" style="margin-bottom: 32px;">
+<span class="profile-card-title" id="selectionSectionLabel" style="font-size: 28px; line-height: 1.1; margin-bottom: 16px; display: block;">RFDS SA/NT</span>
+<p class="profile-card-blurb" id="successSectionBlurb" style="font-size: 16px; line-height: 1.6; color: #475569;">We’re a lifeline for South Australians and Territorians, delivering emergency aeromedical and essential primary health care.</p>
+</div>
+<button type="button" class="spatial-cta-btn" id="spatialGoFurtherBtn">Go further in SA/NT &rarr;</button>
+</div>
+
+<!-- Slide 2: Form & Success -->
+<div class="slide-panel">
+<div class="back-link" id="spatialBackBtn" style="margin-bottom: 16px;">&larr; Back to SA/NT</div>
+<div class="profile-card-divider" style="margin-bottom: 16px;">
+<span>Join our talent community</span>
+</div>
+
+<form id="eoiForm" onsubmit="return false;">
+<input type="hidden" id="eoiSelectedSection" value="SA / NT" />
+
+<div id="eoiInputsGroup">
+<div class="form-row">
+<div class="form-group" style="width: 100%;">
+<label class="form-label" for="eoiFullName">Full Name <span class="req">*</span></label>
+<input type="text" id="eoiFullName" class="form-input" placeholder="e.g. Sarah Mitchell" required />
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label class="form-label" for="eoiEmail">Email Address <span class="req">*</span></label>
+<input type="email" id="eoiEmail" class="form-input" placeholder="sarah@example.com.au" required />
+</div>
+<div class="form-group">
+<label class="form-label" for="eoiPhone">Contact Phone</label>
+<input type="tel" id="eoiPhone" class="form-input" placeholder="0400 000 000" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="form-label" for="eoiRoleSelect">Preferred Role <span class="req">*</span></label>
+<select id="eoiRoleSelect" class="form-select" required>
+<option value="" disabled selected>Select a preferred role</option>
+<option value="Flight Nurse / Midwife">Flight Nurse / Midwife</option>
+<option value="Pilot">Pilot</option>
+<option value="Retrieval Specialist / Rural Generalist">Retrieval Specialist / Rural Generalist</option>
+<option value="Oral Health">Oral Health</option>
+<option value="Mental Health">Mental Health</option>
+<option value="Engineering">Engineering</option>
+<option value="Operations &amp; Logistics">Operations &amp; Logistics</option>
+<option value="Paramedic">Paramedic</option>
+<option value="Administration / Corporate">Administration / Corporate</option>
+<option value="Primary Health">Primary Health</option>
+<option value="Allied Health">Allied Health</option>
+</select>
+</div>
+
+<div class="form-error" id="formError" style="display: none;">Please complete your name, email address and preferred role.</div>
+
+<button type="submit" class="drawer-primary-btn" id="eoiSubmitBtn">
+<span>EXPRESS YOUR INTEREST</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</button>
+</div>
+
+<!-- Captured Information Display & Direct Send EOI Button -->
+<div id="eoiCapturedPanel" class="eoi-captured-panel">
+<div class="eoi-captured-header" style="background-color: rgba(16, 185, 129, 0.1); color: #047857; border-color: #10b981;">
+<span class="eoi-captured-badge" style="background-color: #10b981; color: white;">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+EOI Submitted Successfully
+</span>
+</div>
+
+<div class="eoi-captured-grid">
+<div class="eoi-captured-row">
+<span class="eoi-captured-label">Candidate Name</span>
+<span class="eoi-captured-value" id="capName">—</span>
+</div>
+<div class="eoi-captured-row">
+<span class="eoi-captured-label">Email Address</span>
+<span class="eoi-captured-value" id="capEmail">—</span>
+</div>
+<div class="eoi-captured-row">
+<span class="eoi-captured-label">Contact Phone</span>
+<span class="eoi-captured-value" id="capPhone">—</span>
+</div>
+<div class="eoi-captured-row">
+<span class="eoi-captured-label">Preferred Role</span>
+<span class="eoi-captured-value role-tag" id="capRole">—</span>
+</div>
+<div class="eoi-captured-row" style="grid-column: 1 / -1;">
+<span class="eoi-captured-label">RFDS Section / Region</span>
+<span class="eoi-captured-value" id="capSection">—</span>
+</div>
+</div>
+
+<p class="eoi-send-hint" style="margin-top: 24px; color: #047857; font-weight: 500; font-size: 15px;">Thank you! Your expression of interest has been securely submitted to the RFDS recruitment team.</p>
+
+<div style="text-align: center; margin-top: 16px;">
+<button type="button" id="editEoiBtn" class="eoi-edit-link">
+<span>Submit another EOI</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+if (window.innerWidth <= 900 && e.pointerType === 'touch') {
+setTouchedSection(path, e.clientX, e.clientY);
+}
+}, { passive: true });
+path.addEventListener('pointerup', function() {
+if (window.innerWidth <= 900) {
+window.setTimeout(clearStateTouchFeedback, 520);
+}
+}, { passive: true });
+path.addEventListener('pointercancel', clearStateTouchFeedback, { passive: true });
+});
+
+// Spatial Slide logic
+var spatialGoFurtherBtn = document.getElementById('spatialGoFurtherBtn');
+var spatialBackBtn = document.getElementById('spatialBackBtn');
+var eoiSlideTrack = document.getElementById('eoiSlideTrack');
+
+if (spatialGoFurtherBtn && eoiSlideTrack) {
+spatialGoFurtherBtn.addEventListener('click', function() {
+eoiSlideTrack.classList.add('active');
+});
+  5760	  }
+  5761	  if (stateModal) {
+  5762	    stateModal.scrollTop = 0;
+  5763	  }
+  5764	
+  5765	  var selectionSectionLabel = document.getElementById('selectionSectionLabel');
+  5766	  if (selectionSectionLabel) selectionSectionLabel.textContent = 'RFDS ' + data.formTitle;
+  5767	  if (successSectionBlurb) successSectionBlurb.textContent = data.blurb;
+  5768	  
+  5769	  var spatialGoFurtherBtn = document.getElementById('spatialGoFurtherBtn');
+  5770	  if (spatialGoFurtherBtn) spatialGoFurtherBtn.innerHTML = 'Go further in ' + (data.acronym || data.formTitle) + ' &rarr;';
+  5771	  
+  5772	  var spatialBackBtn = document.getElementById('spatialBackBtn');
+  5773	  if (spatialBackBtn) spatialBackBtn.innerHTML = '&larr; Back to ' + (data.acronym || data.formTitle);
+  5774	  
+  5775	  var eoiSlideTrack = document.getElementById('eoiSlideTrack');
+  5776	  if (eoiSlideTrack) eoiSlideTrack.classList.remove('active');
+  5777	
+  5778	  stateModal.classList.add('open');
+  5779	  document.getElementById('rfds-app').classList.add('drawer-open');
+  5780	  document.body.classList.add('rfds-overlay-open');
+-e var spatialBackBtn = document.getElementById('spatialBackBtn');
+if (spatialBackBtn && eoiSlideTrack) {
+  spatialBackBtn.addEventListener('click', function() {
+    eoiSlideTrack.classList.remove('active');
+  });
+}

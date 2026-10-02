@@ -1,0 +1,112 @@
+<!-- SPATIAL SLIDE HTML STRUCTURE (Place inside flip-card-front) -->
+<div class="slide-viewport" style="width: 100%; overflow-x: hidden; flex: 0 0 auto;">
+  <div class="slide-track" id="eoiSlideTrack">
+    <!-- Slide 1: Blurb -->
+    <div class="slide-panel">
+      <span class="section-meta-kicker" id="formSectionLabel">RFDS · SA/NT</span>
+      <div class="profile-card-overview" style="margin-bottom: 32px;">
+        <span class="profile-card-title" id="selectionSectionLabel" style="font-size: 28px; line-height: 1.1; margin-bottom: 16px; display: block;">RFDS SA/NT</span>
+        <p class="profile-card-blurb" id="successSectionBlurb" style="font-size: 16px; line-height: 1.6; color: #475569;">We’re a lifeline for South Australians and Territorians, delivering emergency aeromedical and essential primary health care.</p>
+      </div>
+      <button type="button" class="spatial-cta-btn" id="spatialGoFurtherBtn">Go further in SA/NT &rarr;</button>
+    </div>
+
+    <!-- Slide 2: Form & Success -->
+    <div class="slide-panel">
+      <div class="back-link" id="spatialBackBtn" style="margin-bottom: 16px;">&larr; Back to SA/NT</div>
+      <div class="profile-card-divider" style="margin-bottom: 16px;">
+        <span>Join our talent community</span>
+      </div>
+      
+      <!-- Existing eoiForm goes here -->
+      <form id="eoiForm" onsubmit="return false;">
+        <!-- ... form inputs ... -->
+      </form>
+    </div>
+  </div>
+</div>
+
+/* SPATIAL SLIDE CSS */
+.slide-viewport {
+  width: 100%;
+  overflow-x: hidden;
+  flex: 0 0 auto;
+}
+.slide-track {
+  display: flex;
+  width: 200%;
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  align-items: flex-start;
+}
+.slide-track.active {
+  transform: translateX(-50%);
+}
+.slide-panel {
+  width: 50%;
+  flex-shrink: 0;
+  padding-bottom: 32px;
+}
+.spatial-cta-btn {
+  width: 100%;
+  height: 56px;
+  border-radius: 16px;
+  background: #f05b22;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s, background 0.2s;
+  margin-top: 16px;
+}
+.spatial-cta-btn:active {
+  transform: scale(0.98);
+}
+.spatial-cta-btn:hover {
+  background: #d04a1a;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.back-link:hover {
+  color: #0f172a;
+}
+
+/* SPATIAL SLIDE JAVASCRIPT (Place near the end of your script) */
+var spatialGoFurtherBtn = document.getElementById('spatialGoFurtherBtn');
+var spatialBackBtn = document.getElementById('spatialBackBtn');
+var eoiSlideTrack = document.getElementById('eoiSlideTrack');
+
+if (spatialGoFurtherBtn && eoiSlideTrack) {
+  spatialGoFurtherBtn.addEventListener('click', function() {
+    eoiSlideTrack.classList.add('active');
+  });
+}
+
+if (spatialBackBtn && eoiSlideTrack) {
+  spatialBackBtn.addEventListener('click', function() {
+    eoiSlideTrack.classList.remove('active');
+  });
+}
+
+/* Add this to your existing openModal function to reset the slide state and update button text */
+var spatialGoFurtherBtn = document.getElementById('spatialGoFurtherBtn');
+if (spatialGoFurtherBtn) spatialGoFurtherBtn.innerHTML = 'Go further in ' + (data.acronym || data.formTitle) + ' &rarr;';
+
+var spatialBackBtn = document.getElementById('spatialBackBtn');
+if (spatialBackBtn) spatialBackBtn.innerHTML = '&larr; Back to ' + (data.acronym || data.formTitle);
+
+var eoiSlideTrack = document.getElementById('eoiSlideTrack');
+if (eoiSlideTrack) eoiSlideTrack.classList.remove('active');
+

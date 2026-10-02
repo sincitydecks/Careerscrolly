@@ -84,10 +84,10 @@ module.exports = async (req, res) => {
       recipientEmail
     } = req.body || {};
 
-    if (!firstName || !lastName || !email || !role) {
+    if (!firstName || !email || !role) {
       return res.status(400).json({
         success: false,
-        error: 'Please complete all required fields: first name, last name, email address, and preferred role.'
+        error: 'Please complete all required fields: full name, email address, and preferred role.'
       });
     }
 
@@ -113,7 +113,7 @@ module.exports = async (req, res) => {
       receivedAt: timestamp,
       formattedDate,
       firstName: firstName.trim(),
-      lastName: lastName.trim(),
+      lastName: (lastName || '').trim(),
       email: email.trim(),
       phone: (phone || '').trim(),
       role: role.trim(),
@@ -127,6 +127,8 @@ module.exports = async (req, res) => {
       }
     };
 
+    const fullName = submissionRecord.lastName ? `${submissionRecord.firstName} ${submissionRecord.lastName}` : submissionRecord.firstName;
+
     const transporter = getEmailTransporter();
     let emailSent = false;
     let emailStatusMessage = '';
@@ -137,11 +139,11 @@ module.exports = async (req, res) => {
         const mailOptions = {
           from: process.env.FROM_EMAIL || `"RFDS Careers Talent Portal" <${process.env.SMTP_USER}>`,
           to: targetEmail,
-          replyTo: `"${submissionRecord.firstName} ${submissionRecord.lastName}" <${submissionRecord.email}>`,
-          subject: `[RFDS Careers EOI] ${submissionRecord.role} - ${submissionRecord.firstName} ${submissionRecord.lastName} (${submissionRecord.sectionName})`,
+          replyTo: `"${fullName}" <${submissionRecord.email}>`,
+          subject: `[RFDS Careers EOI] ${submissionRecord.role} - ${fullName} (${submissionRecord.sectionName})`,
           text: `Royal Flying Doctor Service — Expression of Interest\n` +
                 `--------------------------------------------------\n` +
-                `Candidate Name: ${submissionRecord.firstName} ${submissionRecord.lastName}\n` +
+                `Candidate Name: ${fullName}\n` +
                 `Email: ${submissionRecord.email}\n` +
                 `Phone: ${submissionRecord.phone || 'Not provided'}\n` +
                 `Preferred Role: ${submissionRecord.role}\n` +
@@ -162,7 +164,7 @@ module.exports = async (req, res) => {
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px;">
                   <tr style="border-bottom: 1px solid #f1f5f9;">
                     <td style="padding: 10px 0; font-weight: 600; color: #64748b; width: 140px;">Candidate Name</td>
-                    <td style="padding: 10px 0; color: #0f172a; font-weight: 700;">${submissionRecord.firstName} ${submissionRecord.lastName}</td>
+                    <td style="padding: 10px 0; color: #0f172a; font-weight: 700;">${fullName}</td>
                   </tr>
                   <tr style="border-bottom: 1px solid #f1f5f9;">
                     <td style="padding: 10px 0; font-weight: 600; color: #64748b;">Email Address</td>
@@ -191,7 +193,7 @@ module.exports = async (req, res) => {
                 </table>
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 18px; text-align: center;">
                   <p style="margin: 0; font-size: 13px; color: #475569;">
-                    You can reply directly to this notification email to contact <strong>${submissionRecord.firstName} ${submissionRecord.lastName}</strong>.
+                    You can reply directly to this notification email to contact <strong>${fullName}</strong>.
                   </p>
                 </div>
               </div>

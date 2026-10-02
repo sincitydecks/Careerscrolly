@@ -1,0 +1,56 @@
+-e /* CSS REQUIRED FOR SPATIAL SLIDE */
+.slide-viewport {
+  width: 100%;
+  overflow-x: hidden;
+  flex: 0 0 auto;
+}
+.slide-track {
+  display: flex;
+  width: 200%;
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  align-items: flex-start;
+}
+.slide-track.active {
+  transform: translateX(-50%);
+}
+.slide-panel {
+  width: 50%;
+  flex-shrink: 0;
+  padding-bottom: 32px;
+}
+.spatial-cta-btn {
+  width: 100%;
+  height: 56px;
+  border-radius: 16px;
+  background: #f05b22;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s, background 0.2s;
+  margin-top: 16px;
+}
+.spatial-cta-btn:active {
+  transform: scale(0.98);
+}
+.spatial-cta-btn:hover {
+  background: #d04a1a;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.back-link:hover {
+  color: #0f172a;
+}

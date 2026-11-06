@@ -1,0 +1,888 @@
+[
+  {
+    "registration": "VH-8FD",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD471"
+    ]
+  },
+  {
+    "registration": "VH-8FQ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD469"
+    ]
+  },
+  {
+    "registration": "VH-AW3",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD633"
+    ]
+  },
+  {
+    "registration": "VH-FDA",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD401"
+    ]
+  },
+  {
+    "registration": "VH-FDB",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD412"
+    ]
+  },
+  {
+    "registration": "VH-FDC",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD480"
+    ]
+  },
+  {
+    "registration": "VH-FDD",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD423"
+    ]
+  },
+  {
+    "registration": "VH-FDE",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD843",
+      "FD853",
+      "FD858"
+    ]
+  },
+  {
+    "registration": "VH-FDF",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD449"
+    ]
+  },
+  {
+    "registration": "VH-FDG",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD456"
+    ]
+  },
+  {
+    "registration": "VH-FDI",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD467"
+    ]
+  },
+  {
+    "registration": "VH-FDK",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD512"
+    ]
+  },
+  {
+    "registration": "VH-FDL",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD493"
+    ]
+  },
+  {
+    "registration": "VH-FDM",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD478"
+    ]
+  },
+  {
+    "registration": "VH-FDO",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD489"
+    ]
+  },
+  {
+    "registration": "VH-FDS",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD425"
+    ]
+  },
+  {
+    "registration": "VH-FDT",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD436"
+    ]
+  },
+  {
+    "registration": "VH-FDW",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD447"
+    ]
+  },
+  {
+    "registration": "VH-FDZ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD458"
+    ]
+  },
+  {
+    "registration": "VH-FGR",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD842",
+      "FD858"
+    ]
+  },
+  {
+    "registration": "VH-FGS",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD840",
+      "FD841",
+      "FD862",
+      "FD867",
+      "FD874"
+    ]
+  },
+  {
+    "registration": "VH-FMP",
+    "family": "PC-24",
+    "type": "PC24",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD505",
+      "FD507",
+      "FD509",
+      "FD805"
+    ]
+  },
+  {
+    "registration": "VH-FNH",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD521",
+      "FD522",
+      "FD567",
+      "FD589"
+    ]
+  },
+  {
+    "registration": "VH-FNT",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FNT"
+    ]
+  },
+  {
+    "registration": "VH-FNY",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FNY"
+    ]
+  },
+  {
+    "registration": "VH-FSF",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD512",
+      "FD516",
+      "FD524",
+      "FD525",
+      "FD528",
+      "FD530",
+      "FD535",
+      "FD545",
+      "RGR"
+    ]
+  },
+  {
+    "registration": "VH-FVA",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD856",
+      "FD864",
+      "FD865",
+      "FD867",
+      "FD871",
+      "FD873",
+      "FD880",
+      "FD888"
+    ]
+  },
+  {
+    "registration": "VH-FVB",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD513",
+      "FD533",
+      "FD536",
+      "FD540",
+      "FD578",
+      "FD589"
+    ]
+  },
+  {
+    "registration": "VH-FVD",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD845",
+      "FD856",
+      "FD865",
+      "FD867",
+      "FD871",
+      "FD872",
+      "FD873",
+      "FD880"
+    ]
+  },
+  {
+    "registration": "VH-FVE",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD513",
+      "FD514",
+      "FD518",
+      "FD524",
+      "FD526",
+      "FD531",
+      "FD539",
+      "FD543",
+      "FD545",
+      "FD548",
+      "FD564",
+      "FD583"
+    ]
+  },
+  {
+    "registration": "VH-FXJ",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD526",
+      "FD529",
+      "FD541",
+      "FD576",
+      "FD581",
+      "FD582"
+    ]
+  },
+  {
+    "registration": "VH-FXN",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD516",
+      "FD526",
+      "FD539",
+      "FD540",
+      "FD548",
+      "FD549",
+      "FD583"
+    ]
+  },
+  {
+    "registration": "VH-FXW",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD524",
+      "FD525",
+      "FD527",
+      "FD529",
+      "FD532",
+      "FD533",
+      "FD535",
+      "FD536",
+      "FD539",
+      "FD568",
+      "FD576",
+      "FD581"
+    ],
+    "hex": "7C1CA2"
+  },
+  {
+    "registration": "VH-FXZ",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD519",
+      "FD532",
+      "FD533",
+      "FD536",
+      "FD540",
+      "FD581"
+    ]
+  },
+  {
+    "registration": "VH-FZQ",
+    "family": "PC-24",
+    "type": "PC24",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD804",
+      "FD805",
+      "FD807"
+    ]
+  },
+  {
+    "registration": "VH-IWO",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD627"
+    ]
+  },
+  {
+    "registration": "VH-JDN",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD513",
+      "FD516",
+      "FD526",
+      "FD533",
+      "FD539",
+      "FD540",
+      "FD548",
+      "FD564",
+      "FD568",
+      "FD572",
+      "FD589"
+    ]
+  },
+  {
+    "registration": "VH-KWO",
+    "family": "PC-24",
+    "type": "PC24",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD628J"
+    ]
+  },
+  {
+    "registration": "VH-LTQ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD212",
+      "FD234",
+      "FD236",
+      "FD243",
+      "FD244",
+      "FD271",
+      "FD284",
+      "FD287",
+      "FD292"
+    ]
+  },
+  {
+    "registration": "VH-LWO",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD629"
+    ]
+  },
+  {
+    "registration": "VH-MQD",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "AM712",
+      "AM771",
+      "AM773",
+      "AM774",
+      "AM789",
+      "AM793",
+      "AM794"
+    ]
+  },
+  {
+    "registration": "VH-MQK",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD233",
+      "FD258",
+      "FD264"
+    ]
+  },
+  {
+    "registration": "VH-MVW",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD218",
+      "FD236",
+      "FD237",
+      "FD244",
+      "FD284"
+    ]
+  },
+  {
+    "registration": "VH-MVX",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD217",
+      "FD222",
+      "FD232",
+      "FD238",
+      "FD241",
+      "FD248",
+      "FD268"
+    ]
+  },
+  {
+    "registration": "VH-MWH",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD222",
+      "FD238"
+    ]
+  },
+  {
+    "registration": "VH-MWK",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD212",
+      "FD238",
+      "FD244",
+      "FD284",
+      "FD286",
+      "FD287"
+    ]
+  },
+  {
+    "registration": "VH-NWO",
+    "family": "PC-24",
+    "type": "PC24",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD626J"
+    ]
+  },
+  {
+    "registration": "VH-OWD",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD603"
+    ]
+  },
+  {
+    "registration": "VH-OWI",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD607"
+    ]
+  },
+  {
+    "registration": "VH-OWP",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD609"
+    ]
+  },
+  {
+    "registration": "VH-OWQ",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD612"
+    ]
+  },
+  {
+    "registration": "VH-OWR",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD613"
+    ]
+  },
+  {
+    "registration": "VH-OWS",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD614"
+    ]
+  },
+  {
+    "registration": "VH-OWU",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD617"
+    ]
+  },
+  {
+    "registration": "VH-OWX",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD618"
+    ]
+  },
+  {
+    "registration": "VH-OWY",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD621"
+    ]
+  },
+  {
+    "registration": "VH-PLE",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD580",
+      "PLE",
+      "POL56"
+    ]
+  },
+  {
+    "registration": "VH-RFD",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "AM712",
+      "AM771",
+      "AM773",
+      "AM774",
+      "AM793",
+      "AM794"
+    ]
+  },
+  {
+    "registration": "VH-RHO",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "RHO"
+    ]
+  },
+  {
+    "registration": "VH-T3E",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD876"
+    ]
+  },
+  {
+    "registration": "VH-T3F",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD840",
+      "FD847",
+      "FD862",
+      "FD864",
+      "FD865",
+      "FD874",
+      "FD888"
+    ]
+  },
+  {
+    "registration": "VH-T3G",
+    "family": "PC-12",
+    "type": "PC12",
+    "section": "SA/NT",
+    "sectionFull": "Central Operations",
+    "callsigns": [
+      "FD840",
+      "FD862",
+      "FD864",
+      "FD865",
+      "FD880",
+      "FD888"
+    ]
+  },
+  {
+    "registration": "VH-VAQ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD416"
+    ]
+  },
+  {
+    "registration": "VH-VJW",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD403"
+    ]
+  },
+  {
+    "registration": "VH-VJX",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD426"
+    ]
+  },
+  {
+    "registration": "VH-VJY",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD434"
+    ]
+  },
+  {
+    "registration": "VH-VJZ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD438"
+    ]
+  },
+  {
+    "registration": "VH-VOQ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "QLD",
+    "sectionFull": "Queensland Section",
+    "callsigns": [
+      "FD405"
+    ]
+  },
+  {
+    "registration": "VH-VPQ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD214",
+      "FD227"
+    ]
+  },
+  {
+    "registration": "VH-VWO",
+    "family": "PC-24",
+    "type": "PC24",
+    "section": "WA",
+    "sectionFull": "Western Operations",
+    "callsigns": [
+      "FD624J",
+      "FD626J"
+    ]
+  },
+  {
+    "registration": "VH-XYJ",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD227",
+      "FD231",
+      "FD233",
+      "FD286"
+    ]
+  },
+  {
+    "registration": "VH-XYO",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD217",
+      "FD222",
+      "FD232",
+      "FD242",
+      "FD248"
+    ]
+  },
+  {
+    "registration": "VH-XYU",
+    "family": "King Air",
+    "type": "KINGAIR",
+    "section": "SE",
+    "sectionFull": "South Eastern Section",
+    "callsigns": [
+      "FD212",
+      "FD218",
+      "FD236",
+      "FD237",
+      "FD244",
+      "FD284",
+      "FD292"
+    ]
+  }
+]

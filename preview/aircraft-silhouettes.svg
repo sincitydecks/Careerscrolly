@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="360" viewBox="0 0 1020 360">
+<rect width="1020" height="360" fill="#f7f8fa"/>
+<style>text{font-family:Arial,sans-serif;fill:#00205b} .small{fill:#5c7388;font-size:14px} .heading{font-size:23px;font-weight:700;letter-spacing:.3px}</style>
+<rect x="20" y="16" width="320" height="328" rx="18" fill="#fff" stroke="#dce5ee"/>
+<g transform="translate(180,145) scale(6)"><circle r="15" fill="#ecf7fc"/><path d="M 0,-11.5 C 1.7,-11 1.9,-7 1.9,-3.5 L 9.2,-1.7 L 9.2,0.1 L 2.0,0.3 L 1.6,7.6 L 5,9.0 L 5,10.3 L 0,9.3 L -5,10.3 L -5,9.0 L -1.6,7.6 L -2.0,0.3 L -9.2,0.1 L -9.2,-1.7 L -1.9,-3.5 C -1.9,-7 -1.7,-11 0,-11.5 Z" fill="#fff" stroke="#00205b" stroke-width="0.85"/>
+<line x1="-4" x2="4" y1="-11.8" y2="-11.8" stroke="#00205b" stroke-width="1"/>
+</g>
+<text x="180" y="280" text-anchor="middle" class="heading">PILATUS PC-12</text>
+<text x="180" y="307" text-anchor="middle" class="small">Single nose propeller</text>
+<rect x="360" y="16" width="320" height="328" rx="18" fill="#fff" stroke="#dce5ee"/>
+<g transform="translate(520,145) scale(6)"><circle r="15" fill="#ecf7fc"/><path d="M 0,-12 C 1.7,-11.5 2.0,-7.5 2.1,-4.8 L 10.4,2.8 L 10.0,4.2 L 2.2,1.5 L 1.4,7.5 L 5.5,9.1 L 5.5,10.3 L 0,9.4 L -5.5,10.3 L -5.5,9.1 L -1.4,7.5 L -2.2,1.5 L -10.0,4.2 L -10.4,2.8 L -2.1,-4.8 C -2.0,-7.5 -1.7,-11.5 0,-12 Z" fill="#fff" stroke="#00205b" stroke-width="0.85"/>
+<ellipse cx="-3.35" cy="6.2" rx="1.15" ry="3.2" fill="#fff" stroke="#00205b" stroke-width=".8"/>
+<ellipse cx="3.35" cy="6.2" rx="1.15" ry="3.2" fill="#fff" stroke="#00205b" stroke-width=".8"/>
+</g>
+<text x="520" y="280" text-anchor="middle" class="heading">PILATUS PC-24</text>
+<text x="520" y="307" text-anchor="middle" class="small">Twin rear-mounted jets</text>
+<rect x="700" y="16" width="320" height="328" rx="18" fill="#fff" stroke="#dce5ee"/>
+<g transform="translate(860,145) scale(6)"><circle r="15" fill="#ecf7fc"/><path d="M 0,-11.9 C 1.5,-11.2 1.9,-7.0 2,-4.3 L 10.1,-1.1 L 10.1,0.8 L 2.2,0.6 L 1.6,7.6 L 5.7,9.0 L 5.7,10.3 L 0,9.5 L -5.7,10.3 L -5.7,9.0 L -1.6,7.6 L -2.2,0.6 L -10.1,0.8 L -10.1,-1.1 L -2,-4.3 C -1.9,-7.0 -1.5,-11.2 0,-11.9 Z" fill="#fff" stroke="#00205b" stroke-width="0.85"/>
+<ellipse cx="-5.8" cy="-1.1" rx="1.3" ry="3.1" fill="#fff" stroke="#00205b" stroke-width=".8"/>
+<line x1="-8.35" x2="-3.25" y1="-4.1" y2="-4.1" stroke="#00205b" stroke-width=".9"/>
+<ellipse cx="5.8" cy="-1.1" rx="1.3" ry="3.1" fill="#fff" stroke="#00205b" stroke-width=".8"/>
+<line x1="3.25" x2="8.35" y1="-4.1" y2="-4.1" stroke="#00205b" stroke-width=".9"/>
+</g>
+<text x="860" y="280" text-anchor="middle" class="heading">BEECHCRAFT KING AIR</text>
+<text x="860" y="307" text-anchor="middle" class="small">Twin wing turboprops</text>
+</svg>

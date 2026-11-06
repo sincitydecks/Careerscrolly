@@ -1,127 +1,160 @@
 /**
- * Careerscrolly RFDS aircraft map — adsb.lol public ADS-B API
- * GET /api/flights
+ * RFDS live-map adapter for Careerscrolly (Vercel serverless /api/flights).
+ * Source: adsb.lol's live ADS-B API, ODbL-1.0.
+ * Data is only observed aircraft positions, never a verified mission manifest.
  *
- * All aircraft must match a registration in the supplied RFDS callsign index
- * (or a separately verified ICAO24 hex). Callsigns NEVER qualify by themselves.
- * This is a historical index and must be reconciled against the current fleet.
- * Data: adsb.lol (ODbL-1.0); arrange production access with the provider.
+ * Default: 67 aircraft with directly observed FD-series history in supplied
+ * CSV (6 November 2026). 26 candidate aircraft remain in rfds-fleet.json
+ * but are excluded unless RFDS_INCLUDE_CANDIDATES=1 is set. Check their
+ * operational status before enabling them on a public RFDS site.
+ *
+ * CONTACT adsb.lol for approved production usage and request limits.
  */
-const index = require('./rfds-aircraft-index.json');
-
+'use strict';
+const fleet = require('./rfds-fleet.json');
 const PROVIDER = 'https://api.adsb.lol';
+const INCLUDE_CANDIDATES = process.env.RFDS_INCLUDE_CANDIDATES === '1';
+const MAX_SEEN_POS_SEC = 120;
+const MAX_UPSTREAM_SNAPSHOT_AGE_SEC = 150;
 const BATCH_SIZE = 40;
-const MAX_SEEN_POSITION_SEC = 75;
-const MAX_SNAPSHOT_AGE_SEC = 90;
-const AU = { minLon:108, maxLon:156, minLat:-45, maxLat:-9 };
+const BATCH_SPACING_MS = 1100;
+const AU = {minLon: 108, maxLon: 156, minLat: -45, maxLat: -9};
 
-const byRegistration = new Map();
+function clean(x) { return String(x == null ? '' : x).trim().toUpperCase(); }
+function number(x) {
+  if (x == null || x === '' || x === 'ground') return null;
+  const v = Number(x);
+  return Number.isFinite(v) ? v : null;
+}
 const byHex = new Map();
-for (const e of index) {
-  const reg = String(e.registration || '').trim().toUpperCase();
-  if (!/^VH-[A-Z0-9]{3}$/.test(reg)) throw new Error(`Invalid fleet registration ${reg}`);
-  if (byRegistration.has(reg)) throw new Error(`Duplicate fleet registration ${reg}`);
-  const value = {...e, registration:reg, callsigns:new Set((e.callsigns || []).map(s=>String(s).trim().toUpperCase()))};
-  byRegistration.set(reg, value);
-  if (e.hex) {
-    const hex = String(e.hex).trim().toUpperCase();
-    if (!/^[A-F0-9]{6}$/.test(hex) || byHex.has(hex)) throw new Error(`Invalid/repeated hex ${hex}`);
-    value.hex = hex;
-    byHex.set(hex,value);
+const byReg = new Map();
+for (const entry of fleet) {
+  const hex = clean(entry.hex);
+  const reg = clean(entry.registration);
+  if (!/^[0-9A-F]{6}$/.test(hex) || !/^VH-[A-Z0-9]{3}$/.test(reg)) {
+    throw new Error(`Invalid ICAO24/registration: ${hex} ${reg}`);
   }
+  if (byHex.has(hex) || byReg.has(reg)) throw new Error(`Duplicate aircraft: ${hex} ${reg}`);
+  byHex.set(hex, entry); byReg.set(reg, entry);
 }
-
-function numeric(x) {
-  if (x === null || x === undefined || x === '') return null;
-  const n = Number(x);
-  return Number.isFinite(n) ? n : null;
+function approvedEntries() {
+  return fleet.filter(e => e.verifiedRecentFD || INCLUDE_CANDIDATES);
 }
-function normReg(x){return String(x||'').trim().toUpperCase().replace(/\s+/g,'');}
-function normalizeAircraft(rec, snapshotSeconds) {
-  if (!rec || typeof rec !== 'object') return null;
-  const hex = String(rec.hex||'').toUpperCase().trim();
-  const reg = normReg(rec.r || rec.registration || rec.reg);
-  const fromReg = byRegistration.get(reg);
-  const fromHex = byHex.get(hex);
-  if (fromReg && fromHex && fromReg.registration !== fromHex.registration) return null;
-  const entry = fromReg || fromHex;
+function normalizeAircraft(raw, timestamp, enabledHexes) {
+  if (!raw || typeof raw !== 'object') return null;
+  const hex = clean(raw.hex);
+  if (!enabledHexes.has(hex)) return null;
+  const entry = byHex.get(hex);
   if (!entry) return null;
-  // If an ICAO24 address has been independently verified, require agreement.
-  if (entry.hex && hex !== entry.hex) return null;
-
-  const lon = numeric(rec.lon), lat = numeric(rec.lat);
-  if (lon === null || lat === null || lon < AU.minLon || lon > AU.maxLon || lat < AU.minLat || lat > AU.maxLat) return null;
-  const seenPos = numeric(rec.seen_pos), seen = numeric(rec.seen);
-  if (seenPos === null || seenPos < 0 || seenPos > MAX_SEEN_POSITION_SEC ||
-      (seen !== null && (seen < 0 || seen > MAX_SEEN_POSITION_SEC))) return null;
-  if (String(rec.alt_baro || '').toLowerCase() === 'ground') return null;
-  const alt = numeric(rec.alt_baro) ?? numeric(rec.alt_geom);
-  const gs = numeric(rec.gs);
-  if (alt === null || alt < 150 || gs === null || gs < 45) return null;
-
-  const call = String(rec.flight || '').trim().toUpperCase();
-  const advertisedType = String(rec.t || '').trim().toUpperCase();
-  const typ = /^(PC12|PC24|BE20|B200|B350|BE30)$/.test(advertisedType) ? advertisedType : entry.type;
-  const modelName = entry.family === 'PC-12' ? 'Pilatus PC-12' :
-                    entry.family === 'PC-24' ? 'Pilatus PC-24' : 'Beechcraft King Air';
-  const heading = numeric(rec.track) ?? numeric(rec.true_heading) ?? numeric(rec.mag_heading);
+  const apiRegRaw = clean(raw.r || raw.registration || raw.reg);
+  const apiReg = /^VH[A-Z0-9]{3}$/.test(apiRegRaw.replace(/[-\s]/g,''))
+    ? 'VH-' + apiRegRaw.replace(/[-\s]/g,'').slice(2) : apiRegRaw;
+  // If the ADS-B database explicitly assigns this ICAO address to some
+  // DIFFERENT registration, do not display it under the RFDS name.
+  if (apiReg && apiReg !== entry.registration) return null;
+  const lat = number(raw.lat), lon = number(raw.lon);
+  if (lat === null || lon === null || lat < AU.minLat || lat > AU.maxLat || lon < AU.minLon || lon > AU.maxLon) return null;
+  const age = number(raw.seen_pos);
+  if (age === null || age < 0 || age > MAX_SEEN_POS_SEC) return null;
+  if (clean(raw.alt_baro) === 'GROUND') return null;
+  const altitude = number(raw.alt_baro) ?? number(raw.alt_geom);
+  const gs = number(raw.gs);
+  if (altitude === null || altitude < 100 || gs === null || gs < 40) return null;
+  const hdg = number(raw.track) ?? number(raw.true_heading) ?? number(raw.mag_heading);
+  const positionTime = timestamp - age;
+  const callsign = clean(raw.flight);
   return {
-    id:entry.registration, ident:entry.registration, registration:entry.registration,
-    hex:hex || entry.hex || null, callsign:call,
-    callsignInIndex:entry.callsigns.has(call),
-    type:typ, modelName, section:entry.section,
-    alt:Math.round(alt), speed:Math.round(gs),
-    heading: heading === null ? 0 : Math.round((heading+360)%360),
-    coord:[lon,lat], origin:'—', dest:'—', originName:'', destName:'',
-    timestamp:Math.floor(snapshotSeconds-seenPos)
+    id:entry.registration,
+    ident:entry.registration,
+    registration:entry.registration,
+    hex,
+    callsign,
+    type:entry.type,
+    family:entry.family,
+    modelName:entry.modelName,
+    section:entry.section,
+    alt:Math.round(altitude), speed:Math.round(gs),
+    heading: hdg === null ? 0 : Math.round((hdg + 360) % 360),
+    coord:[lon,lat],
+    origin:'—', dest:'—', originName:'', destName:'',
+    timestamp:Math.floor(positionTime),
+    evidenceStatus:entry.status
   };
 }
-async function fetchBatch(registrations){
-  const url = `${PROVIDER}/v2/reg/${registrations.join(',')}`;
+function snapshotSeconds(payload, nowSeconds) {
+  const raw = number(payload.now);
+  if (raw === null) return nowSeconds;
+  return raw > 1e11 ? raw / 1000 : raw;
+}
+async function fetchBatch(hexes) {
+  // The ADSBexchange-v2 compatible endpoint accepts comma-separated hex IDs.
+  const url = `${PROVIDER}/v2/hex/${hexes.join(',')}`;
   const controller = new AbortController();
-  const timeout = setTimeout(()=>controller.abort(),9000);
+  const timeout = setTimeout(() => controller.abort(), 9500);
   try {
-    const response = await fetch(url,{signal:controller.signal,headers:{Accept:'application/json'}});
-    if (!response.ok) throw new Error(`ADS-B provider error HTTP ${response.status}`);
-    const obj = await response.json();
-    if (!obj || !Array.isArray(obj.ac)) throw new Error('Unexpected ADS-B API response');
-    return obj;
+    const response = await fetch(url, {signal:controller.signal, headers:{Accept:'application/json'}});
+    if (!response.ok) throw new Error(`ADS-B upstream HTTP ${response.status}`);
+    const payload = await response.json();
+    if (!payload || !Array.isArray(payload.ac)) throw new Error('Invalid ADS-B response');
+    return payload;
   } finally { clearTimeout(timeout); }
 }
-async function fetchFlights(){
-  const regs = [...byRegistration.keys()];
-  const chunks = [];
-  for(let i=0;i<regs.length;i+=BATCH_SIZE) chunks.push(regs.slice(i,i+BATCH_SIZE));
-  // 73 registrations currently mean two requests per cache miss, not 140 callsign lookups.
-  const results = await Promise.all(chunks.map(fetchBatch));
-  const seen=new Map();
-  let latest=0;
-  for (const payload of results) {
-    const raw = numeric(payload.now);
-    const snap=raw === null ? Date.now()/1000 : raw>1e11 ? raw/1000 : raw;
-    if (snap > Date.now()/1000 + 15 || Date.now()/1000-snap > MAX_SNAPSHOT_AGE_SEC)
-      throw new Error('ADS-B snapshot is out of date');
-    latest=Math.max(latest,snap);
-    for(const ac of payload.ac){
-      const flight=normalizeAircraft(ac,snap);
-      if (flight && (!seen.has(flight.id) || seen.get(flight.id).timestamp < flight.timestamp)) seen.set(flight.id,flight);
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve,ms)); }
+async function collectFlights(entries = approvedEntries()) {
+  const enabledHexes = new Set(entries.map(e => clean(e.hex)));
+  const hexes = [...enabledHexes];
+  const batches=[];
+  for (let i=0;i<hexes.length;i+=BATCH_SIZE) batches.push(hexes.slice(i,i+BATCH_SIZE));
+  const matched=new Map();
+  const errors=[];
+  let okBatches=0;
+  for (let i=0;i<batches.length;i++) {
+    if (i) await sleep(BATCH_SPACING_MS);
+    try {
+      const payload=await fetchBatch(batches[i]);
+      const now=Date.now()/1000;
+      const timestamp=snapshotSeconds(payload,now);
+      if (timestamp > now + 30 || now-timestamp > MAX_UPSTREAM_SNAPSHOT_AGE_SEC) {
+        throw new Error('ADS-B snapshot is stale or in the future');
+      }
+      okBatches++;
+      for (const raw of payload.ac) {
+        const flight=normalizeAircraft(raw,timestamp,enabledHexes);
+        if (flight && (!matched.has(flight.id) || matched.get(flight.id).timestamp < flight.timestamp)) {
+          matched.set(flight.id,flight);
+        }
+      }
+    } catch (error) {
+      errors.push(`Batch ${i+1}: ${error.message || String(error)}`);
     }
   }
-  return [...seen.values()].sort((a,b)=>a.ident.localeCompare(b.ident));
+  if (!okBatches) throw new Error(errors.join('; ') || 'ADS-B data unavailable');
+  return {flights:[...matched.values()].sort((a,b)=>a.ident.localeCompare(b.ident)),
+    partial:errors.length>0, errors, indexed:entries.length, batches:batches.length};
 }
-async function handler(req,res){
-  if(req.method!=='GET') {res.setHeader('Allow','GET');return res.status(405).json({success:false,error:'Method not allowed'});}
-  try{
-    const flights=await fetchFlights();
-    res.setHeader('Cache-Control','public, max-age=0, s-maxage=60, must-revalidate');
+async function handler(req, res) {
+  if (req.method !== 'GET') {
+    res.setHeader('Allow','GET');
+    return res.status(405).json({success:false,error:'Method not allowed'});
+  }
+  try {
+    const {flights,partial,errors,indexed,batches}=await collectFlights();
+    const sectionsIndexed={};
+    for (const e of approvedEntries()) sectionsIndexed[e.section]=(sectionsIndexed[e.section]||0)+1;
+    const sectionsAirborne={};
+    for (const f of flights) sectionsAirborne[f.section]=(sectionsAirborne[f.section]||0)+1;
+    // Shared Vercel cache, not a per-browser/visitor upstream request.
+    res.setHeader('Cache-Control','public, max-age=0, s-maxage=60, stale-while-revalidate=30');
     return res.status(200).json({success:true,source:'adsb.lol',license:'ODbL-1.0',
-      count:flights.length,fleetRegistrationsIndexed:byRegistration.size,timestamp:Date.now(),flights});
-  }catch(err){
-    console.error('RFDS ADS-B feed error',err);
+      count:flights.length, fleetRegistrationsIndexed:indexed,
+      candidateRegistrations: fleet.length-indexed, sectionsIndexed, sectionsAirborne, upstreamBatches:batches,
+      partial, warnings:partial?errors:[], timestamp:Date.now(), flights});
+  } catch (error) {
+    console.error('RFDS live ADS-B feed failure', error);
     res.setHeader('Cache-Control','no-store');
-    return res.status(502).json({success:false,source:'adsb.lol',count:0,timestamp:Date.now(),flights:[],
-      error:'ADS-B flight positions unavailable'});
+    return res.status(502).json({success:false,source:'adsb.lol',count:0,
+      timestamp:Date.now(),flights:[],error:'ADS-B positions currently unavailable'});
   }
 }
 module.exports=handler;
-module.exports._test={normalizeAircraft,byRegistration,byHex,fetchFlights};
+module.exports._test={normalizeAircraft,approvedEntries,collectFlights,byHex};

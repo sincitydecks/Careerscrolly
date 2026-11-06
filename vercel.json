@@ -1,17 +1,8 @@
 {
   "outputDirectory": "public",
   "rewrites": [
-    {
-      "source": "/api/eoi",
-      "destination": "/api/eoi"
-    },
-    {
-      "source": "/api/flights",
-      "destination": "/api/flights"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/api/eoi", "destination": "/api/eoi" },
+    { "source": "/api/flights", "destination": "/api/flights" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

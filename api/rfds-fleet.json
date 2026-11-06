@@ -1,0 +1,1302 @@
+[
+  {
+    "registration": "VH-FDE",
+    "hex": "7C19C0",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12/45",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD843",
+      "FD853",
+      "FD858"
+    ]
+  },
+  {
+    "registration": "VH-FDJ",
+    "hex": "7C19C5",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12/47",
+    "section": "Central Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FDK",
+    "hex": "7C19C6",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12/45",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD512"
+    ]
+  },
+  {
+    "registration": "VH-FGR",
+    "hex": "7C1A39",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12/45",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD842",
+      "FD858"
+    ]
+  },
+  {
+    "registration": "VH-FGS",
+    "hex": "7C1A3A",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12/45",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD840",
+      "FD841",
+      "FD862",
+      "FD867",
+      "FD874"
+    ]
+  },
+  {
+    "registration": "VH-FGT",
+    "hex": "7C1A3B",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12/45",
+    "section": "Central Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FNH",
+    "hex": "7C1B2B",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD521",
+      "FD522",
+      "FD567",
+      "FD589"
+    ]
+  },
+  {
+    "registration": "VH-FNT",
+    "hex": "7C1B37",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_non_FD_history_only",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FNY",
+    "hex": "7C1B3C",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_non_FD_history_only",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FSF",
+    "hex": "7C1BDD",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD512",
+      "FD516",
+      "FD524",
+      "FD525",
+      "FD528",
+      "FD530",
+      "FD535",
+      "FD545"
+    ]
+  },
+  {
+    "registration": "VH-FVA",
+    "hex": "7C1C44",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD856",
+      "FD864",
+      "FD865",
+      "FD867",
+      "FD871",
+      "FD873",
+      "FD880",
+      "FD888"
+    ]
+  },
+  {
+    "registration": "VH-FVB",
+    "hex": "7C1C45",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD513",
+      "FD533",
+      "FD536",
+      "FD540",
+      "FD578",
+      "FD589"
+    ]
+  },
+  {
+    "registration": "VH-FVD",
+    "hex": "7C1C47",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD845",
+      "FD856",
+      "FD865",
+      "FD867",
+      "FD871",
+      "FD872",
+      "FD873",
+      "FD880"
+    ]
+  },
+  {
+    "registration": "VH-FVE",
+    "hex": "7C1C48",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD513",
+      "FD514",
+      "FD518",
+      "FD524",
+      "FD526",
+      "FD531",
+      "FD539",
+      "FD543",
+      "FD545",
+      "FD548",
+      "FD564",
+      "FD583"
+    ]
+  },
+  {
+    "registration": "VH-FVF",
+    "hex": "7C1C49",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FXJ",
+    "hex": "7C1C95",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD526",
+      "FD529",
+      "FD541",
+      "FD576",
+      "FD581",
+      "FD582"
+    ]
+  },
+  {
+    "registration": "VH-FXN",
+    "hex": "7C1C99",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD516",
+      "FD526",
+      "FD539",
+      "FD540",
+      "FD548",
+      "FD549",
+      "FD583"
+    ]
+  },
+  {
+    "registration": "VH-FXW",
+    "hex": "7C1CA2",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD524",
+      "FD525",
+      "FD527",
+      "FD529",
+      "FD532",
+      "FD533",
+      "FD535",
+      "FD536",
+      "FD539",
+      "FD568",
+      "FD576",
+      "FD581"
+    ]
+  },
+  {
+    "registration": "VH-FXZ",
+    "hex": "7C1CA5",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD519",
+      "FD532",
+      "FD533",
+      "FD536",
+      "FD540",
+      "FD581"
+    ]
+  },
+  {
+    "registration": "VH-JDN",
+    "hex": "7C2E09",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD513",
+      "FD516",
+      "FD526",
+      "FD533",
+      "FD539",
+      "FD540",
+      "FD548",
+      "FD564",
+      "FD568",
+      "FD572",
+      "FD589"
+    ]
+  },
+  {
+    "registration": "VH-PIU",
+    "hex": "7C4D24",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-PLE",
+    "hex": "7C4D80",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD580"
+    ]
+  },
+  {
+    "registration": "VH-RHO",
+    "hex": "7C571A",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Central Operations",
+    "status": "direct_recent_non_FD_history_only",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-T3E",
+    "hex": "7C6448",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD876"
+    ]
+  },
+  {
+    "registration": "VH-T3F",
+    "hex": "7C6449",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD840",
+      "FD847",
+      "FD862",
+      "FD864",
+      "FD865",
+      "FD874",
+      "FD888"
+    ]
+  },
+  {
+    "registration": "VH-T3G",
+    "hex": "7C644A",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD840",
+      "FD862",
+      "FD864",
+      "FD865",
+      "FD880",
+      "FD888"
+    ]
+  },
+  {
+    "registration": "VH-T3H",
+    "hex": "7C644B",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Central Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-T3I",
+    "hex": "7C644C",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Central Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FMP",
+    "hex": "7C1B0F",
+    "family": "PC-24",
+    "type": "PC24",
+    "modelName": "Pilatus PC-24",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD505",
+      "FD507",
+      "FD509",
+      "FD805"
+    ]
+  },
+  {
+    "registration": "VH-FZQ",
+    "hex": "7C1CE4",
+    "family": "PC-24",
+    "type": "PC24",
+    "modelName": "Pilatus PC-24",
+    "section": "Central Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD804",
+      "FD805",
+      "FD807"
+    ]
+  },
+  {
+    "registration": "VH-8FD",
+    "hex": "7CACD7",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 360CER",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD471"
+    ]
+  },
+  {
+    "registration": "VH-8FQ",
+    "hex": "7CACE4",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 360CER",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD469"
+    ]
+  },
+  {
+    "registration": "VH-FDA",
+    "hex": "7C19BC",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 360CER",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD401"
+    ]
+  },
+  {
+    "registration": "VH-FDB",
+    "hex": "7C19BD",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 360CER",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD412"
+    ]
+  },
+  {
+    "registration": "VH-FDC",
+    "hex": "7C19BE",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350C",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD480"
+    ]
+  },
+  {
+    "registration": "VH-FDD",
+    "hex": "7C19BF",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350C",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD423"
+    ]
+  },
+  {
+    "registration": "VH-FDF",
+    "hex": "7C19C1",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350CER",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD449"
+    ]
+  },
+  {
+    "registration": "VH-FDG",
+    "hex": "7C19C2",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD456"
+    ]
+  },
+  {
+    "registration": "VH-FDI",
+    "hex": "7C19C4",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD467"
+    ]
+  },
+  {
+    "registration": "VH-FDL",
+    "hex": "7C19C7",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD493"
+    ]
+  },
+  {
+    "registration": "VH-FDM",
+    "hex": "7C19C8",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD478"
+    ]
+  },
+  {
+    "registration": "VH-FDN",
+    "hex": "7C19C9",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350C",
+    "section": "Queensland Section",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FDO",
+    "hex": "7C19CA",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD489"
+    ]
+  },
+  {
+    "registration": "VH-FDR",
+    "hex": "7C19CD",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 360CER",
+    "section": "Queensland Section",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-FDS",
+    "hex": "7C19CE",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD425"
+    ]
+  },
+  {
+    "registration": "VH-FDT",
+    "hex": "7C19CF",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD436"
+    ]
+  },
+  {
+    "registration": "VH-FDW",
+    "hex": "7C19D2",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 360CER",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD447"
+    ]
+  },
+  {
+    "registration": "VH-FDZ",
+    "hex": "7C19D5",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD458"
+    ]
+  },
+  {
+    "registration": "VH-VAQ",
+    "hex": "7C6A60",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD416"
+    ]
+  },
+  {
+    "registration": "VH-VJU",
+    "hex": "7C6BA8",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-VJW",
+    "hex": "7C6BAA",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD403"
+    ]
+  },
+  {
+    "registration": "VH-VJX",
+    "hex": "7C6BAB",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD426"
+    ]
+  },
+  {
+    "registration": "VH-VJY",
+    "hex": "7C6BAC",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD434"
+    ]
+  },
+  {
+    "registration": "VH-VJZ",
+    "hex": "7C6BAD",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD438"
+    ]
+  },
+  {
+    "registration": "VH-VOQ",
+    "hex": "7C6C58",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD405"
+    ]
+  },
+  {
+    "registration": "VH-VQD",
+    "hex": "7C6C93",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "Queensland Section",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-LTQ",
+    "hex": "7C3A6C",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD212",
+      "FD234",
+      "FD236",
+      "FD243",
+      "FD244",
+      "FD271",
+      "FD284",
+      "FD287",
+      "FD292"
+    ]
+  },
+  {
+    "registration": "VH-MQD",
+    "hex": "7C3F03",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_non_FD_history_only",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-MQK",
+    "hex": "7C3F0A",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD233",
+      "FD258",
+      "FD264"
+    ]
+  },
+  {
+    "registration": "VH-MVW",
+    "hex": "7C3FCA",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD218",
+      "FD236",
+      "FD237",
+      "FD244",
+      "FD284"
+    ]
+  },
+  {
+    "registration": "VH-MVX",
+    "hex": "7C3FCB",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD217",
+      "FD222",
+      "FD232",
+      "FD238",
+      "FD241",
+      "FD248",
+      "FD268"
+    ]
+  },
+  {
+    "registration": "VH-MWH",
+    "hex": "7C3FDF",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD222",
+      "FD238"
+    ]
+  },
+  {
+    "registration": "VH-MWK",
+    "hex": "7C3FE2",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD212",
+      "FD238",
+      "FD244",
+      "FD284",
+      "FD286",
+      "FD287"
+    ]
+  },
+  {
+    "registration": "VH-NAJ",
+    "hex": "7C41D9",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350CER",
+    "section": "South Eastern Section",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-RFD",
+    "hex": "7C56C7",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_non_FD_history_only",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-VPQ",
+    "hex": "7C6C7C",
+    "family": "King Air",
+    "type": "B350",
+    "modelName": "Beech King Air 350i",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD214",
+      "FD227"
+    ]
+  },
+  {
+    "registration": "VH-XYJ",
+    "hex": "7C77D9",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD227",
+      "FD231",
+      "FD233",
+      "FD286"
+    ]
+  },
+  {
+    "registration": "VH-XYO",
+    "hex": "7C77DE",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD217",
+      "FD222",
+      "FD232",
+      "FD242",
+      "FD248"
+    ]
+  },
+  {
+    "registration": "VH-XYR",
+    "hex": "7C77E1",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air 200C",
+    "section": "South Eastern Section",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-XYU",
+    "hex": "7C77E4",
+    "family": "King Air",
+    "type": "BE20",
+    "modelName": "Beech King Air B200",
+    "section": "South Eastern Section",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD212",
+      "FD218",
+      "FD236",
+      "FD237",
+      "FD244",
+      "FD284",
+      "FD292"
+    ]
+  },
+  {
+    "registration": "VH-AW2",
+    "hex": "7C0334",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-AW3",
+    "hex": "7C0335",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD633"
+    ]
+  },
+  {
+    "registration": "VH-AW4",
+    "hex": "7C0336",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 PRO",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-IWO",
+    "hex": "7C2BA6",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD627"
+    ]
+  },
+  {
+    "registration": "VH-LWO",
+    "hex": "7C3AD6",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD629"
+    ]
+  },
+  {
+    "registration": "VH-OWA",
+    "hex": "7C49F8",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-OWB",
+    "hex": "7C49F9",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-OWD",
+    "hex": "7C49FB",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD603"
+    ]
+  },
+  {
+    "registration": "VH-OWG",
+    "hex": "7C49FE",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-OWI",
+    "hex": "7C4A00",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD607"
+    ]
+  },
+  {
+    "registration": "VH-OWJ",
+    "hex": "7C4A01",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-OWP",
+    "hex": "7C4A07",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD609"
+    ]
+  },
+  {
+    "registration": "VH-OWQ",
+    "hex": "7C4A08",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD612"
+    ]
+  },
+  {
+    "registration": "VH-OWR",
+    "hex": "7C4A09",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD613"
+    ]
+  },
+  {
+    "registration": "VH-OWS",
+    "hex": "7C4A0A",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD614"
+    ]
+  },
+  {
+    "registration": "VH-OWU",
+    "hex": "7C4A0C",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD617"
+    ]
+  },
+  {
+    "registration": "VH-OWV",
+    "hex": "7C4A0D",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-OWX",
+    "hex": "7C4A0F",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD618"
+    ]
+  },
+  {
+    "registration": "VH-OWY",
+    "hex": "7C4A10",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD621"
+    ]
+  },
+  {
+    "registration": "VH-OWZ",
+    "hex": "7C4A11",
+    "family": "PC-12",
+    "type": "PC12",
+    "modelName": "Pilatus PC-12 NG",
+    "section": "Western Operations",
+    "status": "no_public_history_observed",
+    "verifiedRecentFD": false,
+    "callsigns": []
+  },
+  {
+    "registration": "VH-KWO",
+    "hex": "7C35C6",
+    "family": "PC-24",
+    "type": "PC24",
+    "modelName": "Pilatus PC-24",
+    "section": "Western Operations",
+    "status": "older_search_snapshot_FD",
+    "verifiedRecentFD": false,
+    "callsigns": [
+      "FD628J"
+    ]
+  },
+  {
+    "registration": "VH-NWO",
+    "hex": "7C44F6",
+    "family": "PC-24",
+    "type": "PC24",
+    "modelName": "Pilatus PC-24",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD626J"
+    ]
+  },
+  {
+    "registration": "VH-VWO",
+    "hex": "7C6D76",
+    "family": "PC-24",
+    "type": "PC24",
+    "modelName": "Pilatus PC-24",
+    "section": "Western Operations",
+    "status": "direct_recent_FD_history",
+    "verifiedRecentFD": true,
+    "callsigns": [
+      "FD624J",
+      "FD626J"
+    ]
+  }
+]

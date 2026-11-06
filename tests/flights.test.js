@@ -1,36 +1,68 @@
+'use strict';
 const assert=require('node:assert/strict');
-const app=require('../api/flights.js');
-const {normalizeAircraft,byRegistration}=app._test;
-assert.equal(byRegistration.size,73);
-assert.deepEqual([...new Set([...byRegistration.values()].map(x=>x.section))].sort(),['QLD','SA/NT','SE','WA']);
-const snap=Date.now()/1000;
-const air=(over={})=>({hex:'7c1ca2',r:'VH-FXW',flight:'FD527 ', lat:-33.9,lon:138.5,alt_baro:12000,gs:160,track:97,seen:1,seen_pos:2,...over});
-assert.equal(normalizeAircraft(air(),snap).ident,'VH-FXW');
-assert.equal(normalizeAircraft(air(),snap).callsignInIndex,true);
-assert.equal(normalizeAircraft(air({flight:'NOTININDEX'}),snap).callsignInIndex,false);
-assert.equal(normalizeAircraft(air({hex:'7fffff',r:'VH-FXW'}),snap),null,'known ICAO24 must agree');
-assert.equal(normalizeAircraft(air({hex:'7c1ca2',r:'VH-OWD'}),snap),null,'hex/reg conflict');
-assert.equal(normalizeAircraft(air({hex:'7fffff',r:'VH-ABZ',flight:'FD527'}),snap),null,'callsign alone NOT sufficient');
-assert.equal(normalizeAircraft(air({alt_baro:'ground'}),snap),null);
-assert.equal(normalizeAircraft(air({seen_pos:300}),snap),null);
-assert.equal(normalizeAircraft(air({lat:-60}),snap),null);
-const ka=normalizeAircraft(air({hex:'7FFFFF',r:'VH-FDA',flight:'FD401',t:'BE20'}),snap);
-assert.equal(ka.type,'BE20');
-assert.equal(ka.section,'QLD');
-assert.equal(ka.modelName,'Beechcraft King Air');
-const old=global.fetch;const calls=[];
+const handler=require('../api/flights');
+const {normalizeAircraft,approvedEntries,collectFlights,byHex}=handler._test;
+const fleet=require('../api/rfds-fleet.json');
+const enabled=approvedEntries();
+const allowed=new Set(enabled.map(e=>e.hex));
+const now=Date.now()/1000;
+assert.equal(fleet.length,93,'93 candidates imported from provided CSV');
+assert.equal(enabled.length,67,'only directly observed FD history enabled by default');
+assert.equal(new Set(fleet.map(e=>e.hex)).size,93,'unique addresses');
+assert.deepEqual([...new Set(enabled.map(e=>e.section))].sort(),
+ ['Central Operations','Queensland Section','South Eastern Section','Western Operations'].sort());
+
+const sample=(entry,overrides={})=>({hex:entry.hex.toLowerCase(),r:entry.registration,lat:-25.35,lon:133.7,alt_baro:18000,gs:210,track:87,seen_pos:9,flight:'FD750  ', ...overrides});
+for(const family of ['PC-12','PC-24','King Air']) {
+ const e=enabled.find(v=>v.family===family);
+ assert.ok(e, 'enabled sample for '+family);
+ const f=normalizeAircraft(sample(e), now,allowed);
+ assert.ok(f, family+' should appear');
+ assert.equal(f.family,family);
+ assert.equal(f.type,e.type);
+ assert.equal(f.ident,e.registration);
+}
+const q=enabled.find(v=>v.section==='Queensland Section');
+const se=enabled.find(v=>v.section==='South Eastern Section');
+const wa=enabled.find(v=>v.section==='Western Operations');
+const sa=enabled.find(v=>v.section==='Central Operations');
+for(const e of [q,se,wa,sa]) assert.ok(normalizeAircraft(sample(e),now,allowed));
+assert.equal(normalizeAircraft(sample(q,{alt_baro:'ground'}),now,allowed),null);
+assert.equal(normalizeAircraft(sample(q,{seen_pos:180}),now,allowed),null);
+assert.equal(normalizeAircraft(sample(q,{r:'VH-XXX'}),now,allowed),null);
+assert.equal(normalizeAircraft(sample(q,{lat:51.5}),now,allowed),null);
+assert.equal(normalizeAircraft(sample(q,{gs:0}),now,allowed),null);
+assert.equal(normalizeAircraft(sample({...q,hex:'ABCDEF'}),now,allowed),null);
+const candidate=fleet.find(e=>!e.verifiedRecentFD);
+assert.equal(normalizeAircraft(sample(candidate),now,allowed),null,'candidate does not display by default');
+
+const requests=[];
+global.fetch=async url=>{
+  requests.push(url);
+  const hexes=url.split('/').pop().split(',').map(x=>x.toUpperCase());
+  return {ok:true,json:async()=>({now:Date.now(),ac:hexes.map(hex=>{
+    const entry=byHex.get(hex);
+    return sample(entry);
+  })})};
+};
 (async()=>{
-  global.fetch=async(url)=>{
-    calls.push(url);const registrations=decodeURIComponent(url.split('/v2/reg/')[1]).split(',');
-    return {ok:true,json:async()=>({now:Date.now(),ac:registrations.includes('VH-FXW')?[air(),air({hex:'7fffff',r:'VH-ABZ',flight:'FD527'})]:[]})};
+  const result=await collectFlights();
+  assert.equal(result.flights.length,67);
+  assert.equal(result.partial,false);
+  assert.equal(requests.length,2,'67 IDs should use two multi-hex requests');
+  assert.ok(requests.every(x=>x.includes('/v2/hex/')));
+  assert.ok(result.flights.some(f=>f.section==='Queensland Section' && f.family==='King Air'));
+  assert.ok(result.flights.some(f=>f.section==='South Eastern Section' && f.family==='King Air'));
+  assert.ok(result.flights.some(f=>f.section==='Central Operations'));
+  assert.ok(result.flights.some(f=>f.section==='Western Operations'));
+
+  const originals=global.fetch;
+  global.fetch=async url=> {
+    if (url.includes(q.hex)) throw new Error('simulated provider outage');
+    return originals(url);
   };
-  function response(){return {code:0,headers:{},setHeader(k,v){this.headers[k]=v;},status(n){this.code=n;return this;},json(o){this.result=o;return this;}};}
-  let res=response();await app({method:'GET'},res);
-  assert.equal(res.code,200);assert.equal(calls.length,2);assert.equal(res.result.count,1);
-  assert.equal(res.result.flights[0].ident,'VH-FXW');
-  assert.equal(res.result.flights[0].callsign,'FD527');
-  assert.match(calls.join(','),/\/v2\/reg\//);
-  global.fetch=async()=>{throw Error('offline')};res=response();await app({method:'GET'},res);
-  assert.equal(res.code,502);assert.deepEqual(res.result.flights,[]);
-  console.log('PASS: 73 registrations, 4 sections, King Air, ID matching, real-data safeguards and 2 API batches');
-})().catch(err=>{console.error(err);process.exitCode=1}).finally(()=>global.fetch=old);
+  const partial=await collectFlights();
+  assert.equal(partial.partial,true);
+  assert.ok(partial.flights.length>0);
+  console.log('PASS: imported fleet, four sections, 3 shapes, strict identity, airborne/staleness, batched requests, partial failures');
+})().catch(e=>{console.error(e); process.exitCode=1});

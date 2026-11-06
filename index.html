@@ -11,7 +11,7 @@
   img-src 'self' data: blob: https://www.flyingdoctor.org.au https://flyingdoctor.org.au https://res.cloudinary.com https://thumbor.ixchosted.com https://rfds-media.s3.amazonaws.com https://p.typekit.net;
   font-src 'self' data: https://use.typekit.net https://p.typekit.net;
   connect-src 'self';
-  frame-src 'self' https://www.flightaware.com;
+  frame-src 'self';
 ">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>RFDS Careers | A Career That Goes Further.</title>
@@ -298,6 +298,9 @@ body.rfds-overlay-open { overflow: hidden; }
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
 }
 
+#rfds-app .aircraft-engine-nacelle {fill:#fff;stroke:var(--rfds-navy);stroke-width:.9;pointer-events:none}
+#rfds-app .aircraft-silhouette-detail {stroke:var(--rfds-navy);stroke-width:1.05;stroke-linecap:round;pointer-events:none}
+#rfds-app .rfds-live-data-credit {opacity:.72;font-size:11px;margin-top:12px}
 #rfds-app .aircraft-pulse {
   fill: none;
   stroke: #10b981;
@@ -4761,20 +4764,19 @@ body.rfds-story-lock {
 <!-- State Hover Tooltip -->
 <div class="state-tooltip" id="stateTooltip"></div>
 
-<!-- RFDS Live Flight Map — current PC-12 / PC-24 data supplied by the external RFDS flight API -->
+<!-- RFDS Live Flight Map — live positions from approved national RFDS fleet -->
 <div class="live-map-overlay" id="liveMapOverlay" aria-hidden="true">
   <div class="live-map-panel" role="dialog" aria-modal="true" aria-label="RFDS Live Flight Map">
     <button type="button" class="live-map-close" id="liveMapClose" aria-label="Close live flight map">&times;</button>
     <div class="live-map-toolbar">
       <div class="live-map-toolbar-copy">
         <span class="live-map-toolbar-title">LIVE RFDS FLIGHTS</span>
-        <span class="live-map-toolbar-sub">PC-12 &amp; PC-24 aircraft currently airborne</span>
+        <span class="live-map-toolbar-sub">PC-12 · PC-24 · King Air aircraft reporting airborne</span>
       </div>
       <div class="live-map-status" id="liveMapStatus"><span class="live-map-status-dot"></span><span id="liveMapStatusText">Connecting…</span></div>
     </div>
     <div class="live-map-body">
       <div class="live-map-canvas" id="liveMapCanvas" aria-label="Live RFDS aircraft positions">
-        <iframe class="live-map-fallback" id="flightAwareFallbackFrame" title="RFDS live FlightAware map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <aside class="live-map-details" id="liveMapDetails" aria-live="polite">
         <p class="live-map-empty">Select a live aircraft to view its current route and flight information.</p>
@@ -4914,6 +4916,7 @@ var STATE_DATA = {
 
 // LIVE FLIGHT MAP control — same-origin Vercel Serverless Function.
 // The browser calls /api/flights on the same deployment as this page.
+// RFDS_NATIONAL_FIX_V3: RFDS-only ADS-B fleet positions
 var RFDS_FLIGHT_API_URL = '/api/flights';
 
 var liveRadarBadge = document.getElementById('liveRadarBadge');
@@ -4925,27 +4928,10 @@ var liveMapDetails = document.getElementById('liveMapDetails');
 var liveMapStatus = document.getElementById('liveMapStatus');
 var liveMapStatusText = document.getElementById('liveMapStatusText');
 
-function flightAwareAircraftUrl(flight) {
-  if (flight && flight.flightAwareUrl) return flight.flightAwareUrl;
-  var ident = flight && flight.ident ? String(flight.ident).replace(/[^A-Za-z0-9]/g, '') : '';
-  return ident ? 'https://www.flightaware.com/live/flight/' + encodeURIComponent(ident) : 'https://www.flightaware.com/';
-}
-
-var flightAwareTvMapUrl = 'https://www.flightaware.com/commercial/tv/map_content.rvt?key=1321716bc0578e355bf829884efa03d73654ad1210fe13887879d99ada358486';
-
-function showFlightAwareFallback() {
-  if (!liveMapCanvas || !flightAwareFallbackFrame) return;
-  liveMapCanvas.classList.add('is-fallback');
-  liveMapCanvas.querySelectorAll('svg').forEach(function(svg) { svg.remove(); });
-  if (!flightAwareFallbackFrame.getAttribute('src')) {
-    flightAwareFallbackFrame.setAttribute('src', flightAwareTvMapUrl);
-  }
-}
-
 function showCustomLiveMap() {
   if (!liveMapCanvas) return;
   liveMapCanvas.classList.remove('is-fallback');
-  if (flightAwareFallbackFrame) flightAwareFallbackFrame.removeAttribute('src');
+  // External tracking iframe removed.
 }
 
 function setLiveMapStatus(count, ok) {
@@ -4985,7 +4971,7 @@ function showLiveOverlayDetails(flight) {
         '<div><span>Heading</span><b>' + escapeHtml(heading) + '</b></div>' +
         '<div><span>Updated</span><b>' + escapeHtml(updated) + '</b></div>' +
       '</div>' +
-      '<a class="live-flight-aware-link" href="' + escapeHtml(flightAwareAircraftUrl(flight)) + '" target="_blank" rel="noopener">View full flight on FlightAware ↗</a>' +
+      '<p class="rfds-live-data-credit">Position source: adsb.lol · ODbL 1.0 · Routes unavailable from ADS-B.</p>' +
     '</div>';
 }
 
@@ -5036,12 +5022,11 @@ function openLiveMap() {
   liveMapOverlay.classList.add('open');
   liveMapOverlay.setAttribute('aria-hidden', 'false');
   document.body.classList.add('rfds-overlay-open');
-  if (activeFlights.length) renderLiveMapOverlay();
-  else showCustomLiveMap();
+  renderLiveMapOverlay();
   if (liveMapDetails) {
     liveMapDetails.innerHTML = activeFlights.length
       ? '<p class="live-map-empty">Select a live aircraft to view its current route and flight information.</p>'
-      : '<p class="live-map-empty">Checking FlightAware for currently airborne RFDS PC-12 and PC-24 aircraft…</p>';
+      : '<p class="live-map-empty">Checking current RFDS ADS-B aircraft positions…</p>';
   }
   fetchFlights();
 }
@@ -5072,16 +5057,50 @@ function projectGeo(lon, lat) {
   return { x: x, y: y };
 }
 
-// Live Flight Data Engine (FlightAware)
+// Live Flight Data Engine (adsb.lol ODbL 1.0)
 var activeFlights = [];
 var liveLayer = document.getElementById('liveAircraftLayer');
 var hudCard = document.getElementById('pilotHudCard');
 var liveCountDisplay = document.getElementById('liveCountDisplay');
 
+
+function rfdsAircraftShape(f) {
+  var type = (String(f.family || '') + ' ' + String(f.type || '') + ' ' + String(f.modelName || '')).toUpperCase();
+  if (type.includes('PC24') || type.includes('PC-24')) return 'PC24';
+  if (type.includes('KING AIR') || type.includes('BE20') || type.includes('B350') || type.includes('B200')) return 'KINGAIR';
+  if (type.includes('PC12') || type.includes('PC-12')) return 'PC12';
+  return 'UNKNOWN';
+}
+function renderAircraftShape(parent, f) {
+  var type = rfdsAircraftShape(f);
+  var outlines = {
+    PC12:'M0,-11.5 C1.7,-11 1.9,-7 1.9,-3.5 L9.2,-1.7 9.2,0.1 2,0.3 1.6,7.6 5,9 5,10.3 0,9.3 -5,10.3 -5,9 -1.6,7.6 -2,0.3 -9.2,0.1 -9.2,-1.7 -1.9,-3.5 C-1.9,-7 -1.7,-11 0,-11.5Z',
+    PC24:'M0,-12 C1.7,-11.5 2,-7.5 2.1,-4.8 L10.4,2.8 10,4.2 2.2,1.5 1.4,7.5 5.5,9.1 5.5,10.3 0,9.4 -5.5,10.3 -5.5,9.1 -1.4,7.5 -2.2,1.5 -10,4.2 -10.4,2.8 -2.1,-4.8 C-2,-7.5 -1.7,-11.5 0,-12Z',
+    KINGAIR:'M0,-11.9 C1.5,-11.2 1.9,-7 2,-4.3 L10.1,-1.1 10.1,0.8 2.2,0.6 1.6,7.6 5.7,9 5.7,10.3 0,9.5 -5.7,10.3 -5.7,9 -1.6,7.6 -2.2,0.6 -10.1,0.8 -10.1,-1.1 -2,-4.3 C-1.9,-7 -1.5,-11.2 0,-11.9Z',
+    UNKNOWN:'M0,-10 L2,-3 9,1 9,3 2,1 1,8 4,10 4,11 0,10 -4,11 -4,10 -1,8 -2,1 -9,3 -9,1 -2,-3Z'
+  };
+  function el(tag, cls, attrs) {
+    var n = document.createElementNS('http://www.w3.org/2000/svg',tag);
+    n.setAttribute('class',cls);
+    Object.keys(attrs).forEach(function(k){n.setAttribute(k,attrs[k]);});
+    parent.appendChild(n);
+  }
+  el('path','aircraft-icon aircraft-icon-'+type.toLowerCase(),{d:outlines[type]});
+  if(type==='PC12') el('line','aircraft-silhouette-detail',{x1:-4,y1:-11.8,x2:4,y2:-11.8});
+  if(type==='PC24') [-3.35,3.35].forEach(function(x){el('ellipse','aircraft-engine-nacelle',{cx:x,cy:6.2,rx:1.15,ry:3.2});});
+  if(type==='KINGAIR') [-5.8,5.8].forEach(function(x){
+    el('ellipse','aircraft-engine-nacelle',{cx:x,cy:-1.1,rx:1.3,ry:3.1});
+    el('line','aircraft-silhouette-detail',{x1:x-2.55,y1:-4.1,x2:x+2.55,y2:-4.1});
+  });
+}
+
 function updateLiveRadar(flights) {
+  // The API has already verified the RFDS ICAO24 whitelist; include King Air.
   activeFlights = (flights || []).filter(function(f) {
-    var type = String((f && f.type) || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-    return type === 'PC12' || type === 'PC24';
+    return f && Array.isArray(f.coord) && f.coord.length === 2 &&
+      Number.isFinite(Number(f.coord[0])) && Number.isFinite(Number(f.coord[1])) &&
+      Number.isFinite(Number(f.timestamp)) &&
+      Date.now()/1000-Number(f.timestamp) <= 180;
   });
   if (liveCountDisplay) {
     liveCountDisplay.textContent = activeFlights.length;
@@ -5109,13 +5128,7 @@ function updateLiveRadar(flights) {
     var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('class', 'aircraft-icon');
 
-    // Dynamic Icon Selection
-    var isJet = f.type && String(f.type).toUpperCase().includes('24');
-    var dProp = 'M 0,-6 L 1.5,-2 L 7,1 L 7,2.5 L 1.5,1.5 L 1,6 L 3.5,7.5 L 3.5,8.2 L 0,7.5 L -3.5,8.2 L -3.5,7.5 L -1,6 L -1.5,1.5 L -7,2.5 L -7,1 L -1.5,-2 Z';
-    var dJet = 'M 0,-7 L 1.2,-1 L 6.5,3 L 6.5,4.5 L 1.2,3 L 0.8,6.5 L 3.5,8.5 L 3.5,9.2 L 0,8.5 L -3.5,9.2 L -3.5,8.5 L -0.8,6.5 L -1.2,3 L -6.5,4.5 L -6.5,3 L -1.2,-1 Z';
-    path.setAttribute('d', isJet ? dJet : dProp);
-
-    planeG.appendChild(path);
+    renderAircraftShape(planeG, f);
     g.appendChild(planeG);
 
     var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -5139,7 +5152,7 @@ function updateLiveRadar(flights) {
 function showHud(flight, pt) {
   document.getElementById('hudIdent').textContent = flight.ident;
   document.getElementById('hudModel').textContent = flight.modelName || 'RFDS Emergency Aircraft';
-  document.getElementById('hudRoute').textContent = (flight.origin || 'Base') + ' → ' + (flight.dest || 'En Route');
+  document.getElementById('hudRoute').textContent = (flight.origin === '—' && flight.dest === '—') ? 'Route unavailable' : (flight.origin || '—') + ' → ' + (flight.dest || '—');
   document.getElementById('hudAlt').textContent = flight.alt > 0 ? flight.alt.toLocaleString() + ' FT' : 'Cruising';
   document.getElementById('hudSpeed').textContent = flight.speed > 0 ? Math.round(flight.speed) + ' KTS' : '—';
   document.getElementById('hudHdg').textContent = (flight.heading || 0) + '°';
@@ -5172,8 +5185,9 @@ function fetchFlights() {
         setLiveMapStatus(activeFlights.length, true);
         if (liveMapOverlay && liveMapOverlay.classList.contains('open')) {
           renderLiveMapOverlay();
+          if (data.partial && liveMapStatusText) liveMapStatusText.textContent = activeFlights.length + ' aircraft · partial coverage';
           if (!activeFlights.length && liveMapDetails) {
-            liveMapDetails.innerHTML = '<p class="live-map-empty">The live RFDS feed is connected, but no PC-12 or PC-24 aircraft are currently being returned as airborne.</p>';
+            liveMapDetails.innerHTML = '<p class="live-map-empty">No approved RFDS aircraft are currently reporting fresh airborne ADS-B positions. Remote coverage can be limited.</p>';
           }
         }
       }
@@ -5184,16 +5198,16 @@ function fetchFlights() {
       setLiveMapStatus(0, false);
       updateLiveRadar([]);
       if (liveMapOverlay && liveMapOverlay.classList.contains('open')) {
-        showFlightAwareFallback();
+        renderLiveMapOverlay();
         if (liveMapDetails) {
-          liveMapDetails.innerHTML = '<p class="live-map-empty"><strong>FlightAware live map</strong><br>The custom RFDS aircraft overlay could not reach the Vercel /api/flights endpoint. The page has fallen back to the live FlightAware map.</p>';
+          liveMapDetails.innerHTML = '<p class="live-map-empty"><strong>ADS-B positions unavailable.</strong> No simulated aircraft displayed.</p>';
         }
       }
     });
 }
 
 fetchFlights();
-setInterval(fetchFlights, 15000);
+setInterval(fetchFlights, 60000);
 
 // Discrete Scrollytelling Engine
 // Scroll is an input gesture, not the story timeline. Each gesture advances or

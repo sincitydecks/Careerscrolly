@@ -59,6 +59,9 @@ function getEmailTransporter() {
   return null;
 }
 
+// RFDS national aircraft positions: local Express route (Vercel uses /api/flights.js).
+app.get('/api/flights', require('./api/flights.js'));
+
 // API endpoint: submit an Expression of Interest (EOI)
 app.post('/api/eoi', async (req, res) => {
   try {
